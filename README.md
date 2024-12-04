@@ -18,7 +18,7 @@ This repository contains the source code and supporting documentation for the **
    Download [Git](https://git-scm.com/downloads)
 
 3. **GitHub Desktop** (Recommended):  
-   Download [GitHub](https://github.com/apps/desktop)
+   Download [GitHub Desktop](https://github.com/apps/desktop)
 
 4. **Postman** (Optional, for API Testing):  
    Download [Postman](https://www.postman.com/downloads/)
