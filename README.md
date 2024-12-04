@@ -36,6 +36,5 @@ This repository contains the source code and supporting documentation for the **
 ## Project Requirements and Files
 
 ### Linked PDF Files:
-1.  [**Project Requirements**](https://github.com/user-attachments/files/18007575/2024_winter_project_description.pdf)
-
-2. [**Milestones Description**](https://github.com/user-attachments/files/18007586/milestones.pdf)
+- [**Project Requirements**](https://github.com/user-attachments/files/18007575/2024_winter_project_description.pdf)
+- [**Milestones Description**](https://github.com/user-attachments/files/18007586/milestones.pdf)
