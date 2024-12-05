@@ -1,4 +1,4 @@
-package api.dtos;
+package api;
 
 /**
  * The one and only custom Exception ... with no further benefit ... as of now

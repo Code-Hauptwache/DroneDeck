@@ -1,10 +1,8 @@
 package api;
 
-import api.dtos.DroneApiException;
-import api.dtos.DroneDynamics;
-import api.dtos.DroneDynamicsResponse;
+import api.dtos.*;
 import com.google.gson.Gson;
-import java.io.UncheckedIOException;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -24,14 +22,18 @@ public class DroneApiInterface {
 
     private static final String DroneDynamicsUrl = "/dronedynamics/";
 
+    private static final String DronesUrl = "/drones/";
 
+    private static final String DroneTypesUrl = "/dronetypes/";
+
+    private static final String DroneDynamicsByDroneId = "/dynamics/";
 
     /**
      * Empty Constructor, mainly used for testing
      */
-    public DroneApiInterface() throws UncheckedIOException {
+    public DroneApiInterface() {
         this.ApiKey = "";
-        this.HttpClient = java.net.http.HttpClient.newHttpClient();
+        this.HttpClient = buildHttpClient();
     }
 
     /**
@@ -40,7 +42,11 @@ public class DroneApiInterface {
      */
     public DroneApiInterface(String apiKey) {
         this.ApiKey = apiKey;
-        this.HttpClient = java.net.http.HttpClient.newHttpClient();
+        this.HttpClient = buildHttpClient();
+    }
+
+    private HttpClient buildHttpClient() {
+        return java.net.http.HttpClient.newBuilder().followRedirects(java.net.http.HttpClient.Redirect.ALWAYS).build();
     }
 
     /**
@@ -106,5 +112,218 @@ public class DroneApiInterface {
      */
     public ArrayList<DroneDynamics> getDroneDynamics() throws DroneApiException {
         return getDroneDynamics(100, 0);
+    }
+
+    /**
+     * Gets a DroneDynamics by id
+     * @param id the id to get the DroneDynamics of
+     * @return the drone dynamics
+     * @throws DroneApiException Magic Exception ;)
+     */
+    public DroneDynamics getDroneDynamicsById(int id) throws DroneApiException {
+        try {
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(Url + DroneDynamicsUrl + id))
+                    .GET()
+                    .header("Authorization", "Token " + this.ApiKey)
+                    .build();
+
+            HttpResponse<String> response = this.HttpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+
+            Gson gson = new Gson();
+
+            return gson.fromJson(response.body(), DroneDynamics.class);
+
+        } catch (Exception e) {
+            throw new DroneApiException();
+        }
+    }
+
+    /**
+     * Get a list of Drones
+     * @param limit the number of Drones to get
+     * @param offset the offset (from 0)
+     * @return list of Drones
+     * @throws DroneApiException Magic Exception D:
+     */
+    public ArrayList<Drone> getDrones(int limit, int offset) throws DroneApiException {
+        try {
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(Url + DronesUrl + "?limit=" + limit + "&offset=" + offset))
+                    .GET()
+                    .header("Authorization", "Token " + this.ApiKey)
+                    .build();
+
+            HttpResponse<String> response = this.HttpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+
+            Gson gson = new Gson();
+
+            return gson.fromJson(response.body(), DronesResponse.class).results;
+
+        } catch (Exception e) {
+            throw new DroneApiException();
+        }
+    }
+
+    /**
+     * Get a list of 100 Drones
+     * @param offset the offset (from 0)
+     * @return a list of 100 Drones
+     * @throws DroneApiException Exception ...
+     */
+    public ArrayList<Drone> getDrones(int offset) throws DroneApiException {
+        return this.getDrones(100, offset);
+    }
+
+    /**
+     * Get a list of 100 Drones
+     * @return a list of 100 Drones
+     * @throws DroneApiException ...
+     */
+    public ArrayList<Drone> getDrones() throws DroneApiException {
+        return this.getDrones(100, 0);
+    }
+
+    /**
+     * Gets a drone by its id
+     * @param id the id of the drone to get
+     * @return the drone
+     * @throws DroneApiException ...
+     */
+    public Drone getDronesById(int id) throws DroneApiException {
+        try {
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(Url + DronesUrl + id))
+                    .GET()
+                    .header("Authorization", "Token " + this.ApiKey)
+                    .build();
+
+            HttpResponse<String> response = this.HttpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+
+            Gson gson = new Gson();
+
+            return gson.fromJson(response.body(), Drone.class);
+
+        } catch (Exception e) {
+            throw new DroneApiException();
+        }
+    }
+
+    /**
+     * Get a list of DroneTypes
+     * @param limit the number of Types to get
+     * @param offset the offset (from 0)
+     * @return a list of DroneTypes
+     * @throws DroneApiException ...
+     */
+    public ArrayList<DroneType> getDroneTypes(int limit, int offset) throws DroneApiException {
+        try {
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(Url + DroneTypesUrl + "?limit=" + limit + "&offset=" + offset))
+                    .GET()
+                    .header("Authorization", "Token " + this.ApiKey)
+                    .build();
+
+            HttpResponse<String> response = this.HttpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+
+            Gson gson = new Gson();
+
+            return gson.fromJson(response.body(), DroneTypesResponse.class).results;
+
+        } catch (Exception e) {
+            throw new DroneApiException();
+        }
+    }
+
+    /**
+     * Get a list of 100 DroneTypes
+     * @param offset the offset from 0
+     * @return A list with 100 DroneTypes
+     * @throws DroneApiException ...
+     */
+    public ArrayList<DroneType> getDroneTypes(int offset) throws DroneApiException {
+        return this.getDroneTypes(100, offset);
+    }
+
+    /**
+     * Get a list of 100 DroneTypes
+     * @return A list with 100 DroneTypes
+     * @throws DroneApiException ...
+     */
+    public ArrayList<DroneType> getDroneTypes() throws DroneApiException {
+        return this.getDroneTypes(100, 0);
+    }
+
+    /**
+     * Get a DroneType by its id
+     * @param id the id of the DroneType to get
+     * @return the DroneType
+     * @throws DroneApiException ...
+     */
+    public DroneType getDroneTypeById(int id) throws DroneApiException {
+        try {
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(Url + DroneTypesUrl + id))
+                    .GET()
+                    .header("Authorization", "Token " + this.ApiKey)
+                    .build();
+
+            HttpResponse<String> response = this.HttpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+
+            Gson gson = new Gson();
+
+            return gson.fromJson(response.body(), DroneType.class);
+
+        } catch (Exception e) {
+            throw new DroneApiException();
+        }
+    }
+
+    /**
+     * Gets a drones DroneDynamics
+     * @param id the id of the drone of wich to retrieve the DroneDynamics
+     * @param limit the number of DroneDynamics to get
+     * @param offset the offset
+     * @return the DroneDynamics of said Drone
+     * @throws DroneApiException ...
+     */
+    public ArrayList<DroneDynamics> getDroneDynamicsByDroneId(int id, int limit, int offset) throws DroneApiException {
+        try {
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(Url + "/" + id + DroneDynamicsByDroneId + "?limit=" + limit + "&offset=" + offset))
+                    .GET()
+                    .header("Authorization", "Token " + this.ApiKey)
+                    .build();
+
+            HttpResponse<String> response = this.HttpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+
+            Gson gson = new Gson();
+
+            return gson.fromJson(response.body(), DroneDynamicsResponse.class).results;
+
+        } catch (Exception e) {
+            throw new DroneApiException();
+        }
+    }
+
+    /**
+     * Get 100 DroneDynamics by Drone id
+     * @param id the id of the Drone
+     * @param offset the offset
+     * @return the DroneDynamics of said Drone
+     * @throws DroneApiException ...
+     */
+    public ArrayList<DroneDynamics> getDroneDynamicsByDroneId(int id, int offset) throws DroneApiException {
+        return this.getDroneDynamicsByDroneId(id, 100, offset);
+    }
+
+    /**
+     * Get 100 DroneDynamics by Drone id
+     * @param id the id of the Drone
+     * @return the DroneDynamics of said Drone
+     * @throws DroneApiException ...
+     */
+    public ArrayList<DroneDynamics> getDroneDynamicsByDroneId(int id) throws DroneApiException {
+        return this.getDroneDynamicsByDroneId(id, 100, 0);
     }
 }
