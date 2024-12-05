@@ -28,7 +28,7 @@ public class DroneDynamics {
      * Get the Id of the drone from the "drone" url property.
      * @return the Id (0 on Error)
      */
-    public int GetId() {
+    public int getId() {
         try {
             return Integer.parseInt(drone.substring(drone.length() - 3, drone.length() - 1));
         } catch (Exception e) {
@@ -53,7 +53,7 @@ public class DroneDynamics {
                 ", latitude=" + latitude +
                 ", battery_status=" + battery_status +
                 ", last_seen=" + last_seen +
-                ", id=" + GetId() +
+                ", id=" + getId() +
                 ", status='" + status + '\'' +
                 '}';
     }
