@@ -1,26 +1,23 @@
-import api.DroneApiInterface;
+package api;
+
 import api.dtos.Drone;
 import api.dtos.DroneDynamics;
 import api.dtos.DroneType;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-public class DroneApiInterfaceTest {
+import static org.junit.jupiter.api.Assertions.*;
 
-    /**
-     * Simple test for the Drone API interface
-     */
-    public static void main(String[] args) {
+class DroneApiInterfaceTest {
 
-        //Only some tests for my code.
-        //If you want to "test" this then put your API Token here
-
-        DroneApiInterface droneApiInterface = new DroneApiInterface("<API_TOKEN Here>");
+    @Test
+    void testDroneApiInterface() {
+        DroneApiInterface droneApiInterface = new DroneApiInterface(System.getenv("DRONE_API_KEY"));
 
         ArrayList<DroneDynamics> dynamics;
         ArrayList<Drone> drones;
         ArrayList<DroneType> droneTypes;
-        ArrayList<DroneDynamics> droneDynamicsByDrone;
 
         try {
             dynamics = droneApiInterface.getDroneDynamics();
@@ -28,18 +25,17 @@ public class DroneApiInterfaceTest {
             droneTypes = droneApiInterface.getDroneTypes();
 
             System.out.println("DroneDynamics");
-            //Just printing the first 3 responses
-            for(int i = 0; i < dynamics.size() && i < 3; i++) {
+            for (int i = 0; i < dynamics.size() && i < 3; i++) {
                 System.out.println(dynamics.get(i));
             }
 
             System.out.println("Drones");
-            for(int i = 0; i < drones.size() && i < 3; i++) {
+            for (int i = 0; i < drones.size() && i < 3; i++) {
                 System.out.println(drones.get(i));
             }
 
             System.out.println("DroneTypes");
-            for(int i = 0; i < droneTypes.size() && i < 3; i++) {
+            for (int i = 0; i < droneTypes.size() && i < 3; i++) {
                 System.out.println(droneTypes.get(i));
             }
 
@@ -52,7 +48,7 @@ public class DroneApiInterfaceTest {
 
         } catch (Exception ex) {
             ex.printStackTrace();
+            fail("Exception occurred during test execution: " + ex.getMessage());
         }
     }
-
 }
