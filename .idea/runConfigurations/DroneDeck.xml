@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="DroneDeck" type="Application" factoryName="Application">
-    <option name="MAIN_CLASS_NAME" value="DroneDeck" />
+    <option name="MAIN_CLASS_NAME" value="main.java.ui.DroneDeck" />
     <module name="DroneDeck" />
     <method v="2">
       <option name="Make" enabled="true" />
