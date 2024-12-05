@@ -1,8 +1,7 @@
-package api;
+package main.java.api;
 
-import api.dtos.*;
+import main.java.api.dtos.*;
 import com.google.gson.Gson;
-
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;

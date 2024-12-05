@@ -1,8 +1,8 @@
-package api.dtos;
+package main.java.api.dtos;
 
 import java.util.ArrayList;
 
-public class DroneTypesResponse {
+public class DronesResponse {
 
     public int count = 0;
 
@@ -10,6 +10,6 @@ public class DroneTypesResponse {
 
     public String previous = "";
 
-    public ArrayList<DroneType> results = new ArrayList<>();
+    public ArrayList<Drone> results = new ArrayList<>();
 
 }
