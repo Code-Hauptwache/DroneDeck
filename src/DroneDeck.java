@@ -15,8 +15,7 @@ public class DroneDeck {
         //Nur ein paar test, ob mein Code auch wirklich funktioniert ...
         //Ihr muessted jedoch vorher den API-Token eingeben ... diesen bitte nicht in Git Pushen ...
 
-        DroneApiInterface droneApiInterface = new DroneApiInterface("<API_KEY Here>");
-
+        DroneApiInterface droneApiInterface = new DroneApiInterface(System.getenv("DRONE_API_KEY"));
         try {
             ArrayList<DroneDynamics> dynamics = droneApiInterface.getDroneDynamics();
 
