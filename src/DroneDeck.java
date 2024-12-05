@@ -7,15 +7,14 @@ public class DroneDeck {
 
 
     /**
-     * Erstmal nur ein ganz einfacher einsteigesspunkt zum Testen des Programms
-     * (Also den Teil den ich gemacht habe -Gordon)
+     * Main entry point of the program.
      */
     public static void main(String[] args) {
 
-        //Nur ein paar test, ob mein Code auch wirklich funktioniert ...
-        //Ihr muessted jedoch vorher den API-Token eingeben ... diesen bitte nicht in Git Pushen ...
+        //Only some thest for my code. Will be moved to spesific testing files later on.
+        //If you want to "test" this then put your API Token here
 
-        DroneApiInterface droneApiInterface = new DroneApiInterface("<API_KEY Here>");
+        DroneApiInterface droneApiInterface = new DroneApiInterface("<API_TOKEN Here>");
 
         try {
             ArrayList<DroneDynamics> dynamics = droneApiInterface.getDroneDynamics();

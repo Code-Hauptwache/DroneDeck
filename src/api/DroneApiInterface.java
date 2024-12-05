@@ -16,14 +16,15 @@ public class DroneApiInterface {
 
     private String ApiKey;
 
-    //Dies sollte natürlich nach dem Erstellen nicht gearendert werden
+    //HttpClient. This shouldn't be changed after Construction
     private final HttpClient HttpClient;
 
-    //Ab hier Konstanten für die Verbindung mit der Rest Api.
-    //Einfach, sodass es später einfacher ist diese eventuell auszutauschen.
+    //some constants for easy editing of "magic" urls
     private static final String Url = "http://dronesim.facets-labs.com/api";
 
     private static final String DroneDynamicsUrl = "/dronedynamics/";
+
+
 
     /**
      * Empty Constructor, mainly used for testing
