@@ -16,10 +16,16 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Set up JDK
+    - name: Set up JDK 23
       uses: actions/setup-java@v3
       with:
-        java-version: '11' # Adjust this to your project's Java version
+        java-version: '23' # Set JDK 23 explicitly
+        distribution: 'temurin' # Adjust if you use a different distribution
+
+    - name: Install FlatLaf
+      run: |
+        # Ensure the FlatLaf dependency is properly installed
+        ./gradlew dependencies --update-dependencies
 
     - name: Build and Test (Exclude API Tests)
       run: ./gradlew test --exclude-pattern '**/api/DroneApiInterfaceTest.java'
