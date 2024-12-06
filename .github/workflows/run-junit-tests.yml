@@ -16,21 +16,22 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Install FortiClient VPN
-      run: sudo apt-get update && sudo apt-get install -y openfortivpn
+    - name: Create VPN Config
+      run: |
+        echo "host = vpngate.frankfurt-university.de" > vpn_config
+        echo "port = 443" >> vpn_config
+        echo "username = ${{ secrets.VPN_USERNAME }}" >> vpn_config
+        echo "password = ${{ secrets.VPN_PASSWORD }}" >> vpn_config
 
     - name: Connect to VPN
-      env:
-        VPN_SERVER: vpngate.frankfurt-university.de:443
-        VPN_USERNAME: ${{ secrets.VPN_USERNAME }}
-        VPN_PASSWORD: ${{ secrets.VPN_PASSWORD }}
       run: |
-        sudo openfortivpn $VPN_SERVER -u $VPN_USERNAME -p $VPN_PASSWORD
-        
+        sudo openfortivpn -c vpn_config
+
     - name: Set up JDK
       uses: actions/setup-java@v3
       with:
-        java-version: '11' # Update if you use a different Java version
+        java-version: '11'
+        distribution: 'temurin'
 
     - name: Set API Token
       run: echo "DRONE_API_KEY=${{ secrets.DRONE_API_KEY }}" >> $GITHUB_ENV
