@@ -16,27 +16,18 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Install OpenFortiVPN
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y openfortivpn
-
-    - name: Create VPN Config
-      run: |
-        echo "host = vpngate.frankfurt-university.de" > vpn_config
-        echo "port = 443" >> vpn_config
-        echo "username = ${{ secrets.VPN_USERNAME }}" >> vpn_config
-        echo "password = ${{ secrets.VPN_PASSWORD }}" >> vpn_config
-
-    - name: Connect to VPN
-      run: |
-        sudo openfortivpn -c vpn_config
+    - name: Set up FortiClient VPN
+      uses: M4hmoudAly/Forticlient-VPN@V1.0.0
+      with:
+        gateway: ${{ secrets.VPN_SERVER }}
+        port: ${{ secrets.VPN_PORT }}
+        username: ${{ secrets.VPN_USERNAME }}
+        password: ${{ secrets.VPN_PASSWORD }}
 
     - name: Set up JDK
       uses: actions/setup-java@v3
       with:
-        java-version: '11'
-        distribution: 'temurin'
+        java-version: '11' # Adjust this to your project's Java version
 
     - name: Set API Token
       run: echo "DRONE_API_KEY=${{ secrets.DRONE_API_KEY }}" >> $GITHUB_ENV
@@ -44,7 +35,4 @@ jobs:
     - name: Build and Test
       env:
         DRONE_API_KEY: ${{ secrets.DRONE_API_KEY }}
-      run: |
-        ./gradlew build test # For Gradle projects
-        # or
-        mvn clean test # For Maven projects
+      run: ./gradlew build test # Adjust this to your build tool
