@@ -24,8 +24,7 @@ jobs:
         VPN_SERVER: ${{ secrets.VPN_SERVER }}
         VPN_USERNAME: ${{ secrets.VPN_USERNAME }}
         VPN_PASSWORD: ${{ secrets.VPN_PASSWORD }}
-      run: |
-        sudo openfortivpn $VPN_SERVER -u $VPN_USERNAME -p $VPN_PASSWORD --trusted-cert <CERTIFICATE_HASH>
+      run: sudo openfortivpn $VPN_SERVER -u $VPN_USERNAME -p $VPN_PASSWORD --trusted-cert <CERTIFICATE_HASH>
 
 
     - name: Set up JDK
