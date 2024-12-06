@@ -17,12 +17,12 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Set up FortiClient VPN
-      uses: M4hmoudAly/Forticlient-VPN@V1.0.0
+      uses: M4hmoudAly/Forticlient-VPN@v1.0.0
       with:
         gateway: ${{ secrets.VPN_SERVER }}
         port: ${{ secrets.VPN_PORT }}
         username: ${{ secrets.VPN_USERNAME }}
-        password: ${{ secrets.VPN_PASSWORD }}
+        password: ${{ secrets.VPN_PASS }}
 
     - name: Set up JDK
       uses: actions/setup-java@v3
