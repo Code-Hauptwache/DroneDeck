@@ -21,11 +21,12 @@ jobs:
 
     - name: Connect to VPN
       env:
-        VPN_SERVER: ${{ secrets.VPN_SERVER }}
+        VPN_SERVER: vpngate.frankfurt-university.de:443
         VPN_USERNAME: ${{ secrets.VPN_USERNAME }}
         VPN_PASSWORD: ${{ secrets.VPN_PASSWORD }}
-      run: sudo openfortivpn $VPN_SERVER -u $VPN_USERNAME -p $VPN_PASSWORD
-
+      run: |
+        sudo openfortivpn $VPN_SERVER -u $VPN_USERNAME -p $VPN_PASSWORD
+        
     - name: Set up JDK
       uses: actions/setup-java@v3
       with:
