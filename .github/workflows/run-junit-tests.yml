@@ -28,8 +28,7 @@ jobs:
         sudo openfortivpn $VPN_SERVER \
           -u $VPN_USERNAME \
           -p $VPN_PASSWORD \
-          --trusted-cert <CERTIFICATE_HASH> &
-        sleep 10 # Wait for the VPN connection to establish
+          --trusted-cert <CERTIFICATE_HASH>
 
     - name: Set up JDK
       uses: actions/setup-java@v3
