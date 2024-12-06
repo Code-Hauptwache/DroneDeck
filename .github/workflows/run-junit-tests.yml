@@ -1,31 +1,42 @@
-name: Run Tests
+name: Run Tests with FortiClient VPN
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
-  test:
+  setup-vpn:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Set up JDK 23
-      uses: actions/setup-java@v3
-      with:
-        java-version: '23' # Set JDK 23 explicitly
-        distribution: 'temurin' # Adjust if you use a different distribution
+      - name: Download and Install FortiClient
+        run: |
+          # Download FortiClient .deb package
+          wget https://fortinet.com/downloads/forticlient/forticlient_7.0.1.0188_amd64.deb -O forticlient.deb
+          
+          # Install the downloaded .deb package
+          sudo gdebi -n forticlient.deb
 
-    - name: Install FlatLaf
-      run: |
-        # Ensure the FlatLaf dependency is properly installed
-        ./gradlew dependencies --update-dependencies
+      - name: Connect to VPN using FortiClient
+        run: |
+          # Use secrets for VPN connection details
+          FortiSSLVPNclient.exe connect -s ${{ secrets.VPN_CONNECTION_NAME }} -h ${{ secrets.VPN_SERVER }} -u ${{ secrets.VPN_USERNAME }}:${{ secrets.VPN_PASSWORD }} -i -m -q
+          FortiSSLVPNclient.exe connect -s ${{ secrets.VPN_CONNECTION_NAME }}  i -m -q 
 
-    - name: Build and Test (Exclude API Tests)
-      run: ./gradlew test --exclude-pattern '**/api/DroneApiInterfaceTest.java'
+      - name: Set up JDK 23
+        uses: actions/setup-java@v3
+        with:
+          java-version: '23' # Set JDK 23 explicitly
+          distribution: 'temurin' # Adjust if you use a different distribution
+  
+      - name: Install FlatLaf
+        run: |
+          # Ensure the FlatLaf dependency is properly installed
+          ./gradlew dependencies --update-dependencies
+  
+      - name: Build and Test (Exclude API Tests)
+        run: ./gradlew test --exclude-pattern '**/api/DroneApiInterfaceTest.java'
