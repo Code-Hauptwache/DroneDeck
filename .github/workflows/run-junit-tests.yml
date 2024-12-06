@@ -1,4 +1,4 @@
-name: Run Tests with VPN
+name: Run Tests
 
 on:
   push:
@@ -11,30 +11,15 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    env:
-      ACTIONS_STEP_DEBUG: true # Enable step-level debug logs
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
-
-    - name: Set up FortiClient VPN
-      uses: ./github/actions/Forticlient-VPN
-      with:
-        gateway: ${{ secrets.VPN_SERVER }}
-        port: ${{ secrets.VPN_PORT }}
-        username: ${{ secrets.VPN_USERNAME }}
-        password: ${{ secrets.VPN_PASS }}
 
     - name: Set up JDK
       uses: actions/setup-java@v3
       with:
         java-version: '11' # Adjust this to your project's Java version
 
-    - name: Set API Token
-      run: echo "DRONE_API_KEY=${{ secrets.DRONE_API_KEY }}" >> $GITHUB_ENV
-
-    - name: Build and Test
-      env:
-        DRONE_API_KEY: ${{ secrets.DRONE_API_KEY }}
-      run: ./gradlew build test # Adjust this to your build tool
+    - name: Build and Test (Exclude API Tests)
+      run: ./gradlew test --exclude-pattern '**/api/DroneApiInterfaceTest.java'
