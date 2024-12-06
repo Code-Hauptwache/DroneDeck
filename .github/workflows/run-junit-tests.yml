@@ -16,6 +16,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
+    - name: Install OpenFortiVPN
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y openfortivpn
+
     - name: Create VPN Config
       run: |
         echo "host = vpngate.frankfurt-university.de" > vpn_config
