@@ -11,13 +11,15 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      ACTIONS_STEP_DEBUG: true # Enable step-level debug logs
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
 
     - name: Set up FortiClient VPN
-      uses: M4hmoudAly/Forticlient-VPN@v1.0.0
+      uses: ./github/actions/Forticlient-VPN
       with:
         gateway: ${{ secrets.VPN_SERVER }}
         port: ${{ secrets.VPN_PORT }}
