@@ -39,7 +39,7 @@ To successfully run the application and interact with the DroneSim API, you will
 ---
 
 ## Additional Resources
-- **Notion for Documentation**:  
+- **[Notion](https://www.notion.so/zakabouj/DroneDeck-OOP-Java-Projcet-152408e5d09b8033b5aed50a06d138d8) for Documentation**:  
   - [Project Documentation](https://www.notion.so/zakabouj/DroneDeck-Documentation-152408e5d09b80bda924f1c1dcf1beb8)  
   - [Milestones Tracking](https://www.notion.so/zakabouj/DroneDeck-Milestones-152408e5d09b800bb222fb4f9c63cec0)
 
