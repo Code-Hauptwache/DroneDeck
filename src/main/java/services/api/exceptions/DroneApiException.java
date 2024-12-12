@@ -1,10 +1,12 @@
-package main.java.api;
+package main.java.services.api.exceptions;
 
 /**
  * The one and only custom Exception ... with no further benefit ... as of now
  */
 public class DroneApiException extends Exception {
 
-    //TODO add more information about the occurred exception. Like Timeout or Unauthorized or PageToBig
+    public DroneApiException(String message) {
+        super(message);
+    }
 
 }

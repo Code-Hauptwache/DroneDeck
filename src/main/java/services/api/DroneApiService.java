@@ -1,7 +1,10 @@
-package main.java.api;
+package main.java.services.api;
 
-import main.java.api.dtos.*;
+import main.java.services.api.dtos.*;
 import com.google.gson.Gson;
+import main.java.services.api.dtos.*;
+import main.java.services.api.exceptions.DroneApiException;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -9,7 +12,7 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 
 
-public class DroneApiInterface {
+public class DroneApiService implements IDroneApiService {
 
     private String ApiKey;
 
@@ -30,7 +33,7 @@ public class DroneApiInterface {
     /**
      * Empty Constructor, mainly used for testing
      */
-    public DroneApiInterface() {
+    public DroneApiService() {
         this.ApiKey = "";
         this.HttpClient = buildHttpClient();
     }
@@ -39,7 +42,7 @@ public class DroneApiInterface {
      * Default Constructor
      * @param apiKey the ApiKey used for Authentication
      */
-    public DroneApiInterface(String apiKey) {
+    public DroneApiService(String apiKey) {
         this.ApiKey = apiKey;
         this.HttpClient = buildHttpClient();
     }
@@ -51,6 +54,7 @@ public class DroneApiInterface {
     /**
      * @return currently used ApiKey
      */
+    @Override
     public String getApiKey() {
         return ApiKey;
     }
@@ -59,21 +63,31 @@ public class DroneApiInterface {
      * Set (new) ApiKey
      * @param apiKey the (new) ApiKey to set
      */
+    @Override
     public void setApiKey(String apiKey) {
         this.ApiKey = apiKey;
     }
 
     /**
      * Get a list of DroneDynamics
-     * @param limit the number of DroneDynamics to fetch. Must be >= 1
+     * @param limit the number of DroneDynamics to fetch. Must be between 10_000 and 1
      * @param offset the offset (from 0)
      * @return the list of DroneDynamics
-     * @throws DroneApiException Strange Custom Exception XD
+     * @throws DroneApiException Api Exceptions
      */
+    @Override
     public ArrayList<DroneDynamics> getDroneDynamics(int limit, int offset) throws DroneApiException {
 
+        if (offset < 0) {
+            throw new DroneApiException("Offset can't be less than 0");
+        }
+
         if (limit <= 0) {
-            limit = 1;
+            throw new DroneApiException("Limit must be greater than 0");
+        }
+
+        if (limit > 10_000) {
+            throw new DroneApiException("Limit is too big");
         }
 
         try {
@@ -90,7 +104,7 @@ public class DroneApiInterface {
             return gson.fromJson(response.body(), DroneDynamicsResponse.class).results;
 
         } catch (Exception e) {
-            throw new DroneApiException();
+            throw new DroneApiException("Error getting drone dynamics: " + e.getMessage());
         }
     }
 
@@ -98,8 +112,9 @@ public class DroneApiInterface {
      * Get 100 DroneDynamics
      * @param offset the offset (from 0)
      * @return 100 DroneDynamics
-     * @throws DroneApiException Magic Exception :D
+     * @throws DroneApiException Api Exceptions
      */
+    @Override
     public ArrayList<DroneDynamics> getDroneDynamics(int offset) throws DroneApiException {
         return getDroneDynamics(100, offset);
     }
@@ -107,8 +122,9 @@ public class DroneApiInterface {
     /**
      * Get 100 DroneDynamics
      * @return 100 DroneDynamics
-     * @throws DroneApiException Magic Exception :)
+     * @throws DroneApiException Api Exceptions
      */
+    @Override
     public ArrayList<DroneDynamics> getDroneDynamics() throws DroneApiException {
         return getDroneDynamics(100, 0);
     }
@@ -117,8 +133,9 @@ public class DroneApiInterface {
      * Gets a DroneDynamics by id
      * @param id the id to get the DroneDynamics of
      * @return the drone dynamics
-     * @throws DroneApiException Magic Exception ;)
+     * @throws DroneApiException Api Exceptions
      */
+    @Override
     public DroneDynamics getDroneDynamicsById(int id) throws DroneApiException {
         try {
             HttpRequest httpRequest = HttpRequest.newBuilder()
@@ -134,18 +151,32 @@ public class DroneApiInterface {
             return gson.fromJson(response.body(), DroneDynamics.class);
 
         } catch (Exception e) {
-            throw new DroneApiException();
+            throw new DroneApiException("Error getting drone dynamics: " + e.getMessage());
         }
     }
 
     /**
      * Get a list of Drones
-     * @param limit the number of Drones to get
+     * @param limit the number of Drones to get. Must be between 10_000 and 1
      * @param offset the offset (from 0)
      * @return list of Drones
-     * @throws DroneApiException Magic Exception D:
+     * @throws DroneApiException Api Exceptions
      */
+    @Override
     public ArrayList<Drone> getDrones(int limit, int offset) throws DroneApiException {
+
+        if (offset < 0) {
+            throw new DroneApiException("Offset can't be less than 0");
+        }
+
+        if (limit <= 0) {
+            throw new DroneApiException("Limit can't be less than 0");
+        }
+
+        if (limit > 10_000) {
+            throw new DroneApiException("Limit is too big");
+        }
+
         try {
             HttpRequest httpRequest = HttpRequest.newBuilder()
                     .uri(URI.create(Url + DronesUrl + "?limit=" + limit + "&offset=" + offset))
@@ -160,7 +191,7 @@ public class DroneApiInterface {
             return gson.fromJson(response.body(), DronesResponse.class).results;
 
         } catch (Exception e) {
-            throw new DroneApiException();
+            throw new DroneApiException("Error getting drones: " + e.getMessage());
         }
     }
 
@@ -168,8 +199,9 @@ public class DroneApiInterface {
      * Get a list of 100 Drones
      * @param offset the offset (from 0)
      * @return a list of 100 Drones
-     * @throws DroneApiException Exception ...
+     * @throws DroneApiException Api Exceptions
      */
+    @Override
     public ArrayList<Drone> getDrones(int offset) throws DroneApiException {
         return this.getDrones(100, offset);
     }
@@ -177,8 +209,9 @@ public class DroneApiInterface {
     /**
      * Get a list of 100 Drones
      * @return a list of 100 Drones
-     * @throws DroneApiException ...
+     * @throws DroneApiException Api Exceptions
      */
+    @Override
     public ArrayList<Drone> getDrones() throws DroneApiException {
         return this.getDrones(100, 0);
     }
@@ -187,8 +220,9 @@ public class DroneApiInterface {
      * Gets a drone by its id
      * @param id the id of the drone to get
      * @return the drone
-     * @throws DroneApiException ...
+     * @throws DroneApiException Api Exceptions
      */
+    @Override
     public Drone getDronesById(int id) throws DroneApiException {
         try {
             HttpRequest httpRequest = HttpRequest.newBuilder()
@@ -204,18 +238,32 @@ public class DroneApiInterface {
             return gson.fromJson(response.body(), Drone.class);
 
         } catch (Exception e) {
-            throw new DroneApiException();
+            throw new DroneApiException("Error getting drones: " + e.getMessage());
         }
     }
 
     /**
      * Get a list of DroneTypes
-     * @param limit the number of Types to get
+     * @param limit the number of Types to get. Must be between 10_000 and 1
      * @param offset the offset (from 0)
      * @return a list of DroneTypes
-     * @throws DroneApiException ...
+     * @throws DroneApiException Api Exceptions
      */
+    @Override
     public ArrayList<DroneType> getDroneTypes(int limit, int offset) throws DroneApiException {
+
+        if (offset < 0) {
+            throw new DroneApiException("Offset can't be less than 0");
+        }
+
+        if (limit <= 0) {
+            throw new DroneApiException("Limit can't be less than 0");
+        }
+
+        if (limit > 10_000) {
+            throw new DroneApiException("Limit is too big");
+        }
+
         try {
             HttpRequest httpRequest = HttpRequest.newBuilder()
                     .uri(URI.create(Url + DroneTypesUrl + "?limit=" + limit + "&offset=" + offset))
@@ -230,7 +278,7 @@ public class DroneApiInterface {
             return gson.fromJson(response.body(), DroneTypesResponse.class).results;
 
         } catch (Exception e) {
-            throw new DroneApiException();
+            throw new DroneApiException("Error getting drone types: " + e.getMessage());
         }
     }
 
@@ -238,8 +286,9 @@ public class DroneApiInterface {
      * Get a list of 100 DroneTypes
      * @param offset the offset from 0
      * @return A list with 100 DroneTypes
-     * @throws DroneApiException ...
+     * @throws DroneApiException Api Exceptions
      */
+    @Override
     public ArrayList<DroneType> getDroneTypes(int offset) throws DroneApiException {
         return this.getDroneTypes(100, offset);
     }
@@ -247,8 +296,9 @@ public class DroneApiInterface {
     /**
      * Get a list of 100 DroneTypes
      * @return A list with 100 DroneTypes
-     * @throws DroneApiException ...
+     * @throws DroneApiException Api Exceptions
      */
+    @Override
     public ArrayList<DroneType> getDroneTypes() throws DroneApiException {
         return this.getDroneTypes(100, 0);
     }
@@ -257,8 +307,9 @@ public class DroneApiInterface {
      * Get a DroneType by its id
      * @param id the id of the DroneType to get
      * @return the DroneType
-     * @throws DroneApiException ...
+     * @throws DroneApiException Api Exceptions
      */
+    @Override
     public DroneType getDroneTypeById(int id) throws DroneApiException {
         try {
             HttpRequest httpRequest = HttpRequest.newBuilder()
@@ -274,19 +325,33 @@ public class DroneApiInterface {
             return gson.fromJson(response.body(), DroneType.class);
 
         } catch (Exception e) {
-            throw new DroneApiException();
+            throw new DroneApiException("Error getting drone types: " + e.getMessage());
         }
     }
 
     /**
      * Gets a drones DroneDynamics
-     * @param id the id of the drone of wich to retrieve the DroneDynamics
-     * @param limit the number of DroneDynamics to get
-     * @param offset the offset
+     * @param id the id of the drone of which to retrieve the DroneDynamics
+     * @param limit the number of DroneDynamics to get. Must be between 10_000 and 1
+     * @param offset the offset from 0
      * @return the DroneDynamics of said Drone
-     * @throws DroneApiException ...
+     * @throws DroneApiException Api Exceptions
      */
+    @Override
     public ArrayList<DroneDynamics> getDroneDynamicsByDroneId(int id, int limit, int offset) throws DroneApiException {
+
+        if (offset < 0) {
+            throw new DroneApiException("Offset can't be less than 0");
+        }
+
+        if (limit <= 0) {
+            throw new DroneApiException("Limit can't be less than 0");
+        }
+
+        if (limit > 10_000) {
+            throw new DroneApiException("Limit is too big");
+        }
+
         try {
             HttpRequest httpRequest = HttpRequest.newBuilder()
                     .uri(URI.create(Url + "/" + id + DroneDynamicsByDroneId + "?limit=" + limit + "&offset=" + offset))
@@ -301,17 +366,18 @@ public class DroneApiInterface {
             return gson.fromJson(response.body(), DroneDynamicsResponse.class).results;
 
         } catch (Exception e) {
-            throw new DroneApiException();
+            throw new DroneApiException("Error getting drone types: " + e.getMessage());
         }
     }
 
     /**
      * Get 100 DroneDynamics by Drone id
      * @param id the id of the Drone
-     * @param offset the offset
+     * @param offset the offset from 0
      * @return the DroneDynamics of said Drone
-     * @throws DroneApiException ...
+     * @throws DroneApiException Api Exceptions
      */
+    @Override
     public ArrayList<DroneDynamics> getDroneDynamicsByDroneId(int id, int offset) throws DroneApiException {
         return this.getDroneDynamicsByDroneId(id, 100, offset);
     }
@@ -320,8 +386,9 @@ public class DroneApiInterface {
      * Get 100 DroneDynamics by Drone id
      * @param id the id of the Drone
      * @return the DroneDynamics of said Drone
-     * @throws DroneApiException ...
+     * @throws DroneApiException Api Exceptions
      */
+    @Override
     public ArrayList<DroneDynamics> getDroneDynamicsByDroneId(int id) throws DroneApiException {
         return this.getDroneDynamicsByDroneId(id, 100, 0);
     }
