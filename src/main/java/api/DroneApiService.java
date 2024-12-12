@@ -2,6 +2,8 @@ package main.java.api;
 
 import main.java.api.dtos.*;
 import com.google.gson.Gson;
+import main.java.api.exceptions.DroneApiException;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -9,7 +11,7 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 
 
-public class DroneApiInterface implements IDroneApiInterface {
+public class DroneApiService implements IDroneApiService {
 
     private String ApiKey;
 
@@ -30,7 +32,7 @@ public class DroneApiInterface implements IDroneApiInterface {
     /**
      * Empty Constructor, mainly used for testing
      */
-    public DroneApiInterface() {
+    public DroneApiService() {
         this.ApiKey = "";
         this.HttpClient = buildHttpClient();
     }
@@ -39,9 +41,13 @@ public class DroneApiInterface implements IDroneApiInterface {
      * Default Constructor
      * @param apiKey the ApiKey used for Authentication
      */
-    public DroneApiInterface(String apiKey) {
+    public DroneApiService(String apiKey) {
         this.ApiKey = apiKey;
         this.HttpClient = buildHttpClient();
+    }
+
+    private HttpClient buildHttpClient() {
+        return java.net.http.HttpClient.newBuilder().followRedirects(java.net.http.HttpClient.Redirect.ALWAYS).build();
     }
 
     /**

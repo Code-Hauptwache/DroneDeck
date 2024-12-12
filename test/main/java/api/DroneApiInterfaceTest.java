@@ -13,7 +13,7 @@ class DroneApiInterfaceTest {
 
     @Test
     void testDroneApiInterface() {
-        IDroneApiInterface droneApiInterface = new DroneApiInterface(System.getenv("DRONE_API_KEY"));
+        IDroneApiService droneApiInterface = new DroneApiService(System.getenv("DRONE_API_KEY"));
 
         ArrayList<DroneDynamics> dynamics;
         ArrayList<Drone> drones;

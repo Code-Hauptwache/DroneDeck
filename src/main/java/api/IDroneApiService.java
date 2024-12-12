@@ -3,10 +3,11 @@ package main.java.api;
 import main.java.api.dtos.Drone;
 import main.java.api.dtos.DroneDynamics;
 import main.java.api.dtos.DroneType;
+import main.java.api.exceptions.DroneApiException;
 
 import java.util.ArrayList;
 
-public interface IDroneApiInterface {
+public interface IDroneApiService {
     /**
      * @return currently used ApiKey
      */
