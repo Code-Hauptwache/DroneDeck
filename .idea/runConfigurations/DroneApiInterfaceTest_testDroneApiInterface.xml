@@ -7,8 +7,8 @@
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>
-    <option name="PACKAGE_NAME" value="api" />
-    <option name="MAIN_CLASS_NAME" value="api.DroneApiInterfaceTest" />
+    <option name="PACKAGE_NAME" value="main.java.api" />
+    <option name="MAIN_CLASS_NAME" value="main.java.api.DroneApiInterfaceTest" />
     <option name="METHOD_NAME" value="testDroneApiInterface" />
     <option name="TEST_OBJECT" value="method" />
     <method v="2">
