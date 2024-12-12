@@ -50,3 +50,6 @@ To successfully run the application and interact with the DroneSim API, you will
 ### Linked PDF Files:
 - [**Project Requirements**](https://github.com/user-attachments/files/18007575/2024_winter_project_description.pdf)
 - [**Milestones Description**](https://github.com/user-attachments/files/18007586/milestones.pdf)
+
+![image](https://github.com/user-attachments/assets/805d8c2c-a472-428c-8842-9c0fc9db3453)
+
