@@ -5,6 +5,8 @@ package main.java.api;
  */
 public class DroneApiException extends Exception {
 
-    //TODO add more information about the occurred exception. Like Timeout or Unauthorized or PageToBig
+    public DroneApiException(String message) {
+        super(message);
+    }
 
 }
