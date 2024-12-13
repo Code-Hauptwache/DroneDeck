@@ -67,7 +67,7 @@ public class DroneApiService implements IDroneApiService {
 
     /**
      * Get a list of DroneDynamics
-     * @param limit the number of DroneDynamics to fetch. Must be between 10,000 and 1
+     * @param limit the number of DroneDynamics to fetch. Must be between 10_000 and 1
      * @param offset the offset (from 0)
      * @return the list of DroneDynamics
      * @throws DroneApiException if an error occurs while fetching the data
@@ -112,7 +112,7 @@ public class DroneApiService implements IDroneApiService {
 
     /**
      * Get a list of Drones
-     * @param limit the number of Drones to get. Must be between 10,000 and 1
+     * @param limit the number of Drones to get. Must be between 10_000 and 1
      * @param offset the offset (from 0)
      * @return list of Drones
      * @throws DroneApiException if an error occurs while fetching the data
@@ -157,7 +157,7 @@ public class DroneApiService implements IDroneApiService {
 
     /**
      * Get a list of DroneTypes
-     * @param limit the number of Types to get. Must be between 10,000 and 1
+     * @param limit the number of Types to get. Must be between 10_000 and 1
      * @param offset the offset (from 0)
      * @return a list of DroneTypes
      * @throws DroneApiException if an error occurs while fetching the data
@@ -203,7 +203,7 @@ public class DroneApiService implements IDroneApiService {
     /**
      * Gets a drone's DroneDynamics
      * @param id the id of the drone of which to retrieve the DroneDynamics
-     * @param limit the number of DroneDynamics to get. Must be between 10,000 and 1
+     * @param limit the number of DroneDynamics to get. Must be between 10_000 and 1
      * @param offset the offset from 0
      * @return the DroneDynamics of said Drone
      * @throws DroneApiException if an error occurs while fetching the data
