@@ -10,24 +10,21 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 
-
 public class DroneApiService implements IDroneApiService {
 
     private String ApiKey;
-
-    //HttpClient. This shouldn't be changed after Construction
-    private final HttpClient HttpClient;
+    private final HttpClient HttpClient; //HttpClient. This shouldn't be changed after Construction
 
     //some constants for easy editing of "magic" urls
-    private static final String Url = "http://dronesim.facets-labs.com/api";
+    private static final String URL = "http://dronesim.facets-labs.com/api";
+    private static final String DRONE_DYNAMICS_URL = "/dronedynamics/";
+    private static final String DRONES_URL = "/drones/";
+    private static final String DRONE_TYPES_URL = "/dronetypes/";
+    private static final String DRONE_DYNAMICS_BY_DRONE_ID = "/dynamics/";
 
-    private static final String DroneDynamicsUrl = "/dronedynamics/";
-
-    private static final String DronesUrl = "/drones/";
-
-    private static final String DroneTypesUrl = "/dronetypes/";
-
-    private static final String DroneDynamicsByDroneId = "/dynamics/";
+    private static final String ERROR_OFFSET_LESS_THAN_ZERO = "Offset can't be less than 0";
+    private static final String ERROR_LIMIT_LESS_THAN_ONE = "Limit must be greater than 0";
+    private static final String ERROR_LIMIT_TOO_BIG = "Limit is too big";
 
     /**
      * Empty Constructor, mainly used for testing
@@ -76,35 +73,8 @@ public class DroneApiService implements IDroneApiService {
      */
     @Override
     public ArrayList<DroneDynamics> getDroneDynamics(int limit, int offset) throws DroneApiException {
-
-        if (offset < 0) {
-            throw new DroneApiException("Offset can't be less than 0");
-        }
-
-        if (limit <= 0) {
-            throw new DroneApiException("Limit must be greater than 0");
-        }
-
-        if (limit > 10_000) {
-            throw new DroneApiException("Limit is too big");
-        }
-
-        try {
-            HttpRequest httpRequest = HttpRequest.newBuilder()
-                    .uri(URI.create(Url + DroneDynamicsUrl + "?limit=" + limit + "&offset=" + offset))
-                    .GET()
-                    .header("Authorization", "Token " + this.ApiKey)
-                    .build();
-
-            HttpResponse<String> response = this.HttpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-
-            Gson gson = new Gson();
-
-            return gson.fromJson(response.body(), DroneDynamicsResponse.class).results;
-
-        } catch (Exception e) {
-            throw new DroneApiException("Error getting drone dynamics: " + e.getMessage());
-        }
+        validateLimitAndOffset(limit, offset);
+        return fetchDroneDynamics(URL + DRONE_DYNAMICS_URL + "?limit=" + limit + "&offset=" + offset);
     }
 
     /**
@@ -136,22 +106,7 @@ public class DroneApiService implements IDroneApiService {
      */
     @Override
     public DroneDynamics getDroneDynamicsById(int id) throws DroneApiException {
-        try {
-            HttpRequest httpRequest = HttpRequest.newBuilder()
-                    .uri(URI.create(Url + DroneDynamicsUrl + id))
-                    .GET()
-                    .header("Authorization", "Token " + this.ApiKey)
-                    .build();
-
-            HttpResponse<String> response = this.HttpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-
-            Gson gson = new Gson();
-
-            return gson.fromJson(response.body(), DroneDynamics.class);
-
-        } catch (Exception e) {
-            throw new DroneApiException("Error getting drone dynamics: " + e.getMessage());
-        }
+        return fetchSingleDroneDynamics(URL + DRONE_DYNAMICS_URL + id);
     }
 
     /**
@@ -163,35 +118,8 @@ public class DroneApiService implements IDroneApiService {
      */
     @Override
     public ArrayList<Drone> getDrones(int limit, int offset) throws DroneApiException {
-
-        if (offset < 0) {
-            throw new DroneApiException("Offset can't be less than 0");
-        }
-
-        if (limit <= 0) {
-            throw new DroneApiException("Limit can't be less than 0");
-        }
-
-        if (limit > 10_000) {
-            throw new DroneApiException("Limit is too big");
-        }
-
-        try {
-            HttpRequest httpRequest = HttpRequest.newBuilder()
-                    .uri(URI.create(Url + DronesUrl + "?limit=" + limit + "&offset=" + offset))
-                    .GET()
-                    .header("Authorization", "Token " + this.ApiKey)
-                    .build();
-
-            HttpResponse<String> response = this.HttpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-
-            Gson gson = new Gson();
-
-            return gson.fromJson(response.body(), DronesResponse.class).results;
-
-        } catch (Exception e) {
-            throw new DroneApiException("Error getting drones: " + e.getMessage());
-        }
+        validateLimitAndOffset(limit, offset);
+        return fetchDrones(URL + DRONES_URL + "?limit=" + limit + "&offset=" + offset);
     }
 
     /**
@@ -223,22 +151,7 @@ public class DroneApiService implements IDroneApiService {
      */
     @Override
     public Drone getDronesById(int id) throws DroneApiException {
-        try {
-            HttpRequest httpRequest = HttpRequest.newBuilder()
-                    .uri(URI.create(Url + DronesUrl + id))
-                    .GET()
-                    .header("Authorization", "Token " + this.ApiKey)
-                    .build();
-
-            HttpResponse<String> response = this.HttpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-
-            Gson gson = new Gson();
-
-            return gson.fromJson(response.body(), Drone.class);
-
-        } catch (Exception e) {
-            throw new DroneApiException("Error getting drones: " + e.getMessage());
-        }
+        return fetchSingleDrone(URL + DRONES_URL + id);
     }
 
     /**
@@ -250,35 +163,8 @@ public class DroneApiService implements IDroneApiService {
      */
     @Override
     public ArrayList<DroneType> getDroneTypes(int limit, int offset) throws DroneApiException {
-
-        if (offset < 0) {
-            throw new DroneApiException("Offset can't be less than 0");
-        }
-
-        if (limit <= 0) {
-            throw new DroneApiException("Limit can't be less than 0");
-        }
-
-        if (limit > 10_000) {
-            throw new DroneApiException("Limit is too big");
-        }
-
-        try {
-            HttpRequest httpRequest = HttpRequest.newBuilder()
-                    .uri(URI.create(Url + DroneTypesUrl + "?limit=" + limit + "&offset=" + offset))
-                    .GET()
-                    .header("Authorization", "Token " + this.ApiKey)
-                    .build();
-
-            HttpResponse<String> response = this.HttpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-
-            Gson gson = new Gson();
-
-            return gson.fromJson(response.body(), DroneTypesResponse.class).results;
-
-        } catch (Exception e) {
-            throw new DroneApiException("Error getting drone types: " + e.getMessage());
-        }
+        validateLimitAndOffset(limit, offset);
+        return fetchDroneTypes(URL + DRONE_TYPES_URL + "?limit=" + limit + "&offset=" + offset);
     }
 
     /**
@@ -310,22 +196,7 @@ public class DroneApiService implements IDroneApiService {
      */
     @Override
     public DroneType getDroneTypeById(int id) throws DroneApiException {
-        try {
-            HttpRequest httpRequest = HttpRequest.newBuilder()
-                    .uri(URI.create(Url + DroneTypesUrl + id))
-                    .GET()
-                    .header("Authorization", "Token " + this.ApiKey)
-                    .build();
-
-            HttpResponse<String> response = this.HttpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-
-            Gson gson = new Gson();
-
-            return gson.fromJson(response.body(), DroneType.class);
-
-        } catch (Exception e) {
-            throw new DroneApiException("Error getting drone types: " + e.getMessage());
-        }
+        return fetchSingleDroneType(URL + DRONE_TYPES_URL + id);
     }
 
     /**
@@ -338,35 +209,8 @@ public class DroneApiService implements IDroneApiService {
      */
     @Override
     public ArrayList<DroneDynamics> getDroneDynamicsByDroneId(int id, int limit, int offset) throws DroneApiException {
-
-        if (offset < 0) {
-            throw new DroneApiException("Offset can't be less than 0");
-        }
-
-        if (limit <= 0) {
-            throw new DroneApiException("Limit can't be less than 0");
-        }
-
-        if (limit > 10_000) {
-            throw new DroneApiException("Limit is too big");
-        }
-
-        try {
-            HttpRequest httpRequest = HttpRequest.newBuilder()
-                    .uri(URI.create(Url + "/" + id + DroneDynamicsByDroneId + "?limit=" + limit + "&offset=" + offset))
-                    .GET()
-                    .header("Authorization", "Token " + this.ApiKey)
-                    .build();
-
-            HttpResponse<String> response = this.HttpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-
-            Gson gson = new Gson();
-
-            return gson.fromJson(response.body(), DroneDynamicsResponse.class).results;
-
-        } catch (Exception e) {
-            throw new DroneApiException("Error getting drone types: " + e.getMessage());
-        }
+        validateLimitAndOffset(limit, offset);
+        return fetchDroneDynamics(URL + "/" + id + DRONE_DYNAMICS_BY_DRONE_ID + "?limit=" + limit + "&offset=" + offset);
     }
 
     /**
@@ -390,5 +234,113 @@ public class DroneApiService implements IDroneApiService {
     @Override
     public ArrayList<DroneDynamics> getDroneDynamicsByDroneId(int id) throws DroneApiException {
         return this.getDroneDynamicsByDroneId(id, 100, 0);
+    }
+
+    private void validateLimitAndOffset(int limit, int offset) throws DroneApiException {
+        if (offset < 0) {
+            throw new DroneApiException(ERROR_OFFSET_LESS_THAN_ZERO);
+        }
+        if (limit <= 0) {
+            throw new DroneApiException(ERROR_LIMIT_LESS_THAN_ONE);
+        }
+        if (limit > 10_000) {
+            throw new DroneApiException(ERROR_LIMIT_TOO_BIG);
+        }
+    }
+
+    private ArrayList<DroneDynamics> fetchDroneDynamics(String url) throws DroneApiException {
+        try {
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .GET()
+                    .header("Authorization", "Token " + this.ApiKey)
+                    .build();
+
+            HttpResponse<String> response = this.HttpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            Gson gson = new Gson();
+            return gson.fromJson(response.body(), DroneDynamicsResponse.class).results;
+        } catch (Exception e) {
+            throw new DroneApiException("Error getting drone dynamics: " + e.getMessage());
+        }
+    }
+
+    private DroneDynamics fetchSingleDroneDynamics(String url) throws DroneApiException {
+        try {
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .GET()
+                    .header("Authorization", "Token " + this.ApiKey)
+                    .build();
+
+            HttpResponse<String> response = this.HttpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            Gson gson = new Gson();
+            return gson.fromJson(response.body(), DroneDynamics.class);
+        } catch (Exception e) {
+            throw new DroneApiException("Error getting drone dynamics: " + e.getMessage());
+        }
+    }
+
+    private ArrayList<Drone> fetchDrones(String url) throws DroneApiException {
+        try {
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .GET()
+                    .header("Authorization", "Token " + this.ApiKey)
+                    .build();
+
+            HttpResponse<String> response = this.HttpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            Gson gson = new Gson();
+            return gson.fromJson(response.body(), DronesResponse.class).results;
+        } catch (Exception e) {
+            throw new DroneApiException("Error getting drones: " + e.getMessage());
+        }
+    }
+
+    private Drone fetchSingleDrone(String url) throws DroneApiException {
+        try {
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .GET()
+                    .header("Authorization", "Token " + this.ApiKey)
+                    .build();
+
+            HttpResponse<String> response = this.HttpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            Gson gson = new Gson();
+            return gson.fromJson(response.body(), Drone.class);
+        } catch (Exception e) {
+            throw new DroneApiException("Error getting drones: " + e.getMessage());
+        }
+    }
+
+    private ArrayList<DroneType> fetchDroneTypes(String url) throws DroneApiException {
+        try {
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .GET()
+                    .header("Authorization", "Token " + this.ApiKey)
+                    .build();
+
+            HttpResponse<String> response = this.HttpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            Gson gson = new Gson();
+            return gson.fromJson(response.body(), DroneTypesResponse.class).results;
+        } catch (Exception e) {
+            throw new DroneApiException("Error getting drone types: " + e.getMessage());
+        }
+    }
+
+    private DroneType fetchSingleDroneType(String url) throws DroneApiException {
+        try {
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .GET()
+                    .header("Authorization", "Token " + this.ApiKey)
+                    .build();
+
+            HttpResponse<String> response = this.HttpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            Gson gson = new Gson();
+            return gson.fromJson(response.body(), DroneType.class);
+        } catch (Exception e) {
+            throw new DroneApiException("Error getting drone types: " + e.getMessage());
+        }
     }
 }
