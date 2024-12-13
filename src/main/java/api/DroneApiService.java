@@ -1,9 +1,8 @@
-package main.java.services.api;
+package main.java.api;
 
-import main.java.services.api.dtos.*;
+import main.java.api.dtos.*;
 import com.google.gson.Gson;
-import main.java.services.api.dtos.*;
-import main.java.services.api.exceptions.DroneApiException;
+import main.java.api.exceptions.DroneApiException;
 
 import java.net.URI;
 import java.net.http.HttpClient;

@@ -1,4 +1,4 @@
-package main.java.services.api.dtos;
+package main.java.api.dtos;
 
 import java.util.ArrayList;
 
