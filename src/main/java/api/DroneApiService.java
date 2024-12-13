@@ -13,15 +13,16 @@ import java.util.ArrayList;
 public class DroneApiService implements IDroneApiService {
 
     private String ApiKey;
-    private final HttpClient HttpClient; //HttpClient. This shouldn't be changed after Construction
+    private final HttpClient HttpClient; // HttpClient instance, shouldn't be changed after construction
 
-    //some constants for easy editing of "magic" urls
+    // Constants for API URLs
     private static final String URL = "http://dronesim.facets-labs.com/api";
     private static final String DRONE_DYNAMICS_URL = "/dronedynamics/";
     private static final String DRONES_URL = "/drones/";
     private static final String DRONE_TYPES_URL = "/dronetypes/";
     private static final String DRONE_DYNAMICS_BY_DRONE_ID = "/dynamics/";
 
+    // Error messages
     private static final String ERROR_OFFSET_LESS_THAN_ZERO = "Offset can't be less than 0";
     private static final String ERROR_LIMIT_LESS_THAN_ONE = "Limit must be greater than 0";
     private static final String ERROR_LIMIT_TOO_BIG = "Limit is too big";
@@ -66,10 +67,10 @@ public class DroneApiService implements IDroneApiService {
 
     /**
      * Get a list of DroneDynamics
-     * @param limit the number of DroneDynamics to fetch. Must be between 10_000 and 1
+     * @param limit the number of DroneDynamics to fetch. Must be between 10,000 and 1
      * @param offset the offset (from 0)
      * @return the list of DroneDynamics
-     * @throws DroneApiException Api Exceptions
+     * @throws DroneApiException if an error occurs while fetching the data
      */
     @Override
     public ArrayList<DroneDynamics> getDroneDynamics(int limit, int offset) throws DroneApiException {
@@ -81,7 +82,7 @@ public class DroneApiService implements IDroneApiService {
      * Get 100 DroneDynamics
      * @param offset the offset (from 0)
      * @return 100 DroneDynamics
-     * @throws DroneApiException Api Exceptions
+     * @throws DroneApiException if an error occurs while fetching the data
      */
     @Override
     public ArrayList<DroneDynamics> getDroneDynamics(int offset) throws DroneApiException {
@@ -91,7 +92,7 @@ public class DroneApiService implements IDroneApiService {
     /**
      * Get 100 DroneDynamics
      * @return 100 DroneDynamics
-     * @throws DroneApiException Api Exceptions
+     * @throws DroneApiException if an error occurs while fetching the data
      */
     @Override
     public ArrayList<DroneDynamics> getDroneDynamics() throws DroneApiException {
@@ -102,7 +103,7 @@ public class DroneApiService implements IDroneApiService {
      * Gets a DroneDynamics by id
      * @param id the id to get the DroneDynamics of
      * @return the drone dynamics
-     * @throws DroneApiException Api Exceptions
+     * @throws DroneApiException if an error occurs while fetching the data
      */
     @Override
     public DroneDynamics getDroneDynamicsById(int id) throws DroneApiException {
@@ -111,10 +112,10 @@ public class DroneApiService implements IDroneApiService {
 
     /**
      * Get a list of Drones
-     * @param limit the number of Drones to get. Must be between 10_000 and 1
+     * @param limit the number of Drones to get. Must be between 10,000 and 1
      * @param offset the offset (from 0)
      * @return list of Drones
-     * @throws DroneApiException Api Exceptions
+     * @throws DroneApiException if an error occurs while fetching the data
      */
     @Override
     public ArrayList<Drone> getDrones(int limit, int offset) throws DroneApiException {
@@ -126,7 +127,7 @@ public class DroneApiService implements IDroneApiService {
      * Get a list of 100 Drones
      * @param offset the offset (from 0)
      * @return a list of 100 Drones
-     * @throws DroneApiException Api Exceptions
+     * @throws DroneApiException if an error occurs while fetching the data
      */
     @Override
     public ArrayList<Drone> getDrones(int offset) throws DroneApiException {
@@ -136,7 +137,7 @@ public class DroneApiService implements IDroneApiService {
     /**
      * Get a list of 100 Drones
      * @return a list of 100 Drones
-     * @throws DroneApiException Api Exceptions
+     * @throws DroneApiException if an error occurs while fetching the data
      */
     @Override
     public ArrayList<Drone> getDrones() throws DroneApiException {
@@ -147,7 +148,7 @@ public class DroneApiService implements IDroneApiService {
      * Gets a drone by its id
      * @param id the id of the drone to get
      * @return the drone
-     * @throws DroneApiException Api Exceptions
+     * @throws DroneApiException if an error occurs while fetching the data
      */
     @Override
     public Drone getDronesById(int id) throws DroneApiException {
@@ -156,10 +157,10 @@ public class DroneApiService implements IDroneApiService {
 
     /**
      * Get a list of DroneTypes
-     * @param limit the number of Types to get. Must be between 10_000 and 1
+     * @param limit the number of Types to get. Must be between 10,000 and 1
      * @param offset the offset (from 0)
      * @return a list of DroneTypes
-     * @throws DroneApiException Api Exceptions
+     * @throws DroneApiException if an error occurs while fetching the data
      */
     @Override
     public ArrayList<DroneType> getDroneTypes(int limit, int offset) throws DroneApiException {
@@ -171,7 +172,7 @@ public class DroneApiService implements IDroneApiService {
      * Get a list of 100 DroneTypes
      * @param offset the offset from 0
      * @return A list with 100 DroneTypes
-     * @throws DroneApiException Api Exceptions
+     * @throws DroneApiException if an error occurs while fetching the data
      */
     @Override
     public ArrayList<DroneType> getDroneTypes(int offset) throws DroneApiException {
@@ -181,7 +182,7 @@ public class DroneApiService implements IDroneApiService {
     /**
      * Get a list of 100 DroneTypes
      * @return A list with 100 DroneTypes
-     * @throws DroneApiException Api Exceptions
+     * @throws DroneApiException if an error occurs while fetching the data
      */
     @Override
     public ArrayList<DroneType> getDroneTypes() throws DroneApiException {
@@ -192,7 +193,7 @@ public class DroneApiService implements IDroneApiService {
      * Get a DroneType by its id
      * @param id the id of the DroneType to get
      * @return the DroneType
-     * @throws DroneApiException Api Exceptions
+     * @throws DroneApiException if an error occurs while fetching the data
      */
     @Override
     public DroneType getDroneTypeById(int id) throws DroneApiException {
@@ -200,12 +201,12 @@ public class DroneApiService implements IDroneApiService {
     }
 
     /**
-     * Gets a drones DroneDynamics
+     * Gets a drone's DroneDynamics
      * @param id the id of the drone of which to retrieve the DroneDynamics
-     * @param limit the number of DroneDynamics to get. Must be between 10_000 and 1
+     * @param limit the number of DroneDynamics to get. Must be between 10,000 and 1
      * @param offset the offset from 0
      * @return the DroneDynamics of said Drone
-     * @throws DroneApiException Api Exceptions
+     * @throws DroneApiException if an error occurs while fetching the data
      */
     @Override
     public ArrayList<DroneDynamics> getDroneDynamicsByDroneId(int id, int limit, int offset) throws DroneApiException {
@@ -218,7 +219,7 @@ public class DroneApiService implements IDroneApiService {
      * @param id the id of the Drone
      * @param offset the offset from 0
      * @return the DroneDynamics of said Drone
-     * @throws DroneApiException Api Exceptions
+     * @throws DroneApiException if an error occurs while fetching the data
      */
     @Override
     public ArrayList<DroneDynamics> getDroneDynamicsByDroneId(int id, int offset) throws DroneApiException {
@@ -229,7 +230,7 @@ public class DroneApiService implements IDroneApiService {
      * Get 100 DroneDynamics by Drone id
      * @param id the id of the Drone
      * @return the DroneDynamics of said Drone
-     * @throws DroneApiException Api Exceptions
+     * @throws DroneApiException if an error occurs while fetching the data
      */
     @Override
     public ArrayList<DroneDynamics> getDroneDynamicsByDroneId(int id) throws DroneApiException {
@@ -243,7 +244,7 @@ public class DroneApiService implements IDroneApiService {
         if (limit <= 0) {
             throw new DroneApiException(ERROR_LIMIT_LESS_THAN_ONE);
         }
-        if (limit > 10_000) {
+        if (limit > 10,000) {
             throw new DroneApiException(ERROR_LIMIT_TOO_BIG);
         }
     }
