@@ -244,7 +244,7 @@ public class DroneApiService implements IDroneApiService {
         if (limit <= 0) {
             throw new DroneApiException(ERROR_LIMIT_LESS_THAN_ONE);
         }
-        if (limit > 10,000) {
+        if (limit > 10_000) {
             throw new DroneApiException(ERROR_LIMIT_TOO_BIG);
         }
     }
