@@ -1,5 +1,6 @@
-package main.java.api;
+package main.java.services;
 
+import main.java.api.IDroneApiService;
 import main.java.api.dtos.*;
 import com.google.gson.Gson;
 import main.java.api.exceptions.DroneApiException;
