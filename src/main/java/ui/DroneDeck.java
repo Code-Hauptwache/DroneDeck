@@ -4,6 +4,8 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import main.java.ui.components.MainPanel;
 
 import javax.swing.*;
+import java.awt.*;
+import java.io.InputStream;
 import java.util.Objects;
 
 public class DroneDeck {
@@ -11,6 +13,16 @@ public class DroneDeck {
     public static void main(String[] args) {
         // Set up FlatLaf look and feel
         FlatDarkLaf.setup();
+
+        // Load Google Font
+        try (InputStream is = DroneDeck.class.getResourceAsStream("/Lato-Bold.ttf")){
+            Font font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(is)).deriveFont(14f);
+            UIManager.put("defaultFont", font);
+        }
+        catch (Exception e) {
+            //noinspection CallToPrintStackTrace
+            e.printStackTrace();
+        }
 
         // Create the main frame
         JFrame frame = new JFrame("DroneDeck");
