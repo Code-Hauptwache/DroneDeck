@@ -12,5 +12,7 @@
     <orderEntry type="library" name="google.code.gson" level="project" />
     <orderEntry type="library" name="junit.jupiter" level="project" />
     <orderEntry type="library" name="formdev.flatlaf" level="project" />
+    <orderEntry type="library" name="kordamp.ikonli.swing" level="project" />
+    <orderEntry type="library" name="kordamp.ikonli.fontawesome5.pack" level="project" />
   </component>
 </module>
