@@ -14,6 +14,5 @@ public class MainPanel extends JPanel {
         // Add the Navigation Bar
         NavigationBar navigationBar = new NavigationBar();
         add(navigationBar, BorderLayout.NORTH);
-
     }
 }
