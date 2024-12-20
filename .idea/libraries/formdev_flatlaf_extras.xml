@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="formdev.flatlaf.extras" type="repository">
+    <properties maven-id="com.formdev:flatlaf-extras:3.5.2" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/flatlaf-extras-3.5.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/flatlaf-3.5.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jsvg-1.4.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
