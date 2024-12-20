@@ -7,17 +7,17 @@ import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.swing.FontIcon;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class ButtonThemeSwitch extends JButton {
-    private FontIcon darkThemeIcon = FontIcon.of(FontAwesomeSolid.MOON, 13);
-    private FontIcon lightThemeIcon = FontIcon.of(FontAwesomeSolid.SUN, 13);
+    private final FontIcon darkThemeIcon = FontIcon.of(FontAwesomeSolid.MOON, 13);
+    private final FontIcon lightThemeIcon = FontIcon.of(FontAwesomeSolid.SUN, 13);
     private boolean isDarkTheme = FlatLaf.isLafDark();
 
     public ButtonThemeSwitch() {
-        FlatLaf.registerCustomDefaultsSource("main.java.ui.themes");
-
         setIcon(isDarkTheme ? darkThemeIcon : lightThemeIcon);
-        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        setHorizontalAlignment(SwingConstants.CENTER);
+        setVerticalAlignment(SwingConstants.CENTER);
         addActionListener(e -> toggleTheme());
     }
 
@@ -32,5 +32,21 @@ public class ButtonThemeSwitch extends JButton {
             FlatLightLaf.setup();
         }
         FlatLaf.updateUI();
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+        int size = Math.max(super.getPreferredSize().width, super.getPreferredSize().height);
+        return new Dimension(size, size); // Ensure the button is a square
+    }
+
+    @Override
+    public Dimension getMinimumSize() {
+        return getPreferredSize(); // Use the same size for minimum
+    }
+
+    @Override
+    public Dimension getMaximumSize() {
+        return getPreferredSize(); // Use the same size for maximum
     }
 }

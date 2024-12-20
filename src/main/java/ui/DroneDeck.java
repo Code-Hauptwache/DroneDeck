@@ -2,7 +2,6 @@ package main.java.ui;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
-import com.formdev.flatlaf.FlatLightLaf;
 import main.java.ui.components.MainPanel;
 
 import javax.swing.*;

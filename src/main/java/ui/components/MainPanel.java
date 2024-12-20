@@ -1,9 +1,5 @@
 package main.java.ui.components;
 
-import com.formdev.flatlaf.FlatDarkLaf;
-import com.formdev.flatlaf.FlatLaf;
-import com.formdev.flatlaf.FlatLightLaf;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -18,5 +14,6 @@ public class MainPanel extends JPanel {
         // Add the Navigation Bar
         NavigationBar navigationBar = new NavigationBar();
         add(navigationBar, BorderLayout.NORTH);
+
     }
 }
