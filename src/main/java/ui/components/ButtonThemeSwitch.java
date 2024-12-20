@@ -3,6 +3,7 @@ package main.java.ui.components;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.swing.FontIcon;
 
@@ -26,12 +27,14 @@ public class ButtonThemeSwitch extends JButton {
         setIcon(isDarkTheme ? darkThemeIcon : lightThemeIcon);
 
         // Logic to toggle the theme
+        FlatAnimatedLafChange.showSnapshot();
         if (isDarkTheme) {
             FlatDarkLaf.setup();
         } else {
             FlatLightLaf.setup();
         }
         FlatLaf.updateUI();
+        FlatAnimatedLafChange.hideSnapshotWithAnimation();
     }
 
     @Override
