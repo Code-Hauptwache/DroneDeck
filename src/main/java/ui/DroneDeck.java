@@ -35,7 +35,7 @@ public class DroneDeck {
         ImageIcon logoIcon = new ImageIcon(Objects.requireNonNull(DroneDeck.class.getResource("/DroneDeck_LogoTemp.png")));
         frame.setIconImage(logoIcon.getImage());
         
-        // Add Main Panel
+        // Add the main panel
         MainPanel mainPanel = new MainPanel();
         frame.add(mainPanel);
         
