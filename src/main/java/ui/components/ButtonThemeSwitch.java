@@ -12,7 +12,7 @@ import java.awt.*;
 public class ButtonThemeSwitch extends JButton {
     private final FontIcon darkThemeIcon = FontIcon.of(FontAwesomeSolid.MOON, 13);
     private final FontIcon lightThemeIcon = FontIcon.of(FontAwesomeSolid.SUN, 13);
-    private boolean isDarkTheme = FlatLaf.isLafDark();
+    boolean isDarkTheme = FlatLaf.isLafDark();
 
     public ButtonThemeSwitch() {
         setIcon(isDarkTheme ? darkThemeIcon : lightThemeIcon);
@@ -21,7 +21,7 @@ public class ButtonThemeSwitch extends JButton {
         addActionListener(e -> toggleTheme());
     }
 
-    private void toggleTheme() {
+    void toggleTheme() {
         isDarkTheme = !isDarkTheme;
         setIcon(isDarkTheme ? darkThemeIcon : lightThemeIcon);
 
