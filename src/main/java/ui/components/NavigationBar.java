@@ -19,11 +19,7 @@ public class NavigationBar extends JComponent {
         JLabel title = new JLabel("Placeholder Navigation Bar");
         add(title);
 
-        // Add a filler to push the theme switch button to the right
+        // Center the navigation bar
         add(Box.createHorizontalGlue());
-
-        // Add the theme switch button
-        ButtonThemeSwitch themeSwitch = new ButtonThemeSwitch();
-        add(themeSwitch);
     }
 }

@@ -7,9 +7,9 @@ import java.awt.event.ComponentEvent;
 
 /**
  * The main panel of the application.
- * It contains the navigation bar, content panel, and pagination controls.
- * The navigation bar is at the top, the content panel is in the center,
- * and the pagination controls are at the bottom.
+ * This panel contains the north panel (navigation bar, search bar, and theme switcher),
+ * the content panel (which displays the main content of the application), and the pagination controls.
+ * The main panel is responsible for adjusting the padding of the content panel based on the width of the main panel.
  */
 public class MainPanel extends JPanel {
     private final int maxContentWidth = 800;
@@ -36,10 +36,8 @@ public class MainPanel extends JPanel {
             }
         });
 
-        // Add the Navigation Bar (North)
-        NavigationBar navigationBar = new NavigationBar();
-        navigationBar.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
-        add(navigationBar, BorderLayout.NORTH);
+        // Add the north panel to the main panel (North)
+        add(new NorthPanel(), BorderLayout.NORTH);
 
         // TODO: Add content panel (Center)
 
