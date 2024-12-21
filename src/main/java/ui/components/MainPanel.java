@@ -5,6 +5,12 @@ import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
+/**
+ * The main panel of the application.
+ * It contains the navigation bar, content panel, and pagination controls.
+ * The navigation bar is at the top, the content panel is in the center,
+ * and the pagination controls are at the bottom.
+ */
 public class MainPanel extends JPanel {
     private final int maxContentWidth = 800;
     private final int minLeftRightPadding = 100;
@@ -38,6 +44,7 @@ public class MainPanel extends JPanel {
         // TODO: Add content panel (Center)
 
         // TODO: Add pagination controls (South)
+      
     }
 
     private void adjustPadding() {

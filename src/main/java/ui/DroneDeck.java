@@ -11,6 +11,14 @@ import java.util.Objects;
 
 public class DroneDeck {
 
+    /**
+     * The main entry point of the application.
+     * It sets up the FlatLaf look and feel, loads a Google Font,
+     * creates the main frame, and makes it visible.
+     *
+     * @param args the command line arguments
+     *             (not used in this application)
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(DroneDeck::createAndShowGUI);
     }
@@ -24,7 +32,11 @@ public class DroneDeck {
         try (InputStream is = DroneDeck.class.getResourceAsStream("/Lato-Bold.ttf")) {
             Font font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(is)).deriveFont(14f);
             UIManager.put("defaultFont", font);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
+            // TODO: Handle exception properly
+
+            //noinspection CallToPrintStackTrace
             e.printStackTrace();
         }
 
