@@ -18,7 +18,7 @@ import java.awt.*;
 public class ButtonThemeSwitch extends JButton {
     private final FontIcon darkThemeIcon = FontIcon.of(FontAwesomeSolid.MOON, 13);
     private final FontIcon lightThemeIcon = FontIcon.of(FontAwesomeSolid.SUN, 13);
-    public boolean isDarkTheme = FlatLaf.isLafDark();
+    private boolean isDarkTheme = FlatLaf.isLafDark();
 
     /**
      * Creates a new theme switch button.
@@ -52,6 +52,15 @@ public class ButtonThemeSwitch extends JButton {
         }
         FlatLaf.updateUI();
         FlatAnimatedLafChange.hideSnapshotWithAnimation();
+    }
+
+    /**
+     * Returns whether the current theme is dark.
+     *
+     * @return true if the current theme is dark, false otherwise
+     */
+    public boolean isDarkTheme() {
+        return isDarkTheme;
     }
 
     /**

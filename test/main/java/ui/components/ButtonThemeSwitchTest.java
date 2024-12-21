@@ -14,9 +14,9 @@ class ButtonThemeSwitchTest {
     @org.junit.jupiter.api.Test
     void toggleTheme() {
         ButtonThemeSwitch buttonThemeSwitch = new ButtonThemeSwitch();
-        boolean isDarkTheme = buttonThemeSwitch.isDarkTheme;
+        boolean isDarkTheme = buttonThemeSwitch.isDarkTheme();
         buttonThemeSwitch.toggleTheme();
-        assertNotEquals(isDarkTheme, buttonThemeSwitch.isDarkTheme);
+        assertNotEquals(isDarkTheme, buttonThemeSwitch.isDarkTheme());
     }
 
     @org.junit.jupiter.api.Test
