@@ -3,24 +3,26 @@ package main.java.ui.components;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * The main panel of the application.
+ * It contains the navigation bar, content panel, and pagination controls.
+ * The navigation bar is at the top, the content panel is in the center,
+ * and the pagination controls are at the bottom.
+ */
 public class MainPanel extends JPanel {
-
     public MainPanel() {
+        // Set the layout manager
         setLayout(new BorderLayout());
 
-        // Create a label to display drone data
-        JLabel label = new JLabel("Drone Data will be displayed here", SwingConstants.CENTER);
-        add(label, BorderLayout.CENTER);
+        // Add padding to the panel
+        setBorder(BorderFactory.createEmptyBorder(20, 100, 20, 100));
 
-        // Create a button to switch pages
-        JButton button = new JButton("Go to Drone Page");
-        button.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        button.addActionListener(e -> showDronePage());
-        add(button, BorderLayout.SOUTH);
-    }
+        // Add the Navigation Bar (North)
+        NavigationBar navigationBar = new NavigationBar();
+        add(navigationBar, BorderLayout.NORTH);
 
-    private void showDronePage() {
-        // Logic to switch to the drone page
-        JOptionPane.showMessageDialog(this, "Switching to Drone Page...");
+        // TODO: Add content panel (Center)
+
+        // TODO: Add pagination controls (South)
     }
 }
