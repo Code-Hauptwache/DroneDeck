@@ -11,6 +11,14 @@ import java.util.Objects;
 
 public class DroneDeck {
 
+    /**
+     * The main entry point of the application.
+     * It sets up the FlatLaf look and feel, loads a Google Font,
+     * creates the main frame, and makes it visible.
+     *
+     * @param args the command line arguments
+     *             (not used in this application)
+     */
     public static void main(String[] args) {
         // Set up FlatLaf look and feel
         FlatLaf.registerCustomDefaultsSource("main.java.ui.themes");
@@ -22,6 +30,8 @@ public class DroneDeck {
             UIManager.put("defaultFont", font);
         }
         catch (Exception e) {
+            // TODO: Handle exception properly
+
             //noinspection CallToPrintStackTrace
             e.printStackTrace();
         }
