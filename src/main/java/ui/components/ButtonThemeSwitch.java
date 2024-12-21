@@ -10,21 +10,24 @@ import org.kordamp.ikonli.swing.FontIcon;
 import javax.swing.*;
 import java.awt.*;
 
-public class ButtonThemeSwitch extends JButton {
+public class ButtonThemeSwitch extends JComponent {
     private final FontIcon darkThemeIcon = FontIcon.of(FontAwesomeSolid.MOON, 13);
     private final FontIcon lightThemeIcon = FontIcon.of(FontAwesomeSolid.SUN, 13);
-    boolean isDarkTheme = FlatLaf.isLafDark();
+    public boolean isDarkTheme = FlatLaf.isLafDark();
+    private final JButton button;
 
     public ButtonThemeSwitch() {
-        setIcon(isDarkTheme ? darkThemeIcon : lightThemeIcon);
-        setHorizontalAlignment(SwingConstants.CENTER);
-        setVerticalAlignment(SwingConstants.CENTER);
-        addActionListener(e -> toggleTheme());
+        button = new JButton(isDarkTheme ? darkThemeIcon : lightThemeIcon);
+        button.setHorizontalAlignment(SwingConstants.CENTER);
+        button.setVerticalAlignment(SwingConstants.CENTER);
+        button.addActionListener(e -> toggleTheme());
+        setLayout(new BorderLayout());
+        add(button, BorderLayout.CENTER);
     }
 
-    void toggleTheme() {
+    public void toggleTheme() {
         isDarkTheme = !isDarkTheme;
-        setIcon(isDarkTheme ? darkThemeIcon : lightThemeIcon);
+        button.setIcon(isDarkTheme ? darkThemeIcon : lightThemeIcon);
 
         // Logic to toggle the theme
         FlatAnimatedLafChange.showSnapshot();
