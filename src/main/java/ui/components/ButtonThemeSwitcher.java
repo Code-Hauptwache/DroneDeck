@@ -15,21 +15,24 @@ import java.awt.*;
  * It displays an icon representing the current theme and toggles the theme
  * when clicked.
  */
-public class ButtonThemeSwitch extends JButton {
-    private final FontIcon darkThemeIcon = FontIcon.of(FontAwesomeSolid.MOON, 13);
-    private final FontIcon lightThemeIcon = FontIcon.of(FontAwesomeSolid.SUN, 13);
+public class ButtonThemeSwitcher extends JComponent {
+    private final FontIcon darkThemeIcon = FontIcon.of(FontAwesomeSolid.MOON, 13, UIManager.getColor("Label.foreground"));
+    private final FontIcon lightThemeIcon = FontIcon.of(FontAwesomeSolid.SUN, 13, UIManager.getColor("Label.foreground"));
     private boolean isDarkTheme = FlatLaf.isLafDark();
+    private final JButton button;
 
     /**
      * Creates a new theme switch button.
      * The button displays an icon representing the current theme and toggles
      * the theme when clicked.
      */
-    public ButtonThemeSwitch() {
-        setIcon(isDarkTheme ? darkThemeIcon : lightThemeIcon);
-        setHorizontalAlignment(SwingConstants.CENTER);
-        setVerticalAlignment(SwingConstants.CENTER);
-        addActionListener(e -> toggleTheme());
+    public ButtonThemeSwitcher() {
+        button = new JButton(isDarkTheme ? darkThemeIcon : lightThemeIcon);
+        button.setHorizontalAlignment(SwingConstants.CENTER);
+        button.setVerticalAlignment(SwingConstants.CENTER);
+        button.addActionListener(e -> toggleTheme());
+        setLayout(new BorderLayout());
+        add(button, BorderLayout.CENTER);
     }
 
     /**
@@ -41,7 +44,7 @@ public class ButtonThemeSwitch extends JButton {
      */
     public void toggleTheme() {
         isDarkTheme = !isDarkTheme;
-        setIcon(isDarkTheme ? darkThemeIcon : lightThemeIcon);
+        button.setIcon(isDarkTheme ? darkThemeIcon : lightThemeIcon);
 
         // Logic to toggle the theme
         FlatAnimatedLafChange.showSnapshot();
@@ -51,6 +54,9 @@ public class ButtonThemeSwitch extends JButton {
             FlatLightLaf.setup();
         }
         FlatLaf.updateUI();
+        button.setForeground(UIManager.getColor("Label.foreground"));
+        darkThemeIcon.setIconColor(UIManager.getColor("Label.foreground"));
+        lightThemeIcon.setIconColor(UIManager.getColor("Label.foreground"));
         FlatAnimatedLafChange.hideSnapshotWithAnimation();
     }
 

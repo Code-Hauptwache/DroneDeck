@@ -1,25 +1,25 @@
 package main.java.ui.components;
 
-import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
-import org.kordamp.ikonli.swing.FontIcon;
-
 import javax.swing.*;
 
-public class NavigationBar extends JPanel {
+
+public class NavigationBar extends JComponent {
     /**
      * Creates a new navigation bar.
      */
     public NavigationBar() {
+
         // Set the layout manager
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
-        // TODO: Add Navigation Buttons to switch between pages
-
-        // Add a filler to push the theme switch button to the right
+        // Center the navigation bar
         add(Box.createHorizontalGlue());
 
-        // Add the theme switch button
-        ButtonThemeSwitch themeSwitch = new ButtonThemeSwitch();
-        add(themeSwitch);
+        // TODO: Add Navigation Buttons to switch between pages
+        JLabel title = new JLabel("Placeholder Navigation Bar");
+        add(title);
+
+        // Center the navigation bar
+        add(Box.createHorizontalGlue());
     }
 }
