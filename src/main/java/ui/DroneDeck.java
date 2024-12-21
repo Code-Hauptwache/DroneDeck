@@ -44,10 +44,8 @@ public class DroneDeck {
         JFrame frame = new JFrame("DroneDeck");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Load and set the logo image as the window icon
-        ImageIcon logoIcon = new ImageIcon(
-                Objects.requireNonNull(DroneDeck.class.getResource("/DroneDeck_LogoTemp.png"))
-        );
+        // Load the logo image
+        ImageIcon logoIcon = new ImageIcon(Objects.requireNonNull(DroneDeck.class.getResource("/DroneDeck_Logo.png")));
         frame.setIconImage(logoIcon.getImage());
 
         // Create and add the main panel
