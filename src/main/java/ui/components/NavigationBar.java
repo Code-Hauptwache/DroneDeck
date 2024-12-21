@@ -13,7 +13,7 @@ public class NavigationBar extends JComponent {
         add(Box.createHorizontalGlue());
 
         // TODO: Add Navigation Buttons to switch between pages
-        JLabel title = new JLabel("DroneDeck");
+        JLabel title = new JLabel("Placeholder Navigation Bar");
         add(title);
 
         // Add a filler to push the theme switch button to the right

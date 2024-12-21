@@ -11,8 +11,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ButtonThemeSwitch extends JComponent {
-    private final FontIcon darkThemeIcon = FontIcon.of(FontAwesomeSolid.MOON, 13);
-    private final FontIcon lightThemeIcon = FontIcon.of(FontAwesomeSolid.SUN, 13);
+    private final FontIcon darkThemeIcon = FontIcon.of(FontAwesomeSolid.MOON, 13, UIManager.getColor("Label.foreground"));
+    private final FontIcon lightThemeIcon = FontIcon.of(FontAwesomeSolid.SUN, 13, UIManager.getColor("Label.foreground"));
     public boolean isDarkTheme = FlatLaf.isLafDark();
     private final JButton button;
 
@@ -37,6 +37,9 @@ public class ButtonThemeSwitch extends JComponent {
             FlatLightLaf.setup();
         }
         FlatLaf.updateUI();
+        button.setForeground(UIManager.getColor("Label.foreground"));
+        darkThemeIcon.setIconColor(UIManager.getColor("Label.foreground"));
+        lightThemeIcon.setIconColor(UIManager.getColor("Label.foreground"));
         FlatAnimatedLafChange.hideSnapshotWithAnimation();
     }
 
