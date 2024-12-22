@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class DroneCatalog extends JPanel {
+    /**
+     * The DroneCatalog class is a JPanel... (TODO)
+     */
     public DroneCatalog() {
         // TODO: Implement the Drone Catalog
 
