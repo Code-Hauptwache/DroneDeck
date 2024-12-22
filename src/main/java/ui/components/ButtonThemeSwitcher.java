@@ -21,6 +21,7 @@ public class ButtonThemeSwitcher extends JComponent {
     private boolean isDarkTheme = FlatLaf.isLafDark();
     private final JButton button;
 
+
     /**
      * Creates a new theme switch button.
      * The button displays an icon representing the current theme and toggles
@@ -58,6 +59,7 @@ public class ButtonThemeSwitcher extends JComponent {
         darkThemeIcon.setIconColor(UIManager.getColor("Label.foreground"));
         lightThemeIcon.setIconColor(UIManager.getColor("Label.foreground"));
         FlatAnimatedLafChange.hideSnapshotWithAnimation();
+
     }
 
     /**
