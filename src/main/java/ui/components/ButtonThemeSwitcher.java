@@ -20,6 +20,7 @@ public class ButtonThemeSwitcher extends JComponent {
     private final FontIcon lightThemeIcon = FontIcon.of(FontAwesomeSolid.SUN, 13, UIManager.getColor("Label.foreground"));
     private boolean isDarkTheme = FlatLaf.isLafDark();
     private final JButton button;
+    private final NavigationBar navigationBar;
 
 
     /**
@@ -27,7 +28,8 @@ public class ButtonThemeSwitcher extends JComponent {
      * The button displays an icon representing the current theme and toggles
      * the theme when clicked.
      */
-    public ButtonThemeSwitcher() {
+    public ButtonThemeSwitcher(NavigationBar navigationBar) {
+        this.navigationBar = navigationBar;
         button = new JButton(isDarkTheme ? darkThemeIcon : lightThemeIcon);
         button.setHorizontalAlignment(SwingConstants.CENTER);
         button.setVerticalAlignment(SwingConstants.CENTER);
@@ -42,6 +44,7 @@ public class ButtonThemeSwitcher extends JComponent {
      * The theme is changed using FlatLaf.
      * The UI is updated to reflect the new theme.
      * The theme change is animated using FlatAnimatedLafChange.
+     * The border color of the navigation bar buttons is updated to match the new theme.
      */
     public void toggleTheme() {
         isDarkTheme = !isDarkTheme;
@@ -60,6 +63,8 @@ public class ButtonThemeSwitcher extends JComponent {
         lightThemeIcon.setIconColor(UIManager.getColor("Label.foreground"));
         FlatAnimatedLafChange.hideSnapshotWithAnimation();
 
+        // Update the border color of the navigation bar buttons
+        navigationBar.updateButtonBorderColor();
     }
 
     /**

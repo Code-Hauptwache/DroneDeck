@@ -9,8 +9,9 @@ public class SearchBar extends JComponent {
 
         // TODO: Implement the Search Bar
 
-        // This is a placeholder for the search bar
-        JLabel searchLabel = new JLabel("Search Bar Placeholder");
+        // This is a placeholder in orange for the search bar
+        JLabel searchLabel = new JLabel("Search Bar (TODO)");
+        searchLabel.setForeground(Color.ORANGE);
         add(searchLabel);
 
     }

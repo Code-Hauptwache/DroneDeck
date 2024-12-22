@@ -8,6 +8,13 @@ public class NavigationBar extends JComponent {
 
     private JButton selectedButton;
 
+    /**
+     * Creates a new navigation bar.
+     * The navigation bar contains buttons for navigating the application.
+     * The navigation bar highlights the selected button.
+     *
+     * @param mainPanel the main panel of the application
+     */
     public NavigationBar(MainPanel mainPanel) {
         setLayout(new GridLayout(1, 2, 0, 0));
 
@@ -58,9 +65,13 @@ public class NavigationBar extends JComponent {
         updateButtonBorderColor();
     }
 
+    /**
+     * Updates the border color of the selected button.
+     * This method is called in the theme switcher to update the border color of the selected button.
+     */
     public void updateButtonBorderColor() {
         if (selectedButton != null) {
-            Border bottomBorder = BorderFactory.createMatteBorder(0, 0, 2, 0, UIManager.getColor("Button.foreground"));
+            Border bottomBorder = BorderFactory.createMatteBorder(0, 0, 2, 0, UIManager.getColor("Label.foreground"));
             selectedButton.setBorder(bottomBorder);
             selectedButton.setBorderPainted(true);
         }

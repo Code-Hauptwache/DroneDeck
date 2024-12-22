@@ -1,6 +1,8 @@
 package main.java.ui.components;
 
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * The ButtonThemeSwitchTest class contains unit tests for the ButtonThemeSwitch class.
@@ -11,30 +13,52 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class ButtonThemeSwitcherTest {
 
-    @org.junit.jupiter.api.Test
+    private TestNavigationBar testNavigationBar;
+    private ButtonThemeSwitcher buttonThemeSwitcher;
+
+    @BeforeEach
+    void setUp() {
+        testNavigationBar = new TestNavigationBar();
+        buttonThemeSwitcher = new ButtonThemeSwitcher(testNavigationBar);
+    }
+
+    @Test
     void toggleTheme() {
-        ButtonThemeSwitcher buttonThemeSwitcher = new ButtonThemeSwitcher();
         boolean isDarkTheme = buttonThemeSwitcher.isDarkTheme();
         buttonThemeSwitcher.toggleTheme();
         assertNotEquals(isDarkTheme, buttonThemeSwitcher.isDarkTheme());
+        assertTrue(testNavigationBar.isUpdateButtonBorderColorCalled());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getPreferredSize() {
-        ButtonThemeSwitcher buttonThemeSwitcher = new ButtonThemeSwitcher();
         assertEquals(buttonThemeSwitcher.getPreferredSize().width, buttonThemeSwitcher.getPreferredSize().height);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getMinimumSize() {
-        ButtonThemeSwitcher buttonThemeSwitcher = new ButtonThemeSwitcher();
         assertEquals(buttonThemeSwitcher.getMinimumSize(), buttonThemeSwitcher.getPreferredSize());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getMaximumSize() {
-        ButtonThemeSwitcher buttonThemeSwitcher = new ButtonThemeSwitcher();
         assertEquals(buttonThemeSwitcher.getMaximumSize(), buttonThemeSwitcher.getPreferredSize());
     }
 
+    private static class TestNavigationBar extends NavigationBar {
+        private boolean updateButtonBorderColorCalled = false;
+
+        public TestNavigationBar() {
+            super(null);
+        }
+
+        @Override
+        public void updateButtonBorderColor() {
+            updateButtonBorderColorCalled = true;
+        }
+
+        public boolean isUpdateButtonBorderColorCalled() {
+            return updateButtonBorderColorCalled;
+        }
+    }
 }

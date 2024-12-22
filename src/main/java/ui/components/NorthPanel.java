@@ -19,7 +19,7 @@ public class NorthPanel extends JPanel {
         add(navigationBar);
 
         // Add the Search Bar and Theme Switcher (unchanged)
-        SearchBarAndThemeSwitcherPanel searchBarAndThemeSwitcherPanel = new SearchBarAndThemeSwitcherPanel();
+        SearchBarAndThemeSwitcherPanel searchBarAndThemeSwitcherPanel = new SearchBarAndThemeSwitcherPanel(navigationBar);
         add(searchBarAndThemeSwitcherPanel);
     }
 }

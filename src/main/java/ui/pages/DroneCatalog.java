@@ -5,8 +5,12 @@ import java.awt.*;
 
 public class DroneCatalog extends JPanel {
     public DroneCatalog() {
+        // TODO: Implement the Drone Catalog
+
+        // This is a placeholder in orange for the drone catalog
         super(new BorderLayout());
-        JLabel label = new JLabel("Drone Catalog", SwingConstants.CENTER);
+        JLabel label = new JLabel("Drone Catalog (TODO)", SwingConstants.CENTER);
+        label.setForeground(Color.ORANGE);
         add(label, BorderLayout.CENTER);
     }
 }

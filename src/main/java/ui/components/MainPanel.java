@@ -26,6 +26,7 @@ public class MainPanel extends JPanel {
     // Center panel that will hold the pages
     private final JPanel centerPanel;
     private final CardLayout cardLayout;
+    private String currentPage;
 
     public MainPanel() {
         super(new BorderLayout());
@@ -65,6 +66,8 @@ public class MainPanel extends JPanel {
         // Add the center panel
         add(centerPanel, BorderLayout.CENTER);
 
+        currentPage = PAGE_CATALOG; // Default page
+
         // TODO: Add pagination controls (South) if needed
     }
 
@@ -74,6 +77,11 @@ public class MainPanel extends JPanel {
      */
     public void showPage(String pageName) {
         cardLayout.show(centerPanel, pageName);
+        currentPage = pageName;
+    }
+
+    public String getCurrentPage() {
+        return currentPage;
     }
 
     /**

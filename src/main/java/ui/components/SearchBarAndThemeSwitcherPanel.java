@@ -9,7 +9,7 @@ public class SearchBarAndThemeSwitcherPanel extends JPanel {
      * The SearchBarAndThemeSwitcherPanel is used in the
      * NorthPanel which is used in the MainPanel.
      */
-    public SearchBarAndThemeSwitcherPanel() {
+    public SearchBarAndThemeSwitcherPanel(NavigationBar navigationBar) {
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
         // Center the search bar
@@ -23,7 +23,7 @@ public class SearchBarAndThemeSwitcherPanel extends JPanel {
         add(Box.createHorizontalGlue());
 
         // Add the Theme Switcher
-        ButtonThemeSwitcher buttonThemeSwitcher = new ButtonThemeSwitcher();
+        ButtonThemeSwitcher buttonThemeSwitcher = new ButtonThemeSwitcher(navigationBar);
         add(buttonThemeSwitcher);
     }
 }
