@@ -12,6 +12,13 @@ public class SearchBarAndThemeSwitcherPanel extends JPanel {
     public SearchBarAndThemeSwitcherPanel(NavigationBar navigationBar) {
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
+        // Create the Theme Switcher
+        ButtonThemeSwitcher buttonThemeSwitcher = new ButtonThemeSwitcher(navigationBar);
+
+        // Add padding on the left equivalent to the width of the ButtonThemeSwitcher Button
+        int paddingWidth = buttonThemeSwitcher.getPreferredSize().width;
+        add(Box.createHorizontalStrut(paddingWidth));
+
         // Center the search bar
         add(Box.createHorizontalGlue());
 
@@ -23,7 +30,6 @@ public class SearchBarAndThemeSwitcherPanel extends JPanel {
         add(Box.createHorizontalGlue());
 
         // Add the Theme Switcher
-        ButtonThemeSwitcher buttonThemeSwitcher = new ButtonThemeSwitcher(navigationBar);
         add(buttonThemeSwitcher);
     }
 }
