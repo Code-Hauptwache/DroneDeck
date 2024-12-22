@@ -19,6 +19,7 @@ public class SearchBarAndThemeSwitcherPanel extends JPanel {
         SearchBar searchBar = new SearchBar();
         add(searchBar);
 
+        // Center the search bar and push the theme switcher to the right
         add(Box.createHorizontalGlue());
 
         // Add the Theme Switcher
