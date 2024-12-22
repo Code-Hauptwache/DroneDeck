@@ -3,8 +3,10 @@ package main.java.ui.pages;
 import javax.swing.*;
 import java.awt.*;
 
-public class DroneCatalog extends Component {
+public class DroneCatalog extends JPanel {
     public DroneCatalog() {
-        JLabel label = new JLabel("Drone Catalog");
+        super(new BorderLayout());
+        JLabel label = new JLabel("Drone Catalog", SwingConstants.CENTER);
+        add(label, BorderLayout.CENTER);
     }
 }

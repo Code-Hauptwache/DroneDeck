@@ -10,15 +10,15 @@ public class NorthPanel extends JPanel {
      * The SearchBar is a horizontal bar that contains a search bar.
      * The ThemeSwitcher is a button that toggles the theme of the application.
      */
-    public NorthPanel() {
+    public NorthPanel(MainPanel mainPanel) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        // Add the Navigation Bar
-        NavigationBar navigationBar = new NavigationBar();
+        // Add the Navigation Bar, passing in the mainPanel reference
+        NavigationBar navigationBar = new NavigationBar(mainPanel);
         navigationBar.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
         add(navigationBar);
 
-        // Add the Search Bar and Theme Switcher
+        // Add the Search Bar and Theme Switcher (unchanged)
         SearchBarAndThemeSwitcherPanel searchBarAndThemeSwitcherPanel = new SearchBarAndThemeSwitcherPanel();
         add(searchBarAndThemeSwitcherPanel);
     }

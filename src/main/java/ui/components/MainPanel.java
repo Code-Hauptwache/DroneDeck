@@ -1,5 +1,8 @@
 package main.java.ui.components;
 
+import main.java.ui.pages.DroneCatalog;
+import main.java.ui.pages.DroneDashboard;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
@@ -16,8 +19,15 @@ public class MainPanel extends JPanel {
     private final int minLeftRightPadding = 100;
     private final int topBottomPadding = 20;
 
+    // Card names
+    public static final String PAGE_CATALOG = "DroneCatalog";
+    public static final String PAGE_DASHBOARD = "DroneDashboard";
+
+    // Center panel that will hold the pages
+    private final JPanel centerPanel;
+    private final CardLayout cardLayout;
+
     public MainPanel() {
-        // Set the layout manager
         super(new BorderLayout());
 
         // Set an initial border (in case we never get resized)
@@ -28,7 +38,7 @@ public class MainPanel extends JPanel {
                 minLeftRightPadding
         ));
 
-        // Whenever this panel is resized, recalculate the padding
+        // Recalculate padding on resize
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -36,26 +46,61 @@ public class MainPanel extends JPanel {
             }
         });
 
-        // Add the north panel to the main panel (North)
-        add(new NorthPanel(), BorderLayout.NORTH);
+        // Create a CardLayout panel to hold the pages
+        cardLayout = new CardLayout();
+        centerPanel = new JPanel(cardLayout);
 
-        // TODO: Add content panel (Center)
+        // Instantiate the pages
+        JPanel droneCatalogPanel = createCatalogPanel();
+        JPanel droneDashboardPanel = createDashboardPanel();
 
-        // TODO: Add pagination controls (South)
-      
+        // Add the pages to the center panel
+        centerPanel.add(droneCatalogPanel, PAGE_CATALOG);
+        centerPanel.add(droneDashboardPanel, PAGE_DASHBOARD);
+
+        // Add the north panel (with navigation, search, theme switcher)
+        // Note: pass `this` so the NavigationBar can call `showPage(...)`.
+        add(new NorthPanel(this), BorderLayout.NORTH);
+
+        // Add the center panel
+        add(centerPanel, BorderLayout.CENTER);
+
+        // TODO: Add pagination controls (South) if needed
+    }
+
+    /**
+     * Show one of the pages in the center panel.
+     * @param pageName The name of the page (e.g., "DroneCatalog" or "DroneDashboard")
+     */
+    public void showPage(String pageName) {
+        cardLayout.show(centerPanel, pageName);
+    }
+
+    /**
+     * Create a panel holding the DroneCatalog page.
+     */
+    private JPanel createCatalogPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(new DroneCatalog(), BorderLayout.CENTER);
+        return panel;
+    }
+
+    /**
+     * Create a panel holding the DroneDashboard page.
+     */
+    private JPanel createDashboardPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(new DroneDashboard(), BorderLayout.CENTER);
+        return panel;
     }
 
     private void adjustPadding() {
         int panelWidth = getWidth();
-        // Figure out how much "extra" space is left after maxContentWidth
         int extraWidth = panelWidth - maxContentWidth;
 
-        // If extraWidth > 0, use half of it on each side as padding
-        // Otherwise, just use the minimum padding
         int horizontalPadding = (extraWidth > 0) ? extraWidth / 2 : minLeftRightPadding;
         horizontalPadding = Math.max(horizontalPadding, minLeftRightPadding);
 
-        // Update border with new dynamic left/right padding
         setBorder(BorderFactory.createEmptyBorder(
                 topBottomPadding,
                 horizontalPadding,
@@ -63,7 +108,6 @@ public class MainPanel extends JPanel {
                 horizontalPadding
         ));
 
-        // Optional: revalidate and repaint if you want an immediate refresh
         revalidate();
         repaint();
     }
