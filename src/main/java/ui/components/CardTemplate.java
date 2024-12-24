@@ -107,4 +107,12 @@ public class CardTemplate extends JComponent {
             card.updateThemeColor();
         }
     }
+
+    public JLabel getSubtitleLabel() {
+        return subtitleLabel;
+    }
+
+    public JSeparator getSeparator() {
+        return separator;
+    }
 }
