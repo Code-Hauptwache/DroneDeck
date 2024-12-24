@@ -15,7 +15,14 @@ public class CardTemplate extends JComponent {
     private final JLabel subtitleLabel;
     private final JSeparator separator;
 
-
+    /**
+     * A CardTemplate is a JComponent that displays a card with a title, subtitle, and content.
+     * The card has a modern border with rounded corners and a separator between the header and content.
+     *
+     * @param title    the title of the card
+     * @param subtitle the subtitle of the card
+     * @param content  the content component to display in the card
+     */
     public CardTemplate(String title, String subtitle, Component content) {
         // Register this instance
         instances.add(this);
@@ -82,12 +89,20 @@ public class CardTemplate extends JComponent {
         add(centerPanel, BorderLayout.CENTER);
     }
 
+    /**
+     * Update the theme color of the card.
+     * This method should be called whenever the theme changes.
+     */
     public void updateThemeColor(){
         separator.setForeground(UIManager.getColor("Label.disabledForeground"));
         subtitleLabel.setForeground(UIManager.getColor("Label.disabledForeground"));
     }
 
-    public static void updateAllSeparators(){
+    /**
+     * Update the theme color of all CardTemplate instances.
+     * This method gets called whenever ButtonThemeSwitcher toggles the theme.
+     */
+    public static void updateAllInstances(){
         for (CardTemplate card : instances){
             card.updateThemeColor();
         }

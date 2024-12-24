@@ -33,7 +33,7 @@ public class ButtonThemeSwitcher extends JComponent {
         button = new JButton(isDarkTheme ? darkThemeIcon : lightThemeIcon);
         button.setHorizontalAlignment(SwingConstants.CENTER);
         button.setVerticalAlignment(SwingConstants.CENTER);
-        button.addActionListener(e -> toggleTheme());
+        button.addActionListener(_ -> toggleTheme());
         setLayout(new BorderLayout());
         add(button, BorderLayout.CENTER);
     }
@@ -44,7 +44,6 @@ public class ButtonThemeSwitcher extends JComponent {
      * The theme is changed using FlatLaf.
      * The UI is updated to reflect the new theme.
      * The theme change is animated using FlatAnimatedLafChange.
-     * The border color of the navigation bar buttons is updated to match the new theme.
      */
     public void toggleTheme() {
         isDarkTheme = !isDarkTheme;
@@ -66,7 +65,7 @@ public class ButtonThemeSwitcher extends JComponent {
         navigationBar.updateButtonBorderColor();
 
         // Update the separator color of all CardTemplate instances
-        CardTemplate.updateAllSeparators();
+        CardTemplate.updateAllInstances();
 
         FlatAnimatedLafChange.hideSnapshotWithAnimation();
     }
