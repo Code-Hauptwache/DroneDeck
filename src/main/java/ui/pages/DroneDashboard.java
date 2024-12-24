@@ -18,7 +18,7 @@ public class DroneDashboard extends JPanel {
         // Use BorderLayout for main arrangement
         super(new BorderLayout());
 
-        // Add CardTemplate instances to the center panel using FlowLayout
+        // Add CardTemplate instances to the center panel using GridLayout
         JPanel cardPanel = new JPanel(new GridLayout(0, 1, 10, 10));
 
         // Create multiple CardTemplates for testing
