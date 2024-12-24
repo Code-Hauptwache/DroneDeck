@@ -1,7 +1,8 @@
 package main.java.ui.components;
 
+import main.java.ui.MainPanel;
+
 import javax.swing.*;
-import java.awt.*;
 
 public class NorthPanel extends JPanel {
     /**

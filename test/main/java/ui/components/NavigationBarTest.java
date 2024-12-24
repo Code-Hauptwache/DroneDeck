@@ -1,6 +1,7 @@
 // NavigationBarTest.java
 package main.java.ui.components;
 
+import main.java.ui.MainPanel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

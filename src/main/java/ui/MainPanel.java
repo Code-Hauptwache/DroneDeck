@@ -1,5 +1,6 @@
-package main.java.ui.components;
+package main.java.ui;
 
+import main.java.ui.components.NorthPanel;
 import main.java.ui.pages.DroneCatalog;
 import main.java.ui.pages.DroneDashboard;
 
