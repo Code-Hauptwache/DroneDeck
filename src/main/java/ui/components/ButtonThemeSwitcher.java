@@ -61,10 +61,14 @@ public class ButtonThemeSwitcher extends JComponent {
         button.setForeground(UIManager.getColor("Label.foreground"));
         darkThemeIcon.setIconColor(UIManager.getColor("Label.foreground"));
         lightThemeIcon.setIconColor(UIManager.getColor("Label.foreground"));
-        FlatAnimatedLafChange.hideSnapshotWithAnimation();
 
         // Update the border color of the navigation bar buttons
         navigationBar.updateButtonBorderColor();
+
+        // Update the separator color of all CardTemplate instances
+        CardTemplate.updateAllSeparators();
+
+        FlatAnimatedLafChange.hideSnapshotWithAnimation();
     }
 
     /**
