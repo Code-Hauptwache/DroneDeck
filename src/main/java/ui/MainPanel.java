@@ -18,7 +18,8 @@ import java.awt.event.ComponentEvent;
 public class MainPanel extends JPanel {
     private final int maxContentWidth = 800;
     private final int minLeftRightPadding = 100;
-    private final int topBottomPadding = 20;
+    private final int topAndBottomMainPanelPadding = 10;
+    private final int northBottomPadding = 10;
 
     // Card names
     public static final String PAGE_CATALOG = "DroneCatalog";
@@ -34,9 +35,9 @@ public class MainPanel extends JPanel {
 
         // Set an initial border (in case we never get resized)
         setBorder(BorderFactory.createEmptyBorder(
-                topBottomPadding,
+                topAndBottomMainPanelPadding,
                 minLeftRightPadding,
-                topBottomPadding,
+                topAndBottomMainPanelPadding,
                 minLeftRightPadding
         ));
 
@@ -60,9 +61,11 @@ public class MainPanel extends JPanel {
         centerPanel.add(droneCatalogPanel, PAGE_CATALOG);
         centerPanel.add(droneDashboardPanel, PAGE_DASHBOARD);
 
-        // Add the north panel (with navigation, search, theme switcher)
-        // Note: pass `this` so the NavigationBar can call `showPage(...)`.
-        add(new NorthPanel(this), BorderLayout.NORTH);
+        // Add the north panel (with navigation, search, theme switcher) with bottom padding
+        JPanel northWrapper = new JPanel(new BorderLayout());
+        northWrapper.setBorder(BorderFactory.createEmptyBorder(0, 0, northBottomPadding, 0));
+        northWrapper.add(new NorthPanel(this), BorderLayout.CENTER);
+        add(northWrapper, BorderLayout.NORTH);
 
         // Add the center panel
         add(centerPanel, BorderLayout.CENTER);
@@ -111,14 +114,17 @@ public class MainPanel extends JPanel {
         horizontalPadding = Math.max(horizontalPadding, minLeftRightPadding);
 
         setBorder(BorderFactory.createEmptyBorder(
-                topBottomPadding,
+                topAndBottomMainPanelPadding,
                 horizontalPadding,
-                topBottomPadding,
+                topAndBottomMainPanelPadding,
                 horizontalPadding
         ));
 
         revalidate();
         repaint();
     }
-}
 
+    public int maxContentWidth() {
+        return maxContentWidth;
+    }
+}
