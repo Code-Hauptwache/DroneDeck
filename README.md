@@ -53,3 +53,29 @@ To successfully run the application and interact with the DroneSim API, you will
 
 ![image](https://github.com/user-attachments/assets/805d8c2c-a472-428c-8842-9c0fc9db3453)
 
+---
+
+## Card Component Documentation
+
+### Parameters
+
+The `CardComponent` accepts the following parameters:
+
+1. **Type Name**: Displays at the top.
+2. **Brand**: Displays below Type Name.
+3. **Content**: Customizable content displayed.
+
+### Usage Example
+
+Here is an example of how to use the `CardComponent` with dynamic content:
+
+```java
+import main.java.ui.components.CardComponent;
+
+public class ExampleUsage {
+    public static void main(String[] args) {
+        CardComponent card = new CardComponent("Drone Type", "Drone Brand", "This is a customizable content area.");
+        // Add the card to your UI container
+    }
+}
+```
