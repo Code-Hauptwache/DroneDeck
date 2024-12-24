@@ -70,9 +70,8 @@ public class MainPanel extends JPanel {
         // Add the center panel
         add(centerPanel, BorderLayout.CENTER);
 
-        currentPage = PAGE_CATALOG; // Default page
-
-        // TODO: Add pagination controls (South) if needed
+        // Show the dashboard page by default
+        showPage(PAGE_DASHBOARD);
     }
 
     /**

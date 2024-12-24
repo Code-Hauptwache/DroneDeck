@@ -28,8 +28,8 @@ public class NavigationBar extends JComponent {
         JButton dashboardButton = createButton("Dashboard", mainPanel, MainPanel.PAGE_DASHBOARD);
         add(dashboardButton);
 
-        // By default, select the first button or any desired button.
-        setSelectedButton(catalogButton);
+        // By default, select the dashboard button
+        setSelectedButton(dashboardButton);
     }
 
     private JButton createButton(String text, MainPanel mainPanel, String page) {
