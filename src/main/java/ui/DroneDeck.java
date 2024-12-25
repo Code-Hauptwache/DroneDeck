@@ -2,7 +2,6 @@ package main.java.ui;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
-import main.java.ui.components.MainPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,12 +19,16 @@ public class DroneDeck {
      *             (not used in this application)
      */
     public static void main(String[] args) {
+        SwingUtilities.invokeLater(DroneDeck::createAndShowGUI);
+    }
+
+    private static void createAndShowGUI() {
         // Set up FlatLaf look and feel
         FlatLaf.registerCustomDefaultsSource("main.java.ui.themes");
         FlatDarkLaf.setup();
 
         // Load Google Font
-        try (InputStream is = DroneDeck.class.getResourceAsStream("/Lato-Bold.ttf")){
+        try (InputStream is = DroneDeck.class.getResourceAsStream("/Lato-Bold.ttf")) {
             Font font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(is)).deriveFont(14f);
             UIManager.put("defaultFont", font);
         }
@@ -36,23 +39,28 @@ public class DroneDeck {
             e.printStackTrace();
         }
 
-        // Create the main frame
+        // Create the frame
         JFrame frame = new JFrame("DroneDeck");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);
 
         // Load the logo image
         ImageIcon logoIcon = new ImageIcon(Objects.requireNonNull(DroneDeck.class.getResource("/DroneDeck_Logo.png")));
-        frame.setIconImage(logoIcon.getImage());
+        Image scaledLogo = logoIcon.getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
+        frame.setIconImage(scaledLogo);
 
-        // Add the main panel
+        // Create and add the main panel
         MainPanel mainPanel = new MainPanel();
-        frame.add(mainPanel);
+        frame.add(mainPanel, BorderLayout.CENTER);
 
-        // Center the frame on the screen
+        // Call pack() so that components are laid out properly
+        frame.pack();
+
+        // Enforce the minimum size (the user cannot shrink the window below this)
+        frame.setMinimumSize(new Dimension(1100, 900));
+
+        // Center the frame on the screen and make it visible
         frame.setLocationRelativeTo(null);
-
-        // Make the frame visible
         frame.setVisible(true);
     }
+
 }
