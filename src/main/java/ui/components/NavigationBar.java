@@ -21,18 +21,18 @@ public class NavigationBar extends JComponent {
         setLayout(new GridLayout(1, 2, 0, 0));
 
         // "Catalog" button
-        JButton catalogButton = createButton("Catalog", mainPanel, MainPanel.PAGE_CATALOG);
+        JButton catalogButton = createButton("Catalog", mainPanel, MainPanel.Page.CATALOG);
         add(catalogButton);
 
         // "Dashboard" button
-        JButton dashboardButton = createButton("Dashboard", mainPanel, MainPanel.PAGE_DASHBOARD);
+        JButton dashboardButton = createButton("Dashboard", mainPanel, MainPanel.Page.DASHBOARD);
         add(dashboardButton);
 
         // By default, select the dashboard button
         setSelectedButton(dashboardButton);
     }
 
-    private JButton createButton(String text, MainPanel mainPanel, String page) {
+    private JButton createButton(String text, MainPanel mainPanel, MainPanel.Page page) {
         JButton button = new JButton(text);
 
         // Make the button transparent

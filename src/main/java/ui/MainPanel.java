@@ -21,14 +21,15 @@ public class MainPanel extends JPanel {
     private final int topAndBottomMainPanelPadding = 10;
     private final int northBottomPadding = 10;
 
-    // Card names
-    public static final String PAGE_CATALOG = "DroneCatalog";
-    public static final String PAGE_DASHBOARD = "DroneDashboard";
+    // Enum for page names
+    public enum Page {
+        CATALOG, DASHBOARD
+    }
 
     // Center panel that will hold the pages
     private final JPanel centerPanel;
     private final CardLayout cardLayout;
-    private String currentPage;
+    private Page currentPage;
 
     public MainPanel() {
         super(new BorderLayout());
@@ -58,8 +59,8 @@ public class MainPanel extends JPanel {
         JPanel droneDashboardPanel = createDashboardPanel();
 
         // Add the pages to the center panel
-        centerPanel.add(droneCatalogPanel, PAGE_CATALOG);
-        centerPanel.add(droneDashboardPanel, PAGE_DASHBOARD);
+        centerPanel.add(droneCatalogPanel, Page.CATALOG.name());
+        centerPanel.add(droneDashboardPanel, Page.DASHBOARD.name());
 
         // Add the north panel (with navigation, search, theme switcher) with bottom padding
         JPanel northWrapper = new JPanel(new BorderLayout());
@@ -71,19 +72,19 @@ public class MainPanel extends JPanel {
         add(centerPanel, BorderLayout.CENTER);
 
         // Show the dashboard page by default
-        showPage(PAGE_DASHBOARD);
+        showPage(Page.DASHBOARD);
     }
 
     /**
      * Show one of the pages in the center panel.
-     * @param pageName The name of the page (e.g., "DroneCatalog" or "DroneDashboard")
+     * @param page The page to show (e.g., Page.CATALOG or Page.DASHBOARD)
      */
-    public void showPage(String pageName) {
-        cardLayout.show(centerPanel, pageName);
-        currentPage = pageName;
+    public void showPage(Page page) {
+        cardLayout.show(centerPanel, page.name());
+        currentPage = page;
     }
 
-    public String getCurrentPage() {
+    public Page getCurrentPage() {
         return currentPage;
     }
 
