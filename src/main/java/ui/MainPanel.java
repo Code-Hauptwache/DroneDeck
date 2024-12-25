@@ -123,9 +123,4 @@ public class MainPanel extends JPanel {
         revalidate();
         repaint();
     }
-
-    public int getMaxContentWidth() {
-        return maxContentWidth;
-        
-    }
 }
