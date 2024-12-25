@@ -4,12 +4,17 @@ import main.java.ui.MainPanel;
 
 import javax.swing.*;
 
+/**
+ * The NorthPanel class is a JPanel
+ * that contains the NavigationBar, SearchBar, and ThemeSwitcher.
+ * The NorthPanel is used in the MainPanel.
+ */
 public class NorthPanel extends JPanel {
     /**
-     * The NorthPanel class is a JPanel that contains the NavigationBar, SearchBar, and ThemeSwitcher.
-     * The NavigationBar is a horizontal bar that contains buttons for navigating the application.
-     * The SearchBar is a horizontal bar that contains a search bar.
-     * The ThemeSwitcher is a button that toggles the theme of the application.
+     * The NorthPanel method is the constructor for the NorthPanel class.
+     * It sets the layout of the NorthPanel to BoxLayout with the Y_AXIS.
+     * It then adds the NavigationBar and SearchBarAndThemeSwitcherPanel to the NorthPanel.
+     * @param mainPanel The mainPanel reference
      */
     public NorthPanel(MainPanel mainPanel) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
