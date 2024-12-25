@@ -2,12 +2,16 @@ package main.java.ui.components;
 
 import javax.swing.*;
 
+/**
+ * The SearchBarAndThemeSwitcherPanel class is a JPanel
+ * that contains the SearchBar and the ThemeSwitcher.
+ * The SearchBarAndThemeSwitcherPanel is used in the NorthPanel.
+ */
 public class SearchBarAndThemeSwitcherPanel extends JPanel {
     /**
-     * The SearchBarAndThemeSwitcherPanel class is a JPanel
-     * that contains a SearchBar and a ButtonThemeSwitcher.
-     * The SearchBarAndThemeSwitcherPanel is used in the
-     * NorthPanel which is used in the MainPanel.
+     * The SearchBarAndThemeSwitcherPanel method is the constructor for the SearchBarAndThemeSwitcherPanel class.
+     * It sets the layout of the SearchBarAndThemeSwitcherPanel to BoxLayout with the X_AXIS.
+     * It then adds the ThemeSwitcher, padding, SearchBar, padding, and the ThemeSwitcher to the SearchBarAndThemeSwitcherPanel.
      */
     public SearchBarAndThemeSwitcherPanel() {
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
