@@ -18,11 +18,15 @@ public class DroneDashboard extends JPanel {
         // Use BorderLayout for main arrangement
         super(new BorderLayout());
 
+        // Horizontal and vertical gaps for the GridLayout
+        int horizontalGap = 20;
+        int verticalGap = 20;
+
         // Add CardTemplate instances to the center panel using GridLayout
-        JPanel cardPanel = new JPanel(new GridLayout(0, 1, 10, 10));
+        JPanel cardPanel = new JPanel(new GridLayout(0, 1, horizontalGap, verticalGap));
 
         // Create multiple CardTemplates for testing
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 20; i++) {
             JPanel testPanel = new JPanel(new FlowLayout());
             testPanel.add(new JButton("Card " + i + " Button"));
             testPanel.add(new JLabel("Card " + i + " Label"));
@@ -44,7 +48,7 @@ public class DroneDashboard extends JPanel {
 
                 // Each CardTemplate is ~250 wide, plus we have a 10px gap (GridLayout hGap)
                 // We'll assume some extra spacing; adjust as needed
-                int cardTotalWidth = 250 + 10; // 250 for card + 10 for right gap
+                int cardTotalWidth = 250 +  horizontalGap; // 250 for card + 10 for right gap
                 // Compute how many columns can fit
                 int columns = Math.max(1, panelWidth / cardTotalWidth);
 
