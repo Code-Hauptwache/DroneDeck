@@ -1,6 +1,8 @@
 package main.java.api.dtos;
 
-public class DroneType {
+import java.io.Serializable;
+
+public class DroneType implements Serializable {
 
     public int id = 0;
 

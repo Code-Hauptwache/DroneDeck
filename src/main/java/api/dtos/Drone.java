@@ -1,8 +1,9 @@
 package main.java.api.dtos;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Drone {
+public class Drone implements Serializable {
 
     public int id = 0;
 
