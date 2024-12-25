@@ -9,11 +9,11 @@ public class SearchBarAndThemeSwitcherPanel extends JPanel {
      * The SearchBarAndThemeSwitcherPanel is used in the
      * NorthPanel which is used in the MainPanel.
      */
-    public SearchBarAndThemeSwitcherPanel(NavigationBar navigationBar) {
+    public SearchBarAndThemeSwitcherPanel() {
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
         // Create the Theme Switcher
-        ButtonThemeSwitcher buttonThemeSwitcher = new ButtonThemeSwitcher(navigationBar);
+        ButtonThemeSwitcher buttonThemeSwitcher = new ButtonThemeSwitcher();
 
         // Add padding on the left equivalent to the width of the ButtonThemeSwitcher Button
         int paddingWidth = buttonThemeSwitcher.getPreferredSize().width;

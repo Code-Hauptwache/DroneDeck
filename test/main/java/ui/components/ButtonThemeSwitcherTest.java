@@ -19,7 +19,7 @@ class ButtonThemeSwitcherTest {
     @BeforeEach
     void setUp() {
         testNavigationBar = new TestNavigationBar();
-        buttonThemeSwitcher = new ButtonThemeSwitcher(testNavigationBar);
+        buttonThemeSwitcher = new ButtonThemeSwitcher();
     }
 
     @Test

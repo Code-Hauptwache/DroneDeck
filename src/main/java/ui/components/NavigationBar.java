@@ -5,9 +5,16 @@ import main.java.ui.MainPanel;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * The NavigationBar class is a JComponent that displays a navigation bar with buttons for navigating the application.
+ * The navigation bar highlights the selected button.
+ */
 public class NavigationBar extends JComponent {
 
+    private static final List<NavigationBar> instances = new ArrayList<>();
     private JButton selectedButton;
 
     /**
@@ -18,6 +25,7 @@ public class NavigationBar extends JComponent {
      * @param mainPanel the main panel of the application
      */
     public NavigationBar(MainPanel mainPanel) {
+        instances.add(this);
         setLayout(new GridLayout(1, 2, 0, 0));
 
         // "Catalog" button
@@ -45,7 +53,7 @@ public class NavigationBar extends JComponent {
         button.setPreferredSize(new Dimension(50, 30));
 
         // Listener to switch pages and mark the button as selected
-        button.addActionListener(e -> {
+        button.addActionListener(_ -> {
             mainPanel.showPage(page);
             setSelectedButton(button);
         });
@@ -76,6 +84,16 @@ public class NavigationBar extends JComponent {
             Border bottomBorder = BorderFactory.createMatteBorder(0, 0, 2, 0, UIManager.getColor("Label.foreground"));
             selectedButton.setBorder(bottomBorder);
             selectedButton.setBorderPainted(true);
+        }
+    }
+
+    /**
+     * Update the border color of all NavigationBar instances.
+     * This method should be called whenever the theme changes.
+     */
+    public static void updateAllInstances() {
+        for (NavigationBar navigationBar : instances) {
+            navigationBar.updateButtonBorderColor();
         }
     }
 }
