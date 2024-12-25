@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * A CardTemplate is a JComponent that displays a card with a title, subtitle, and content.
- * The card has a modern border with rounded corners and a separator between the header and content.
+ * The card has a border with rounded corners and a separator between the header and content.
  * It is used to create a consistent look and feel for card-like components in the application.
  */
 public class CardTemplate extends JComponent {
