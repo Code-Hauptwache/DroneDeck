@@ -37,6 +37,8 @@ public class DroneDeck {
 
             //noinspection CallToPrintStackTrace
             e.printStackTrace();
+
+            // Test
         }
 
         // Create the frame
