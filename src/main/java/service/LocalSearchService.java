@@ -6,36 +6,16 @@ import main.java.api.dtos.DroneType;
 import main.java.api.exceptions.DroneApiException;
 import main.java.dao.LocalDroneDao;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class LocalSearchService {
+public interface LocalSearchService {
 
-    private final LocalDroneDao localDroneDao;
-    private final IDroneApiService droneApiService;
+    void initLocalData();
 
-    public LocalSearchService(LocalDroneDao localDroneDao, IDroneApiService droneApiService) {
-        this.localDroneDao = localDroneDao;
-        this.droneApiService = droneApiService;
-    }
+    List<Drone> getAllDrones();
 
-    public void initLocalData() {
-        ArrayList<Drone> drones = null;
-        try {
-            drones = droneApiService.getDrones();
-            System.out.println("drones.size() = " + drones.size());
-        } catch (DroneApiException e) {
-            throw new RuntimeException(e);
-        }
-        ArrayList<DroneType> droneTypes = null;
-        try {
-            droneTypes = droneApiService.getDroneTypes();
-            System.out.println("droneTypes.size() = " + droneTypes.size());
-        } catch (DroneApiException e) {
-            throw new RuntimeException(e);
-        }
+    List<DroneType> getAllDroneTypes();
 
-        localDroneDao.saveDroneData(drones);
-        localDroneDao.saveDroneTypeData(droneTypes);
-    }
+    List<Drone> findDroneByKeyword(String keyword);
 }
