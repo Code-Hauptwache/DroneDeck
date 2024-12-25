@@ -3,6 +3,10 @@ package main.java.ui.components;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * A search bar that allows the user to search for drones.
+ * The search bar is used in the NorthPanel.
+ */
 public class SearchBar extends JComponent {
     public SearchBar() {
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
