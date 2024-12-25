@@ -16,7 +16,7 @@ import java.awt.event.ComponentEvent;
  * The main panel is responsible for adjusting the padding of the content panel based on the width of the main panel.
  */
 public class MainPanel extends JPanel {
-    private final int maxContentWidth = 800;
+    private final int maxContentWidth = 1200;
     private final int minLeftRightPadding = 100;
     private final int topAndBottomMainPanelPadding = 10;
     private final int northBottomPadding = 10;
