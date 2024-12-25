@@ -1,4 +1,3 @@
-// NavigationBarTest.java
 package main.java.ui.components;
 
 import main.java.ui.MainPanel;
@@ -31,13 +30,14 @@ class NavigationBarTest {
         JButton catalogButton = (JButton) navigationBar.getComponent(0);
         JButton dashboardButton = (JButton) navigationBar.getComponent(1);
 
-        assertTrue(catalogButton.isBorderPainted());
-        assertFalse(dashboardButton.isBorderPainted());
-
-        dashboardButton.doClick();
-
+        // By default, the dashboard button should be selected
         assertFalse(catalogButton.isBorderPainted());
         assertTrue(dashboardButton.isBorderPainted());
+
+        // Click the catalog button and check the selection
+        catalogButton.doClick();
+        assertTrue(catalogButton.isBorderPainted());
+        assertFalse(dashboardButton.isBorderPainted());
     }
 
     @Test
@@ -46,9 +46,9 @@ class NavigationBarTest {
         JButton dashboardButton = (JButton) navigationBar.getComponent(1);
 
         dashboardButton.doClick();
-        assertEquals(MainPanel.PAGE_DASHBOARD, mainPanel.getCurrentPage());
+        assertEquals(MainPanel.Page.DASHBOARD, mainPanel.getCurrentPage());
 
         catalogButton.doClick();
-        assertEquals(MainPanel.PAGE_CATALOG, mainPanel.getCurrentPage());
+        assertEquals(MainPanel.Page.CATALOG, mainPanel.getCurrentPage());
     }
 }
