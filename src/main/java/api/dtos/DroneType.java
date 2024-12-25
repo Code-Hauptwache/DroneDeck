@@ -1,23 +1,40 @@
 package main.java.api.dtos;
 
+/**
+ * DroneType Data Transfer Object.
+ * The DroneType contains static about the DroneType.
+ */
 public class DroneType {
 
+    /// The Id of the DroneType
     public int id = 0;
 
+    /// The Manufacturer
     public String manufacturer = "";
 
+    /// The Typename
     public String typename = "";
 
+    /// The Weight of this DroneType
     public int weight = 0;
 
+    /// The Max Speed
     public int max_speed = 0;
 
+    /// Battery Capacity
     public int battery_capacity = 0;
 
+    /// Control Range
     public int control_range = 0;
 
+    /// The Max Carriage this Drone can Carry
     public int max_carriage = 0;
 
+
+    /**
+     * Pretty string Representation of this class's Data
+     * @return String Representation
+     */
     @Override
     public String toString() {
         return "DroneType{" +

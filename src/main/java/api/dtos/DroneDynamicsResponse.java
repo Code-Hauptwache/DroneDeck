@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class DroneDynamicsResponse {
 
     /**
-     * Number of results
+     * Number of total results available on the API
      */
     public int count = 0;
 
@@ -23,6 +23,7 @@ public class DroneDynamicsResponse {
      */
     public String previous = "";
 
+    /// The Results
     public ArrayList<DroneDynamics> results = new ArrayList<DroneDynamics>();
 
 }
