@@ -7,6 +7,11 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A CardTemplate is a JComponent that displays a card with a title, subtitle, and content.
+ * The card has a modern border with rounded corners and a separator between the header and content.
+ * It is used to create a consistent look and feel for card-like components in the application.
+ */
 public class CardTemplate extends JComponent {
     private static final List<CardTemplate> instances = new ArrayList<>();
     private final int cardHeight = 300;
@@ -16,8 +21,7 @@ public class CardTemplate extends JComponent {
     private final JSeparator separator;
 
     /**
-     * A CardTemplate is a JComponent that displays a card with a title, subtitle, and content.
-     * The card has a modern border with rounded corners and a separator between the header and content.
+     * Constructs a CardTemplate with the specified title, subtitle, and content.
      *
      * @param title    the title of the card
      * @param subtitle the subtitle of the card
