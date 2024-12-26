@@ -51,7 +51,7 @@ public class DroneDashboard extends JPanel {
         cardPanel.add(new DashboardDroneCard(fakeDTO), BorderLayout.WEST);
 
         // Create multiple CardTemplates for testing
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 19; i++) {
             JPanel testPanel = new JPanel(new FlowLayout());
             testPanel.add(new JButton("Card " + i + " Button"));
             testPanel.add(new JLabel("Card " + i + " Label"));
