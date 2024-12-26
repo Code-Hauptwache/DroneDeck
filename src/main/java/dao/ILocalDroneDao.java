@@ -17,6 +17,7 @@ public interface ILocalDroneDao {
 
     /**
      * Get cached drone data from file or heap memory
+     * Using Singleton List inside, call initLocalData() from LocalSearchService once before using this method.
      * @return List of all drone data
      */
     List<DroneEntity> loadDroneData();

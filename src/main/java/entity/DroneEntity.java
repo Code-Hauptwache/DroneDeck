@@ -2,6 +2,7 @@ package main.java.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 /**
  * Drone Entity
@@ -53,9 +54,15 @@ public class DroneEntity implements Serializable {
      * @return boolean value that this drone matches with condition
      */
     public boolean checkIfKeywordMatches(String keyword) {
-        return Integer.toString(this.id).contains(keyword)
-                || this.serialnumber.contains(keyword)
-                || this.dronetype.typename.contains(keyword);
+        if (keyword == null || keyword.isEmpty()) {
+            return true; // If empty value comes in, all the drones return.
+        }
+
+        Pattern pattern = Pattern.compile(Pattern.quote(keyword), Pattern.CASE_INSENSITIVE);
+
+        return pattern.matcher(this.serialnumber).find()
+                || pattern.matcher(this.dronetype.typename).find()
+                || pattern.matcher(this.dronetype.manufacturer).find();
     }
 
     /**

@@ -11,6 +11,7 @@ public interface ILocalSearchService {
 
     /**
      * Method that Initializes / Updates Local Drone Data for Caching
+     * Must be called once when program starts
      */
     void initLocalData();
 
