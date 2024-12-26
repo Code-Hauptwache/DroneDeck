@@ -2,23 +2,26 @@ package main.java.service;
 
 import main.java.api.DroneApiService;
 import main.java.api.IDroneApiService;
+import main.java.dao.ILocalDroneDao;
 import main.java.dao.LocalDroneDao;
-import main.java.dao.LocalDroneDaoImpl;
 import main.java.entity.DroneEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class LocalSearchServiceImplTest {
+/**
+ * Test Class for LocalSearchService
+ */
+public class LocalSearchServiceTest {
 
-    LocalSearchService localSearchService;
+    ILocalSearchService localSearchService;
 
     @BeforeEach
     void setUp() {
-        LocalDroneDao localDroneDao = new LocalDroneDaoImpl();
+        ILocalDroneDao localDroneDao = new LocalDroneDao();
         IDroneApiService droneApiService = new DroneApiService(System.getenv("DRONE_API_KEY"));
-        localSearchService = new LocalSearchServiceImpl(localDroneDao, droneApiService);
+        localSearchService = new LocalSearchService(localDroneDao, droneApiService);
 
         localSearchService.initLocalData();
     }
