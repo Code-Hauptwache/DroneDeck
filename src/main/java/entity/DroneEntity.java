@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Drone Data Transfer Object
+ * Drone Entity
  */
 public class DroneEntity implements Serializable {
 
@@ -14,8 +14,7 @@ public class DroneEntity implements Serializable {
     private int id = 0;
 
     /**
-     * This shouldn't be used in the Applikation directly.
-     * This is an Url to the DroneType assigned to the Drone.
+     * Linked Dronetype Entity
      */
     private DroneTypeEntity dronetype;
 
@@ -39,16 +38,30 @@ public class DroneEntity implements Serializable {
         this.carriage_type = carriage_type;
     }
 
+    /**
+     * Dronetype Setter for Lazy Initialization
+     * @param dronetype
+     */
     public void setDronetype(DroneTypeEntity dronetype) {
         this.dronetype = dronetype;
     }
 
+    /**
+     * check if this drone entity matches with keyword
+     * Especially for drone's id, serial number and type name.
+     * @param keyword for searching
+     * @return boolean value that this drone matches with condition
+     */
     public boolean checkIfKeywordMatches(String keyword) {
         return Integer.toString(this.id).contains(keyword)
                 || this.serialnumber.contains(keyword)
                 || this.dronetype.typename.contains(keyword);
     }
 
+    /**
+     * ToString Override method for Test
+     * @return All DroneEntity's field value String
+     */
     @Override
     public String toString() {
         return "DroneEntity{" +

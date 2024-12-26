@@ -35,7 +35,7 @@ public class LocalSearchServiceImplTest {
 
     @Test
     void searchDrones() {
-        List<DroneEntity> drones = localSearchService.findDroneByKeyword("Evo");
+        List<DroneEntity> drones = localSearchService.findDronesByKeyword("Evo");
 
         for (DroneEntity drone : drones) {
             System.out.println(drone);
@@ -43,7 +43,7 @@ public class LocalSearchServiceImplTest {
 
         // singleton start
         long start = System.currentTimeMillis();
-        List<DroneEntity> drones1 = localSearchService.findDroneByKeyword("Evo");
+        List<DroneEntity> drones1 = localSearchService.findDronesByKeyword("Evo");
         for (DroneEntity drone : drones1) {
             System.out.println(drone);
         }

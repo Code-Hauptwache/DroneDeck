@@ -23,6 +23,9 @@ public class LocalSearchServiceImpl implements LocalSearchService {
         this.droneApiService = droneApiService;
     }
 
+    /**
+     * Method that Initializes / Updates Local Drone Data for Caching
+     */
     public void initLocalData() {
         List<Drone> drones = null;
         List<DroneType> droneTypes = null;
@@ -51,11 +54,21 @@ public class LocalSearchServiceImpl implements LocalSearchService {
         localDroneDao.updateDroneData(droneEntityList);
     }
 
+    /**
+     * Get All Drones from local cached drone data
+     * @return All Drones
+     */
     public List<DroneEntity> getAllDrones() {
         return localDroneDao.loadDroneData();
     }
 
-    public List<DroneEntity> findDroneByKeyword(String keyword) {
+    /**
+     * Find Drones that matches with keyword
+     * Especially for drone's id, serial number and type name.
+     * @param keyword that user wants to find with
+     * @return Drones that matches with keyword
+     */
+    public List<DroneEntity> findDronesByKeyword(String keyword) {
         List<DroneEntity> drones = localDroneDao.loadDroneData();
 
         return drones.stream()

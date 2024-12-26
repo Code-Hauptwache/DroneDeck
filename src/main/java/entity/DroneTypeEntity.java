@@ -3,8 +3,7 @@ package main.java.entity;
 import java.io.Serializable;
 
 /**
- * DroneType Data Transfer Object.
- * The DroneType contains static about the DroneType.
+ * DroneType Entity
  */
 public class DroneTypeEntity implements Serializable {
 
@@ -43,6 +42,10 @@ public class DroneTypeEntity implements Serializable {
         this.max_carriage = max_carriage;
     }
 
+    /**
+     * ToString Override method for Test
+     * @return All DroneTypeEntity's field value String
+     */
     @Override
     public String toString() {
         return "DroneTypeEntity{" +

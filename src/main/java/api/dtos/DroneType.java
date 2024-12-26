@@ -53,6 +53,10 @@ public class DroneType {
                 '}';
     }
 
+    /**
+     * This method makes Dto to Entity
+     * @return new DroneTypeEntity
+     */
     public DroneTypeEntity toEntity() {
         return new DroneTypeEntity(id, manufacturer, typename, weight, max_speed, battery_capacity, control_range, max_carriage);
     }

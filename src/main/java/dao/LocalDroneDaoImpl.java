@@ -13,6 +13,10 @@ public class LocalDroneDaoImpl implements LocalDroneDao {
     private static final String DRONE_FILE_NAME = "drone_data.bin";
     private static List<DroneEntity> singletonList = new ArrayList<>();
 
+    /**
+     * Initialize or Update Drone Information
+     * @param drones from API
+     */
     public void updateDroneData(List<DroneEntity> drones) {
         saveDroneData(drones);
         getDroneDataFromFile();
@@ -26,6 +30,10 @@ public class LocalDroneDaoImpl implements LocalDroneDao {
         }
     }
 
+    /**
+     * Get cached drone data from file or heap memory
+     * @return List of all drone data
+     */
     public List<DroneEntity> loadDroneData() {
         if (singletonList.isEmpty()) {
             singletonList = getDroneDataFromFile();

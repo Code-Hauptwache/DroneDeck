@@ -66,6 +66,10 @@ public class Drone {
                 '}';
     }
 
+    /**
+     * This method makes Dto to Entity
+     * @return new DroneEntity
+     */
     public DroneEntity toEntity() {
         return new DroneEntity(id, created, serialnumber, carriage_weight, carriage_type);
     }
