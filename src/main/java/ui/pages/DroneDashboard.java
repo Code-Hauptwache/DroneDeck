@@ -25,8 +25,8 @@ public class DroneDashboard extends JPanel {
         // This is a placeholder in orange for the graphical components of the drone dashboard
         JLabel label = new JLabel("Graphical Components (TODO)", SwingConstants.CENTER);
         label.setForeground(Color.ORANGE);
-        // set height of the label to CardTemplate height + horizontal gap
         label.setPreferredSize(new Dimension(0, 300 + horizontalGap));
+        label.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.ORANGE));
         add(label, BorderLayout.NORTH);
 
         // Add CardTemplate instances to the center panel using GridLayout
