@@ -1,12 +1,14 @@
 package main.java.api.dtos;
 
+import main.java.entity.DroneEntity;
+
 import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Drone Data Transfer Object
  */
-public class Drone implements Serializable {
+public class Drone {
 
     /**
      * The Id of the Drone
@@ -62,5 +64,9 @@ public class Drone implements Serializable {
                 ", carriage_weight=" + carriage_weight +
                 ", carriage_type='" + carriage_type + '\'' +
                 '}';
+    }
+
+    public DroneEntity toEntity() {
+        return new DroneEntity(id, created, serialnumber, carriage_weight, carriage_type);
     }
 }

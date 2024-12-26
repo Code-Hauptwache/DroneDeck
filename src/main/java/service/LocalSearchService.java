@@ -5,6 +5,7 @@ import main.java.api.dtos.Drone;
 import main.java.api.dtos.DroneType;
 import main.java.api.exceptions.DroneApiException;
 import main.java.dao.LocalDroneDao;
+import main.java.entity.DroneEntity;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,9 +14,7 @@ public interface LocalSearchService {
 
     void initLocalData();
 
-    List<Drone> getAllDrones();
+    List<DroneEntity> getAllDrones();
 
-    List<DroneType> getAllDroneTypes();
-
-    List<Drone> findDroneByKeyword(String keyword);
+    List<DroneEntity> findDroneByKeyword(String keyword);
 }

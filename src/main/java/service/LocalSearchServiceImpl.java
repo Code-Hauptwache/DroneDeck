@@ -5,8 +5,12 @@ import main.java.api.dtos.Drone;
 import main.java.api.dtos.DroneType;
 import main.java.api.exceptions.DroneApiException;
 import main.java.dao.LocalDroneDao;
+import main.java.entity.DroneEntity;
+import main.java.entity.DroneTypeEntity;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class LocalSearchServiceImpl implements LocalSearchService {
@@ -29,25 +33,33 @@ public class LocalSearchServiceImpl implements LocalSearchService {
             throw new RuntimeException(e);
         }
 
-        localDroneDao.saveDroneData(drones);
-        localDroneDao.saveDroneTypeData(droneTypes);
+        List<DroneEntity> droneEntityList = new ArrayList<>();
+
+        for (Drone drone : drones) {
+            DroneEntity entity = drone.toEntity();
+            DroneTypeEntity droneTypeEntity = droneTypes.stream()
+                    .filter(droneType -> Objects.equals(droneType.id, drone.getDronetypeId()))
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException())
+                    .toEntity();
+
+            entity.setDronetype(droneTypeEntity);
+
+            droneEntityList.add(entity);
+        }
+
+        localDroneDao.updateDroneData(droneEntityList);
     }
 
-    public List<Drone> getAllDrones() {
+    public List<DroneEntity> getAllDrones() {
         return localDroneDao.loadDroneData();
     }
 
-    public List<DroneType> getAllDroneTypes() {
-        return localDroneDao.loadDroneTypeData();
-    }
+    public List<DroneEntity> findDroneByKeyword(String keyword) {
+        List<DroneEntity> drones = localDroneDao.loadDroneData();
 
-    public List<Drone> findDroneByKeyword(String keyword) {
-        List<Drone> drones = localDroneDao.loadDroneData();
-
-        return drones.stream().filter(drone ->
-                        Integer.toString(drone.id).contains(keyword)
-                                || drone.serialnumber.contains(keyword)
-                                || drone.dronetype.contains(keyword))
+        return drones.stream()
+                .filter(droneEntity -> droneEntity.checkIfKeywordMatches(keyword))
                 .collect(Collectors.toList());
     }
 }

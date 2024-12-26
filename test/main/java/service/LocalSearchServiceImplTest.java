@@ -2,10 +2,9 @@ package main.java.service;
 
 import main.java.api.DroneApiService;
 import main.java.api.IDroneApiService;
-import main.java.api.dtos.Drone;
-import main.java.api.dtos.DroneType;
 import main.java.dao.LocalDroneDao;
 import main.java.dao.LocalDroneDaoImpl;
+import main.java.entity.DroneEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,31 +25,30 @@ public class LocalSearchServiceImplTest {
 
     @Test
     void loadDrones() {
-        List<Drone> drones = localSearchService.getAllDrones();
-        List<DroneType> droneTypes = localSearchService.getAllDroneTypes();
+        List<DroneEntity> drones = localSearchService.getAllDrones();
 
-        for (Drone drone : drones) {
-            System.out.println("drone.serialnumber = " + drone.serialnumber);
-        }
-
-        for (DroneType droneType : droneTypes) {
-            System.out.println("droneType.typename = " + droneType.typename);
+        for (DroneEntity drone : drones) {
+            System.out.println("drone = " + drone);
         }
 
     }
 
     @Test
     void searchDrones() {
-        LocalDroneDao localDroneDao = new LocalDroneDaoImpl();
-        IDroneApiService droneApiService = new DroneApiService(System.getenv("DRONE_API_KEY"));
-        LocalSearchService localSearchService = new LocalSearchServiceImpl(localDroneDao, droneApiService);
+        List<DroneEntity> drones = localSearchService.findDroneByKeyword("Evo");
 
-        localSearchService.initLocalData();
-
-        List<Drone> drones = localSearchService.findDroneByKeyword("70");
-
-        for (Drone drone : drones) {
-            System.out.println("drone.droneType = " + drone.dronetype);
+        for (DroneEntity drone : drones) {
+            System.out.println(drone);
         }
+
+        // singleton start
+        long start = System.currentTimeMillis();
+        List<DroneEntity> drones1 = localSearchService.findDroneByKeyword("Evo");
+        for (DroneEntity drone : drones1) {
+            System.out.println(drone);
+        }
+        long end = System.currentTimeMillis();
+        System.out.println(end - start + "ms");
+
     }
 }
