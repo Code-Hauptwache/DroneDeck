@@ -29,7 +29,7 @@ public class DroneDeck {
 
         // Load Google Font
         try (InputStream is = DroneDeck.class.getResourceAsStream("/Lato-Bold.ttf")) {
-            Font font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(is)).deriveFont(14f);
+            Font font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(is)).deriveFont(16f);
             UIManager.put("defaultFont", font);
         }
         catch (Exception e) {

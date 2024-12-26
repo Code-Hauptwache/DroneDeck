@@ -1,11 +1,7 @@
 package main.java.ui.pages;
 
-import main.java.ui.components.CardTemplate;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 
 public class DroneCatalog extends JPanel {
     /**
