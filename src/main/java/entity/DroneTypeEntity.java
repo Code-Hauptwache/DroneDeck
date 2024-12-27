@@ -1,14 +1,11 @@
-package main.java.api.dtos;
-
-import main.java.entity.DroneTypeEntity;
+package main.java.entity;
 
 import java.io.Serializable;
 
 /**
- * DroneType Data Transfer Object.
- * The DroneType contains static about the DroneType.
+ * DroneType Entity
  */
-public class DroneType {
+public class DroneTypeEntity implements Serializable {
 
     /// The Id of the DroneType
     public int id = 0;
@@ -34,14 +31,24 @@ public class DroneType {
     /// The Max Carriage this Drone can Carry
     public int max_carriage = 0;
 
+    public DroneTypeEntity(int id, String manufacturer, String typename, int weight, int max_speed, int battery_capacity, int control_range, int max_carriage) {
+        this.id = id;
+        this.manufacturer = manufacturer;
+        this.typename = typename;
+        this.weight = weight;
+        this.max_speed = max_speed;
+        this.battery_capacity = battery_capacity;
+        this.control_range = control_range;
+        this.max_carriage = max_carriage;
+    }
 
     /**
-     * Pretty string Representation of this class's Data
-     * @return String Representation
+     * ToString Override method for Test
+     * @return All DroneTypeEntity's field value String
      */
     @Override
     public String toString() {
-        return "DroneType{" +
+        return "DroneTypeEntity{" +
                 "id=" + id +
                 ", manufacturer='" + manufacturer + '\'' +
                 ", typename='" + typename + '\'' +
@@ -51,13 +58,5 @@ public class DroneType {
                 ", control_range=" + control_range +
                 ", max_carriage=" + max_carriage +
                 '}';
-    }
-
-    /**
-     * This method makes Dto to Entity
-     * @return new DroneTypeEntity
-     */
-    public DroneTypeEntity toEntity() {
-        return new DroneTypeEntity(id, manufacturer, typename, weight, max_speed, battery_capacity, control_range, max_carriage);
     }
 }
