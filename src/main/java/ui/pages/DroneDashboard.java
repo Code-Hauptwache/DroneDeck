@@ -21,8 +21,8 @@ public class DroneDashboard extends JPanel {
         super(new BorderLayout());
 
         // Horizontal and vertical gaps for the GridLayout
-        int horizontalGap = 20;
-        int verticalGap = 20;
+        int horizontalGap = 30;
+        int verticalGap = 30;
 
         // This is a placeholder in orange for the graphical components of the drone dashboard
         JLabel label = new JLabel("Graphical Components (TODO)", SwingConstants.CENTER);
