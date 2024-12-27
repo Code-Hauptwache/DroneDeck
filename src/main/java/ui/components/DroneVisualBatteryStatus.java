@@ -1,8 +1,7 @@
 package main.java.ui.components;
 
 import main.java.ui.dtos.DashboardDroneCardDTO;
-import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
-import org.kordamp.ikonli.swing.FontIcon;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,14 +22,28 @@ public class DroneVisualBatteryStatus extends JPanel {
     public DroneVisualBatteryStatus(DashboardDroneCardDTO dto) {
         setLayout(new FlowLayout(FlowLayout.LEFT));
 
-        // Initialize the FontIcon
-        FontIcon batteryIcon = FontIcon.of(FontAwesomeSolid.BATTERY_EMPTY, 20, Color.ORANGE);
+        // Load the SVG icon
+        // Create the icon
+        FlatSVGIcon batteryIcon = new FlatSVGIcon("EmptyBatteryIcon.svg", (float) 0.7);
+
+        // Set a color filter to change the icon color to FlatLaf's default label color
+        batteryIcon.setColorFilter(new FlatSVGIcon.ColorFilter() {
+            @Override
+            public Color filter(Color color) {
+                return UIManager.getColor("Label.foreground");
+            }
+        });
 
         // Create a JLabel to hold the icon
         batteryIconLabel = new JLabel(batteryIcon);
 
-        // Initialize battery percentage text label
-        batteryPercentageLabel = new JLabel((int) dto.getBatteryPercentage() + "%");
+        // Create a JLabel to hold the battery percentage
+        batteryPercentageLabel = new JLabel(
+            dto.getStatus() != null &&
+            (dto.getStatus().equalsIgnoreCase("OF") || dto.getStatus().equalsIgnoreCase("IS"))
+            ? "N/A"
+            : (int) dto.getBatteryPercentage() + "%"
+        );
 
         // Add the icon and battery percentage label to the panel
         add(batteryIconLabel);
