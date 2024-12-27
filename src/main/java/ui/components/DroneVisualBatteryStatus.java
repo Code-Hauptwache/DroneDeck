@@ -40,7 +40,7 @@ public class DroneVisualBatteryStatus extends JPanel {
         // Create a JLabel to hold the battery percentage
         batteryPercentageLabel = new JLabel(
             dto.getStatus() != null &&
-            (dto.getStatus().equalsIgnoreCase("OF") || dto.getStatus().equalsIgnoreCase("IS"))
+            (dto.getStatus().equalsIgnoreCase("OF"))
             ? "N/A"
             : (int) dto.getBatteryPercentage() + "%"
         );
