@@ -1,5 +1,8 @@
 package main.java.api.dtos;
 
+import main.java.entity.DroneEntity;
+
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -61,5 +64,13 @@ public class Drone {
                 ", carriage_weight=" + carriage_weight +
                 ", carriage_type='" + carriage_type + '\'' +
                 '}';
+    }
+
+    /**
+     * This method makes Dto to Entity
+     * @return new DroneEntity
+     */
+    public DroneEntity toEntity() {
+        return new DroneEntity(id, created, serialnumber, carriage_weight, carriage_type);
     }
 }
