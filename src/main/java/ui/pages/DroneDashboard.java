@@ -38,10 +38,10 @@ public class DroneDashboard extends JPanel {
         DashboardDroneCardDTO fakeDTO = new DashboardDroneCardDTO(
                 "Drone 1",
                 "DJI",
-                "ON",
+                "OF",
                 354,
                 400,
-                10.0,
+                0.0,
                 0.0,
                 0.0,
                 "1234567890"
