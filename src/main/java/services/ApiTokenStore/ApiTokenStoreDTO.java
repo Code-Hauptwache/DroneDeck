@@ -2,7 +2,7 @@ package main.java.services.ApiTokenStore;
 
 import java.io.Serializable;
 
-public class ApiTokenStoreDto implements Serializable {
+public class ApiTokenStoreDTO implements Serializable {
 
     public String Salt;
 
