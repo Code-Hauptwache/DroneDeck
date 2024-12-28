@@ -1,7 +1,7 @@
 package main.java.services.LocalSearch;
 
-import main.java.dao.ILocalDroneDao;
-import main.java.dao.LocalDroneDao;
+import main.java.dao.ILocalDroneDAO;
+import main.java.dao.LocalDroneDAO;
 import main.java.entity.DroneEntity;
 import main.java.services.DroneApi.DroneApiService;
 import main.java.services.DroneApi.IDroneApiService;
@@ -18,7 +18,7 @@ class LocalSearchServiceTest {
 
     @BeforeEach
     void setUp() {
-        ILocalDroneDao localDroneDao = new LocalDroneDao();
+        ILocalDroneDAO localDroneDao = new LocalDroneDAO();
         IDroneApiService droneApiService = new DroneApiService(System.getenv("DRONE_API_KEY"));
         localSearchService = new LocalSearchService(localDroneDao, droneApiService);
 

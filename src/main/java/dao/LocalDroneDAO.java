@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Implemented Local Drone Saver/Loader Dao
  */
-public class LocalDroneDao implements ILocalDroneDao {
+public class LocalDroneDAO implements ILocalDroneDAO {
 
     private static final String DRONE_FILE_NAME = "drone_data.bin";
     private static List<DroneEntity> singletonList = new ArrayList<>();
