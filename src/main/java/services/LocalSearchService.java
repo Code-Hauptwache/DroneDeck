@@ -1,4 +1,4 @@
-package main.java.service;
+package main.java.services;
 
 import main.java.api.IDroneApiService;
 import main.java.api.dtos.Drone;
