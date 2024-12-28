@@ -4,7 +4,7 @@ import main.java.services.DroneApi.IDroneApiService;
 import main.java.services.DroneApi.dtos.Drone;
 import main.java.services.DroneApi.dtos.DroneType;
 import main.java.exceptions.DroneApiException;
-import main.java.dao.ILocalDroneDAO;
+import main.java.dao.ILocalDroneDao;
 import main.java.entity.DroneEntity;
 import main.java.entity.DroneTypeEntity;
 
@@ -18,10 +18,10 @@ import java.util.stream.Collectors;
  */
 public class LocalSearchService implements ILocalSearchService {
 
-    private final ILocalDroneDAO localDroneDao;
+    private final ILocalDroneDao localDroneDao;
     private final IDroneApiService droneApiService;
 
-    public LocalSearchService(ILocalDroneDAO localDroneDao, IDroneApiService droneApiService) {
+    public LocalSearchService(ILocalDroneDao localDroneDao, IDroneApiService droneApiService) {
         this.localDroneDao = localDroneDao;
         this.droneApiService = droneApiService;
     }

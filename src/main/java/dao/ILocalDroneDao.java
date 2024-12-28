@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Local Drone Saver/Loader Dao
  */
-public interface ILocalDroneDAO {
+public interface ILocalDroneDao {
 
     /**
      * Initialize or Update Drone Information
