@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.File;
 import java.io.IOException;
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public class ApiTokenStoreServiceTest {
 
     @Test
@@ -69,16 +70,14 @@ public class ApiTokenStoreServiceTest {
         }
 
         // Act & Assert
-        assertThrows(RuntimeException.class, () -> {
-            ApiTokenStoreService.getApiToken(invalidPassword);
-        });
+        assertThrows(RuntimeException.class, () -> ApiTokenStoreService.getApiToken(invalidPassword));
 
         // Cleanup
         new File("api_token.bin").delete();
     }
 
     @Test
-    void saveApiToken_savesTokenSuccessfully() throws IOException, ClassNotFoundException {
+    void saveApiToken_savesTokenSuccessfully() throws IOException {
         // Setup
         String password = "validPassword";
         String token = "testToken";
