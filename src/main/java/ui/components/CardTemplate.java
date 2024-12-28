@@ -15,7 +15,7 @@ import java.util.List;
 public class CardTemplate extends JComponent {
     private static final List<CardTemplate> instances = new ArrayList<>();
     private final int cardHeight = 275;
-    private final int cardWidth = 200;
+    private final int cardWidth = 225;
     private final JLabel titleLabel;
     private final JLabel subtitleLabel;
     private final JSeparator separator;
@@ -49,7 +49,7 @@ public class CardTemplate extends JComponent {
                 new Insets(15, 15, 15, 15),
                 UIManager.getColor("Component.borderColor"),
                 1,
-                30 // corner radius
+                40 // corner radius
         ));
 
         // --- Header Panel (Title + Subtitle) ---
