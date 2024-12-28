@@ -1,8 +1,8 @@
 package main.java.services.LocalSearch;
 
 import main.java.services.DroneApi.IDroneApiService;
-import main.java.services.DroneApi.DTOs.Drone;
-import main.java.services.DroneApi.DTOs.DroneType;
+import main.java.services.DroneApi.dtos.Drone;
+import main.java.services.DroneApi.dtos.DroneType;
 import main.java.exceptions.DroneApiException;
 import main.java.dao.ILocalDroneDao;
 import main.java.entity.DroneEntity;

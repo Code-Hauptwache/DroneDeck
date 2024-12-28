@@ -1,4 +1,4 @@
-package main.java.services.DroneApi.DTOs;
+package main.java.services.DroneApi.dtos;
 
 import main.java.entity.DroneTypeEntity;
 
