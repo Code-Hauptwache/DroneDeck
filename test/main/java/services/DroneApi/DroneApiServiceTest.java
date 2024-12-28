@@ -1,18 +1,18 @@
-package main.java.api;
+package main.java.services.DroneApi;
 
-import main.java.services.DroneApi.dtos.Drone;
-import main.java.services.DroneApi.dtos.DroneDynamics;
-import main.java.services.DroneApi.dtos.DroneType;
-import main.java.services.DroneApi.DroneApiService;
-import main.java.services.DroneApi.IDroneApiService;
+import main.java.services.DroneApi.DTOs.Drone;
+import main.java.services.DroneApi.DTOs.DroneDynamics;
+import main.java.services.DroneApi.DTOs.DroneType;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test Class for DroneApiService
+ */
 class DroneApiServiceTest {
-
     @Test
     void testDroneApiInterface() {
         IDroneApiService droneApiInterface = new DroneApiService(System.getenv("DRONE_API_KEY"));
@@ -53,4 +53,5 @@ class DroneApiServiceTest {
             fail("Exception occurred during test execution: " + ex.getMessage());
         }
     }
+
 }

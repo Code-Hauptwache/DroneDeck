@@ -1,8 +1,7 @@
-package main.java.services.DroneApi.dtos;
+package main.java.services.DroneApi.DTOs;
 
 import main.java.entity.DroneEntity;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**

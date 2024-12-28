@@ -1,8 +1,6 @@
-package main.java.services.DroneApi.dtos;
+package main.java.services.DroneApi.DTOs;
 
 import main.java.entity.DroneTypeEntity;
-
-import java.io.Serializable;
 
 /**
  * DroneType Data Transfer Object.

@@ -1,4 +1,4 @@
-package main.java.services.DroneApi.dtos;
+package main.java.services.DroneApi.DTOs;
 
 import java.util.ArrayList;
 
@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * DTO (Data Transfer Object) for Api Response
  * You probably shouldn't use this in your own code
  */
-public class DroneDynamicsResponse {
+public class DroneTypesResponse {
 
     /**
      * Number of total results available on the API
@@ -24,6 +24,6 @@ public class DroneDynamicsResponse {
     public String previous = "";
 
     /// The Results
-    public ArrayList<DroneDynamics> results = new ArrayList<DroneDynamics>();
+    public ArrayList<DroneType> results = new ArrayList<>();
 
 }

@@ -1,4 +1,4 @@
-package main.java.services.DroneApi.dtos;
+package main.java.services.DroneApi.DTOs;
 
 import java.util.Date;
 

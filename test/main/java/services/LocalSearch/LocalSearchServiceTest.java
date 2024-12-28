@@ -1,12 +1,10 @@
-package main.java.services;
+package main.java.services.LocalSearch;
 
-import main.java.services.DroneApi.DroneApiService;
-import main.java.services.DroneApi.IDroneApiService;
 import main.java.dao.ILocalDroneDao;
 import main.java.dao.LocalDroneDao;
 import main.java.entity.DroneEntity;
-import main.java.services.LocalSearch.ILocalSearchService;
-import main.java.services.LocalSearch.LocalSearchService;
+import main.java.services.DroneApi.DroneApiService;
+import main.java.services.DroneApi.IDroneApiService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,8 +13,7 @@ import java.util.List;
 /**
  * Test Class for LocalSearchService
  */
-public class LocalSearchServiceTest {
-
+class LocalSearchServiceTest {
     ILocalSearchService localSearchService;
 
     @BeforeEach
@@ -56,4 +53,5 @@ public class LocalSearchServiceTest {
         System.out.println(end - start + "ms");
 
     }
+
 }
