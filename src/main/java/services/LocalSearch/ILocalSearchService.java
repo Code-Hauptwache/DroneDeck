@@ -1,4 +1,4 @@
-package main.java.service;
+package main.java.services.LocalSearch;
 
 import main.java.entity.DroneEntity;
 

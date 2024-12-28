@@ -1,4 +1,4 @@
-package main.java.api.dtos;
+package main.java.services.DroneApi.dtos;
 
 import java.util.ArrayList;
 
