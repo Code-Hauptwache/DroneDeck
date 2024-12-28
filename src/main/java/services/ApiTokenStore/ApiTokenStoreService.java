@@ -45,8 +45,8 @@ public class ApiTokenStoreService {
 
             // Read and validate the object
             Object obj = ois.readObject();
-            if (!(obj instanceof ApiTokenStoreDTO apiTokenStoreDto)) {
-                throw new IllegalArgumentException("Invalid object type: Expected ApiTokenStoreDTO");
+            if (!(obj instanceof ApiTokenStoreDto apiTokenStoreDto)) {
+                throw new IllegalArgumentException("Invalid object type: Expected ApiTokenStoreDto");
             }
 
             // Process the token
@@ -78,7 +78,7 @@ public class ApiTokenStoreService {
             IvParameterSpec iv = generateIv();
 
             // Prepare DTO for serialization
-            ApiTokenStoreDTO apiTokenStoreDto = new ApiTokenStoreDTO();
+            ApiTokenStoreDto apiTokenStoreDto = new ApiTokenStoreDto();
             apiTokenStoreDto.Token = encrypt(token, key, iv);
             apiTokenStoreDto.IV = iv.getIV();
             apiTokenStoreDto.Salt = salt;

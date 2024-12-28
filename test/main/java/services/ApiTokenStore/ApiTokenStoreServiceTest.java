@@ -1,15 +1,16 @@
-package main.java.services;
+package main.java.services.ApiTokenStore;
 
-import main.java.services.ApiTokenStore.ApiTokenStoreService;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.io.IOException;
 
-@SuppressWarnings("ResultOfMethodCallIgnored")
-public class ApiTokenStoreServiceTest {
+import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test Class for ApiTokenStoreService
+ */
+class ApiTokenStoreServiceTest {
     @Test
     void IsTokenAvailable_returnsTrue_whenTokenFileExists() {
         // Setup
@@ -109,4 +110,5 @@ public class ApiTokenStoreServiceTest {
         // Cleanup
         new File("api_token.bin").delete();
     }
+
 }
