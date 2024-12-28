@@ -1,4 +1,4 @@
-package main.java.api.exceptions;
+package main.java.exceptions;
 
 /**
  * The one and only custom Exception ... with no further benefit ... as of now

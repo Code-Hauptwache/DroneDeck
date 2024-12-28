@@ -1,8 +1,10 @@
 package main.java.api;
 
-import main.java.api.dtos.Drone;
-import main.java.api.dtos.DroneDynamics;
-import main.java.api.dtos.DroneType;
+import main.java.services.DroneApi.dtos.Drone;
+import main.java.services.DroneApi.dtos.DroneDynamics;
+import main.java.services.DroneApi.dtos.DroneType;
+import main.java.services.DroneApi.DroneApiService;
+import main.java.services.DroneApi.IDroneApiService;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

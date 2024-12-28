@@ -1,10 +1,12 @@
 package main.java.services;
 
-import main.java.api.DroneApiService;
-import main.java.api.IDroneApiService;
+import main.java.services.DroneApi.DroneApiService;
+import main.java.services.DroneApi.IDroneApiService;
 import main.java.dao.ILocalDroneDao;
 import main.java.dao.LocalDroneDao;
 import main.java.entity.DroneEntity;
+import main.java.services.LocalSearch.ILocalSearchService;
+import main.java.services.LocalSearch.LocalSearchService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
