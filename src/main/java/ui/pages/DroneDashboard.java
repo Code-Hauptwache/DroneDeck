@@ -41,9 +41,9 @@ public class DroneDashboard extends JPanel {
                 "IS",
                 314,
                 400,
-                0.0,
-                0.0,
-                0.0,
+                50.0,
+                12.34,
+                56.78,
                 "1234567890"
         );
 
