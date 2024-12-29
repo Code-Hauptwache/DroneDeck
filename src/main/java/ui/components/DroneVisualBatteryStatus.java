@@ -1,6 +1,6 @@
 package main.java.ui.components;
 
-import main.java.ui.dtos.DashboardDroneCardDTO;
+import main.java.ui.dtos.DashboardDroneCardDto;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 import javax.swing.*;
@@ -19,7 +19,7 @@ public class DroneVisualBatteryStatus extends JPanel {
      *
      * @param dto The DTO containing the information to display.
      */
-    public DroneVisualBatteryStatus(DashboardDroneCardDTO dto) {
+    public DroneVisualBatteryStatus(DashboardDroneCardDto dto) {
         setLayout(new FlowLayout(FlowLayout.LEFT));
 
         // Load the SVG icon

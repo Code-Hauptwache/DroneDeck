@@ -2,7 +2,7 @@ package main.java.ui.pages;
 
 import main.java.ui.components.CardTemplate;
 import main.java.ui.components.DashboardDroneCard;
-import main.java.ui.dtos.DashboardDroneCardDTO;
+import main.java.ui.dtos.DashboardDroneCardDto;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,8 +34,8 @@ public class DroneDashboard extends JPanel {
         // Add CardTemplate instances to the center panel using GridLayout
         JPanel cardPanel = new JPanel(new GridLayout(0, 1, horizontalGap, verticalGap));
 
-        // Create a fake DashboardDroneCardDTO
-        DashboardDroneCardDTO fakeDTO = new DashboardDroneCardDTO(
+        // Create a fake DashboardDroneCardDto
+        DashboardDroneCardDto fakeDTO = new DashboardDroneCardDto(
                 "Drone 1",
                 "DJI",
                 "OF",

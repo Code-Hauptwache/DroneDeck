@@ -1,6 +1,6 @@
 package main.java.ui.components;
 
-import main.java.ui.dtos.DashboardDroneCardDTO;
+import main.java.ui.dtos.DashboardDroneCardDto;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.swing.FontIcon;
 
@@ -21,7 +21,7 @@ public class DroneStatus extends JPanel {
      *
      * @param dto The DTO containing the information to display.
      */
-    public DroneStatus(DashboardDroneCardDTO dto) {
+    public DroneStatus(DashboardDroneCardDto dto) {
         setLayout(new FlowLayout(FlowLayout.LEFT));
 
         // Initialize the FontIcon

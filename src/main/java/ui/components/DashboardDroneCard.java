@@ -1,6 +1,6 @@
 package main.java.ui.components;
 
-import main.java.ui.dtos.DashboardDroneCardDTO;
+import main.java.ui.dtos.DashboardDroneCardDto;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +16,7 @@ public class DashboardDroneCard extends JComponent {
      *
      * @param dto The DTO containing the information to display.
      */
-    public DashboardDroneCard(DashboardDroneCardDTO dto) {
+    public DashboardDroneCard(DashboardDroneCardDto dto) {
         setLayout(new BorderLayout());
 
         // Main content container with GridLayout

@@ -1,10 +1,10 @@
 package main.java.ui.dtos;
 
 /**
- * The DashboardDroneCardDTO class is a DTO that contains information about a drone.
+ * The DashboardDroneCardDto class is a DTO that contains information about a drone.
  * It is used to transfer information about a drone to the DashboardDroneCard component.
  */
-public class DashboardDroneCardDTO {
+public class DashboardDroneCardDto {
     private String typename;
     private String manufacture;
     private String status;
@@ -16,7 +16,7 @@ public class DashboardDroneCardDTO {
     private String serialNumber;
 
     /**
-     * Creates a new DashboardDroneCardDTO with the given information.
+     * Creates a new DashboardDroneCardDto with the given information.
      *
      * @param typename        The type name of the drone.
      * @param manufacture      The manufacturer of the drone.
@@ -28,7 +28,7 @@ public class DashboardDroneCardDTO {
      * @param latitude         The latitude of the drone.
      * @param serialNumber     The serial number of the drone.
      */
-    public DashboardDroneCardDTO(String typename, String manufacture, String status, int batteryStatus, int batteryCapacity, double speed, double longitude, double latitude, String serialNumber) {
+    public DashboardDroneCardDto(String typename, String manufacture, String status, int batteryStatus, int batteryCapacity, double speed, double longitude, double latitude, String serialNumber) {
         this.typename = typename;
         this.manufacture = manufacture;
         this.status = status;
