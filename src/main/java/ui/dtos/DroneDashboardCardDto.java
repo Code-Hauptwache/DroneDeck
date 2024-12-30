@@ -47,73 +47,36 @@ public class DroneDashboardCardDto {
         return typename;
     }
 
-    public void setTypename(String typename) {
-        this.typename = typename;
-    }
-
     public String getManufacture() {
         return manufacture;
-    }
-
-    public void setManufacture(String manufacture) {
-        this.manufacture = manufacture;
     }
 
     public String getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public int getBatteryStatus() {
         return batteryStatus;
-    }
-
-    public void setBatteryStatus(int batteryStatus) {
-        this.batteryStatus = batteryStatus;
     }
 
     public int getBatteryCapacity() {
         return batteryCapacity;
     }
 
-    public void setBatteryCapacity(int batteryCapacity) {
-        this.batteryCapacity = batteryCapacity;
-    }
-
     public double getSpeed() {
         return speed;
-    }
-
-    public void setSpeed(double speed) {
-        this.speed = speed;
     }
 
     public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
     public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-
     public String getSerialNumber() {
         return serialNumber;
-    }
-
-    public void setSerialNumber(String serialNumber) {
-        this.serialNumber = serialNumber;
     }
 
     public double getBatteryPercentage() {
@@ -124,11 +87,11 @@ public class DroneDashboardCardDto {
     }
 
     public Object getTravelDistance() {
-        IReverseGeocodeService reverseGeocodeService = new ReverseGeocodeService();
-        return reverseGeocodeService.getCityAndCountry(latitude, longitude);
+        return null; // TODO: Implement this
     }
 
     public String getLocation() {
-        return ""; // TODO: Get actual location
+        IReverseGeocodeService reverseGeocodeService = new ReverseGeocodeService();
+        return reverseGeocodeService.getCityAndCountry(latitude, longitude);
     }
 }

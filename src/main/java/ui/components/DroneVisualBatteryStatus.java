@@ -53,7 +53,8 @@ public class DroneVisualBatteryStatus extends JPanel {
     /**
      * Updates the battery percentage of the drone.
      *
-     * @param batteryPercentage The new battery percentage of the drone.
+     * @param g The Graphics object to paint the component.
+     *          This method is called by Swing to draw the component.
      */
     @Override
     protected void paintComponent(Graphics g) {
