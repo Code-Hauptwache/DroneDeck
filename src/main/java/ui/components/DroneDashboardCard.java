@@ -6,17 +6,17 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * The DashboardDroneCard class is a custom JComponent that represents a card
+ * The DroneDashboardCard class is a custom JComponent that represents a card
  * with information about a drone. It is used in the dashboard to display
  * information about a drone.
  */
-public class DashboardDroneCard extends JComponent {
+public class DroneDashboardCard extends JComponent {
     /**
-     * Creates a new DashboardDroneCard with the given DTO.
+     * Creates a new DroneDashboardCard with the given DTO.
      *
      * @param dto The DTO containing the information to display.
      */
-    public DashboardDroneCard(DashboardDroneCardDto dto) {
+    public DroneDashboardCard(DashboardDroneCardDto dto) {
         setLayout(new BorderLayout());
 
         // Main content container with GridLayout

@@ -5,7 +5,7 @@ import main.java.services.ReverseGeocode.ReverseGeocodeService;
 
 /**
  * The DashboardDroneCardDto class is a DTO that contains information about a drone.
- * It is used to transfer information about a drone to the DashboardDroneCard component.
+ * It is used to transfer information about a drone to the DroneDashboardCard component.
  */
 public class DashboardDroneCardDto {
     private String typename;

@@ -9,7 +9,7 @@ import java.awt.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DashboardDroneCardTest {
+class DroneDashboardCardTest {
 
     @Test
     void testDashboardDroneCardContent() {
@@ -26,8 +26,8 @@ class DashboardDroneCardTest {
                 "1234567890"
         );
 
-        // Create a DashboardDroneCard instance
-        DashboardDroneCard card = new DashboardDroneCard(dto);
+        // Create a DroneDashboardCard instance
+        DroneDashboardCard card = new DroneDashboardCard(dto);
 
         // Get the content container
         JPanel contentContainer = (JPanel) ((CardTemplate) card.getComponent(0)).getComponent(1);

@@ -1,7 +1,7 @@
 package main.java.ui.pages;
 
 import main.java.ui.components.CardTemplate;
-import main.java.ui.components.DashboardDroneCard;
+import main.java.ui.components.DroneDashboardCard;
 import main.java.ui.dtos.DashboardDroneCardDto;
 
 import javax.swing.*;
@@ -47,8 +47,8 @@ public class DroneDashboard extends JPanel {
                 "1234567890"
         );
 
-        // Add the fake DashboardDroneCard to the cardPanel
-        cardPanel.add(new DashboardDroneCard(fakeDTO), BorderLayout.WEST);
+        // Add the fake DroneDashboardCard to the cardPanel
+        cardPanel.add(new DroneDashboardCard(fakeDTO), BorderLayout.WEST);
 
         // Create multiple CardTemplates for testing
         for (int i = 1; i <= 19; i++) {
