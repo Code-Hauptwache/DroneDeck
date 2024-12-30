@@ -16,7 +16,7 @@ public class DroneDashboard extends JPanel {
     public DroneDashboard() {
         // TODO: Implement the Drone Dashboard
 
-        // *** THIS IS AN EXAMPLE OF HOW THE CardTemplate CAN BE USED ***
+        // *** THIS IS AN EXAMPLE OF HOW THE CardTemplate AND DroneDashboardCard CAN BE USED ***
         // Use BorderLayout for main arrangement
         super(new BorderLayout());
 
