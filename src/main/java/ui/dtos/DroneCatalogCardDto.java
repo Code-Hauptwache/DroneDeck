@@ -1,13 +1,13 @@
 package main.java.ui.dtos;
 
 public class DroneCatalogCardDto {
-    private String typename;
-    private String manufacturer;
-    private int weight;
-    private int max_speed;
-    private int battery_capacity;
-    private int control_range;
-    private int max_carriage;
+    private final String typename;
+    private final String manufacturer;
+    private final int weight;
+    private final int max_speed;
+    private final int battery_capacity;
+    private final int control_range;
+    private final int max_carriage;
 
     public DroneCatalogCardDto(String typename, String manufacturer, int weight, int max_speed, int battery_capacity, int control_range, int max_carriage) {
         this.typename = typename;
