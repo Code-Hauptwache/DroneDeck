@@ -8,15 +8,15 @@ import main.java.services.ReverseGeocode.ReverseGeocodeService;
  * It is used to transfer information about a drone to the DroneDashboardCard component.
  */
 public class DroneDashboardCardDto {
-    private String typename;
-    private String manufacture;
-    private String status;
-    private int batteryStatus;
-    private int batteryCapacity;
-    private double speed;
-    private double longitude;
-    private double latitude;
-    private String serialNumber;
+    private final String typename;
+    private final String manufacture;
+    private final String status;
+    private final int batteryStatus;
+    private final int batteryCapacity;
+    private final double speed;
+    private final double longitude;
+    private final double latitude;
+    private final String serialNumber;
 
     /**
      * Creates a new DroneDashboardCardDto with the given information.
@@ -55,24 +55,8 @@ public class DroneDashboardCardDto {
         return status;
     }
 
-    public int getBatteryStatus() {
-        return batteryStatus;
-    }
-
-    public int getBatteryCapacity() {
-        return batteryCapacity;
-    }
-
     public double getSpeed() {
         return speed;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public double getLatitude() {
-        return latitude;
     }
 
     public String getSerialNumber() {
