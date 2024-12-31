@@ -1,6 +1,8 @@
 package main.java.ui.pages;
 
 import main.java.ui.components.CardTemplate;
+import main.java.ui.components.DroneDashboardCard;
+import main.java.ui.dtos.DroneDashboardCardDto;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,19 +16,42 @@ public class DroneDashboard extends JPanel {
     public DroneDashboard() {
         // TODO: Implement the Drone Dashboard
 
-        // *** THIS IS AN EXAMPLE OF HOW THE CardTemplate CAN BE USED ***
+        // *** THIS IS AN EXAMPLE OF HOW THE CardTemplate AND DroneDashboardCard CAN BE USED ***
         // Use BorderLayout for main arrangement
         super(new BorderLayout());
 
         // Horizontal and vertical gaps for the GridLayout
-        int horizontalGap = 20;
-        int verticalGap = 20;
+        int horizontalGap = 30;
+        int verticalGap = 30;
+
+        // This is a placeholder in orange for the graphical components of the drone dashboard
+        JLabel label = new JLabel("Graphical Components (TODO)", SwingConstants.CENTER);
+        label.setForeground(Color.ORANGE);
+        label.setPreferredSize(new Dimension(0, 300 + horizontalGap));
+        label.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.ORANGE));
+        add(label, BorderLayout.NORTH);
 
         // Add CardTemplate instances to the center panel using GridLayout
         JPanel cardPanel = new JPanel(new GridLayout(0, 1, horizontalGap, verticalGap));
 
+        // Create a fake DroneDashboardCardDto
+        DroneDashboardCardDto fakeDTO = new DroneDashboardCardDto(
+                "Drone 1",
+                "DJI",
+                "IS",
+                314,
+                400,
+                50.0,
+                12.34,
+                56.78,
+                "1234567890"
+        );
+
+        // Add the fake DroneDashboardCard to the cardPanel
+        cardPanel.add(new DroneDashboardCard(fakeDTO), BorderLayout.WEST);
+
         // Create multiple CardTemplates for testing
-        for (int i = 1; i <= 20; i++) {
+        for (int i = 1; i <= 19; i++) {
             JPanel testPanel = new JPanel(new FlowLayout());
             testPanel.add(new JButton("Card " + i + " Button"));
             testPanel.add(new JLabel("Card " + i + " Label"));
