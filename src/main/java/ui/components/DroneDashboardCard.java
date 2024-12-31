@@ -29,7 +29,6 @@ public class DroneDashboardCard extends JComponent {
         // Main content container with GridLayout
         JPanel contentContainer = new JPanel(new GridLayout(5, 2, 0, 4));
 
-        // Add remaining standard label-value pairs
         Component[] leftContent = {
                 new DroneStatus(dto),
                 new JLabel("Speed"),
@@ -50,7 +49,6 @@ public class DroneDashboardCard extends JComponent {
                 new JLabel(dto.getSerialNumber())
         };
 
-        // Add remaining rows
         for (int i = 0; i < leftContent.length; i++) {
             contentContainer.add(leftContent[i]);
             contentContainer.add(rightContent[i]);
@@ -75,46 +73,28 @@ public class DroneDashboardCard extends JComponent {
     }
 
     private void showDetailOverlay() {
-        System.out.println("showDetailOverlay called");
-
-        // 1. Get the MainPanel (assuming we are ultimately inside a MainPanel).
+        // Find the MainPanel and the JLayeredPane
         MainPanel mainPanel = (MainPanel) SwingUtilities.getAncestorOfClass(MainPanel.class, this);
         if (mainPanel == null) {
-            System.out.println("MainPanel not found");
-            return;  // Failsafe if we somehow aren't in a MainPanel
-        }
-
-        // 2. Get the layered pane from the MainPanel
-        JLayeredPane layeredPane = mainPanel.getMainLayeredPane();
-        if (layeredPane == null) {
-            System.out.println("layeredPane not found");
             return;
         }
 
-        // 3. Create a semi-transparent overlay panel
+        // Add the overlay panel to the JLayeredPane
+        JLayeredPane layeredPane = mainPanel.getMainLayeredPane();
+
+        // Create the overlay panel
         JPanel overlayPanel = getOverlayPanel();
 
-        // 6. Add the overlay panel to the layeredPane at a higher layer
+        // Add the overlay panel to the layered pane
         layeredPane.add(overlayPanel, JLayeredPane.MODAL_LAYER);
         layeredPane.revalidate();
         layeredPane.repaint();
-
-        System.out.println("Overlay added to layeredPane");
     }
 
     private JPanel getOverlayPanel() {
-        JPanel overlayPanel = new JPanel(new BorderLayout()) {
-            @Override
-            public boolean isOpaque() {
-                return false;  // We want the background to be partially transparent
-            }
-        };
+        JPanel overlayPanel = new JPanel(new BorderLayout());
         overlayPanel.setBackground(new Color(0, 0, 0, 100)); // slight transparency
-
-        // 4. Create the DroneDetailedView with the dto
         DroneDetailedView detailView = new DroneDetailedView(dto, overlayPanel);
-
-        // 5. Add the detailView to the overlay
         overlayPanel.add(detailView, BorderLayout.CENTER);
         return overlayPanel;
     }
