@@ -11,9 +11,15 @@ import java.awt.event.ComponentEvent;
 
 /**
  * The main panel of the application.
- * This panel contains the north panel (navigation bar, search bar, and theme switcher),
- * the content panel (which displays the main content of the application), and the pagination controls.
- * The main panel is responsible for adjusting the padding of the content panel based on the width of the main panel.
+ * This panel contains:
+ *  - The north panel (navigation bar, search bar, and theme switcher).
+ *  - A JLayeredPane, which holds:
+ *       1. A "cardPanel" (using a CardLayout) for the main pages (catalog, dashboard).
+ *       2. An optional overlay panel (added dynamically above the main pages).
+ *  - Pagination controls (not shown in this example).
+ * <p>
+ * The main panel is also responsible for adjusting padding around the content,
+ * based on the total width of the application window.
  */
 public class MainPanel extends JPanel {
     private final int maxContentWidth = 1200;
@@ -26,9 +32,13 @@ public class MainPanel extends JPanel {
         CATALOG, DASHBOARD
     }
 
-    // Center panel that will hold the pages
-    private final JPanel centerPanel;
+    // A JLayeredPane allows us to place an "overlay" above other panels.
+    private final JLayeredPane layeredPane;
+
+    // The panel that displays your main pages via CardLayout
+    private final JPanel cardPanel;
     private final CardLayout cardLayout;
+
     private Page currentPage;
 
     public MainPanel() {
@@ -50,37 +60,51 @@ public class MainPanel extends JPanel {
             }
         });
 
-        // Create a CardLayout panel to hold the pages
+        // 1) Create a JLayeredPane to hold both your main content (cardPanel) and overlays
+        layeredPane = new JLayeredPane() {
+            @Override
+            public void doLayout() {
+                // Make sure every child in the layered pane fills its entire area
+                for (int i = 0; i < getComponentCount(); i++) {
+                    getComponent(i).setBounds(0, 0, getWidth(), getHeight());
+                }
+            }
+        };
+
+        // 2) Create the cardPanel (with CardLayout) that holds your main pages
         cardLayout = new CardLayout();
-        centerPanel = new JPanel(cardLayout);
+        cardPanel = new JPanel(cardLayout);
 
         // Instantiate the pages
         JPanel droneCatalogPanel = createCatalogPanel();
         JPanel droneDashboardPanel = createDashboardPanel();
 
-        // Add the pages to the center panel
-        centerPanel.add(droneCatalogPanel, Page.CATALOG.name());
-        centerPanel.add(droneDashboardPanel, Page.DASHBOARD.name());
+        // Add the pages to the cardPanel
+        cardPanel.add(droneCatalogPanel, Page.CATALOG.name());
+        cardPanel.add(droneDashboardPanel, Page.DASHBOARD.name());
 
-        // Add the north panel (with navigation, search, theme switcher) with bottom padding
+        // By default, show the DASHBOARD
+        showPage(Page.DASHBOARD);
+
+        // 3) Add the cardPanel to the layeredPane at the DEFAULT layer
+        layeredPane.add(cardPanel, JLayeredPane.DEFAULT_LAYER);
+
+        // 4) Add a north panel (header/navigation) with some padding below it
         JPanel northWrapper = new JPanel(new BorderLayout());
         northWrapper.setBorder(BorderFactory.createEmptyBorder(0, 0, northBottomPadding, 0));
         northWrapper.add(new NorthPanel(this), BorderLayout.CENTER);
         add(northWrapper, BorderLayout.NORTH);
 
-        // Add the center panel
-        add(centerPanel, BorderLayout.CENTER);
-
-        // Show the dashboard page by default
-        showPage(Page.DASHBOARD);
+        // 5) Add the layeredPane to the center of MainPanel
+        add(layeredPane, BorderLayout.CENTER);
     }
 
     /**
-     * Show one of the pages in the center panel.
+     * Show one of the pages in the cardPanel.
      * @param page The page to show (e.g., Page.CATALOG or Page.DASHBOARD)
      */
     public void showPage(Page page) {
-        cardLayout.show(centerPanel, page.name());
+        cardLayout.show(cardPanel, page.name());
         currentPage = page;
     }
 
@@ -106,6 +130,9 @@ public class MainPanel extends JPanel {
         return panel;
     }
 
+    /**
+     * Adjusts the padding around the main panel based on its width.
+     */
     private void adjustPadding() {
         int panelWidth = getWidth();
         int extraWidth = panelWidth - maxContentWidth;
@@ -122,5 +149,12 @@ public class MainPanel extends JPanel {
 
         revalidate();
         repaint();
+    }
+
+    /**
+     * Exposes the JLayeredPane so other components can add overlays above the main pages.
+     */
+    public JLayeredPane getMainLayeredPane() {
+        return layeredPane;
     }
 }
