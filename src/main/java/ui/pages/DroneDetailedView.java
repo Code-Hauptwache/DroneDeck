@@ -1,4 +1,9 @@
 package main.java.ui.pages;
 
-public class DroneDetailedView {
+import javax.swing.*;
+
+public class DroneDetailedView extends JPanel {
+    public DroneDetailedView() {
+        
+    }
 }
