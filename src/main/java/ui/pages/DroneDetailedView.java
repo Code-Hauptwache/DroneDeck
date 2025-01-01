@@ -88,7 +88,7 @@ public class DroneDetailedView extends JPanel {
 
         // Create an array of components for column 2
         Component[] Column2 = {
-                new InfoTooltip(dto.getDataTimestamp()),
+                new InfoTooltip("Data Timestamp: " + dto.getDataTimestamp()),
                 new JLabel((int) dto.getSpeed() + " km/h"),
                 new JLabel(dto.getLocation() != null ? dto.getLocation() + " km" : "N/A"),
                 new JLabel(
