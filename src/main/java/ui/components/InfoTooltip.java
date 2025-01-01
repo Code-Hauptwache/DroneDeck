@@ -7,10 +7,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class InfoTooltip extends JComponent {
-    private final FontIcon infoIcon;
 
     public InfoTooltip(String tooltipText) {
-        infoIcon = FontIcon.of(FontAwesomeSolid.INFO_CIRCLE, 16, UIManager.getColor("Label.foreground"));
+        FontIcon infoIcon = FontIcon.of(FontAwesomeSolid.INFO_CIRCLE, 16, UIManager.getColor("Label.foreground"));
         JLabel iconLabel = new JLabel(infoIcon);
         iconLabel.setToolTipText(tooltipText);
         setLayout(new BorderLayout());
