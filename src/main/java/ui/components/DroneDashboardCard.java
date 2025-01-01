@@ -1,7 +1,7 @@
 package main.java.ui.components;
 
 import main.java.ui.MainPanel;
-import main.java.ui.dtos.DroneDashboardCardDto;
+import main.java.ui.dtos.DroneDashboardDto;
 import main.java.ui.pages.DroneDetailedView;
 
 import javax.swing.*;
@@ -15,16 +15,16 @@ import java.awt.event.MouseEvent;
  * information about a drone.
  */
 public class DroneDashboardCard extends JComponent {
-    private final DroneDashboardCardDto dto;
+    private final DroneDashboardDto dto;
 
     /**
      * Creates a new DroneDashboardCard with the given DTO.
      *
      * @param dto The DTO containing the information to display.
      */
-    public DroneDashboardCard(DroneDashboardCardDto dto) {
-        this.dto = dto;
+    public DroneDashboardCard(DroneDashboardDto dto) {
         setLayout(new BorderLayout());
+        this.dto = dto;
 
         // Main content container with GridLayout
         JPanel contentContainer = new JPanel(new GridLayout(5, 2, 0, 4));

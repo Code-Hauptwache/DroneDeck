@@ -1,6 +1,6 @@
 package main.java.ui.pages;
 
-import main.java.ui.dtos.DroneDashboardCardDto;
+import main.java.ui.dtos.DroneDashboardDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +15,7 @@ class DroneDetailedViewTest {
 
     @BeforeEach
     void setUp() {
-        DroneDashboardCardDto dto = new DroneDashboardCardDto(
+        DroneDashboardDto dto = new DroneDashboardDto(
                 "Test Drone",
                 "Test Manufacturer",
                 "Active",
@@ -24,7 +24,15 @@ class DroneDetailedViewTest {
                 50.0,
                 10.0,
                 20.0,
-                "12345"
+                "12345",
+                52.0,
+                "SEN",
+                60.0,
+                "2024-12-15T17:00:52.588123+01:00",
+                732.0,
+                54.0,
+                250.0,
+                "2024-12-15T17:00:52.588123+01:00"
         );
 
         overlayPanel = new JPanel();
