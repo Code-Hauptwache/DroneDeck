@@ -95,8 +95,14 @@ public class DroneDashboardDto {
     }
 
     public String getCarriageType() {
-        return carriageType;
+    if ("SEN".equals(carriageType)) {
+        return "Sensor";
+    } else if ("ACT".equals(carriageType)) {
+        return "Actuator";
+    } else {
+        return "None";
     }
+}
 
     public double getMaxCarriageWeight() {
         return maxCarriageWeight;
