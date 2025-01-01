@@ -3,6 +3,8 @@ package main.java.ui.dtos;
 import main.java.services.ReverseGeocode.IReverseGeocodeService;
 import main.java.services.ReverseGeocode.ReverseGeocodeService;
 
+import java.util.List;
+
 /**
  * The DroneDashboardCardDto class is a DTO that contains information about a drone.
  * It is used to transfer information about a drone to the DroneDashboardCard component.
@@ -17,6 +19,7 @@ public class DroneDashboardCardDto {
     private final double longitude;
     private final double latitude;
     private final String serialNumber;
+    private List<Coordinate> historicalFlightDataList;
 
     /**
      * Creates a new DroneDashboardCardDto with the given information.
@@ -68,6 +71,10 @@ public class DroneDashboardCardDto {
             return 0;
         }
         return (double) batteryStatus / batteryCapacity * 100;
+    }
+
+    public void updateHistoricalFlightDataList(List<Coordinate> historicalFlightDataList) {
+        this.historicalFlightDataList = historicalFlightDataList;
     }
 
     public Object getTravelDistance() {
