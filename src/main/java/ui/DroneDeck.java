@@ -2,6 +2,8 @@ package main.java.ui;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.FlatLightLaf;
+import com.jthemedetecor.OsThemeDetector;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,7 +27,16 @@ public class DroneDeck {
     private static void createAndShowGUI() {
         // Set up FlatLaf look and feel
         FlatLaf.registerCustomDefaultsSource("main.java.ui.themes");
-        FlatDarkLaf.setup();
+
+        final OsThemeDetector detector = OsThemeDetector.getDetector();
+        final boolean isDarkThemeUsed = detector.isDark();
+        if (isDarkThemeUsed) {
+            //The OS uses a dark theme
+            FlatDarkLaf.setup();
+        } else {
+            //The OS uses a light theme
+            FlatLightLaf.setup();
+        }
 
         // Load Google Font
         try (InputStream is = DroneDeck.class.getResourceAsStream("/Lato-Bold.ttf")) {
