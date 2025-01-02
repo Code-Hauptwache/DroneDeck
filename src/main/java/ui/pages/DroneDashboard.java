@@ -44,7 +44,7 @@ public class DroneDashboard extends JPanel {
                 50.0,
                 12.34,
                 56.78,
-                "1234567890",
+                "SkSk-2027-E1C45D",
                 52.0,
                 "SEN",
                 60.0,
