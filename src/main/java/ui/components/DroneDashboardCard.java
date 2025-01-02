@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+
 /**
  * The DroneDashboardCard class is a custom JComponent that represents a card
  * with information about a drone. It is used in the dashboard to display
@@ -29,6 +30,7 @@ public class DroneDashboardCard extends JComponent {
         // Main content container with GridLayout
         JPanel contentContainer = new JPanel(new GridLayout(5, 2, 0, 4));
 
+        // Add remaining standard label-value pairs
         Component[] leftContent = {
                 new DroneStatus(dto),
                 new JLabel("Speed"),
@@ -41,11 +43,7 @@ public class DroneDashboardCard extends JComponent {
                 new DroneVisualBatteryStatus(dto),
                 new JLabel((int) dto.getSpeed() + " km/h"),
                 new JLabel(dto.getLocation() != null ? dto.getLocation() + " km" : "N/A"),
-                new JLabel(
-                        (dto.getTravelDistance() != null && !dto.getTravelDistance().toString().isEmpty())
-                                ? dto.getTravelDistance().toString()
-                                : "N/A"
-                ),
+                new JLabel(getTravelDistanceString(dto)),
                 new JLabel(dto.getSerialNumber())
         };
 
@@ -97,5 +95,11 @@ public class DroneDashboardCard extends JComponent {
         DroneDetailedView detailView = new DroneDetailedView(dto, overlayPanel);
         overlayPanel.add(detailView, BorderLayout.CENTER);
         return overlayPanel;
+    }
+
+    private String getTravelDistanceString(DroneDashboardCardDto dto) {
+        return (dto.getTravelDistance() != null && !dto.getTravelDistance().toString().isEmpty())
+                ? dto.getTravelDistance().toString()
+                : "N/A";
     }
 }

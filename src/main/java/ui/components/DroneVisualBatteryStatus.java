@@ -71,8 +71,13 @@ public class DroneVisualBatteryStatus extends JPanel {
         int width = bounds.width - 6;
         int height = bounds.height - 6;
 
-        // Calculate the filled battery level width
-        int filledWidth = (int) (width * (batteryPercentage / 100.0));
+        // Subtract width for the right-side terminal
+        int terminalWidth = 3;
+        int fillableWidth = width - terminalWidth;
+
+        // Compute fill width for 0-100% range
+        double percentage = batteryPercentage == 0 ? 0 : Math.min(Math.max(batteryPercentage, 10), 100) / 100.0;
+        int filledWidth = (int) (fillableWidth * percentage);
 
         // Set the color based on the battery percentage
         Color fillColor;
