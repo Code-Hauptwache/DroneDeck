@@ -97,7 +97,7 @@ public class DroneDashboardCard extends JComponent {
         return overlayPanel;
     }
 
-    private String getTravelDistanceString(DroneDashboardCardDto dto) {
+    private String getTravelDistanceString(DroneDashboardDto dto) {
         return (dto.getTravelDistance() != null && !dto.getTravelDistance().toString().isEmpty())
                 ? dto.getTravelDistance().toString()
                 : "N/A";
