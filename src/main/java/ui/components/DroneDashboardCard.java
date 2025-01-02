@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+
 /**
  * The DroneDashboardCard class is a custom JComponent that represents a card
  * with information about a drone. It is used in the dashboard to display
@@ -29,6 +30,7 @@ public class DroneDashboardCard extends JComponent {
         // Main content container with GridLayout
         JPanel contentContainer = new JPanel(new GridLayout(5, 2, 0, 4));
 
+        // Add remaining standard label-value pairs
         Component[] leftContent = {
                 new DroneStatus(dto),
                 new JLabel("Speed"),
