@@ -31,6 +31,7 @@ public class ButtonThemeSwitcher extends JComponent {
         button.setHorizontalAlignment(SwingConstants.CENTER);
         button.setVerticalAlignment(SwingConstants.CENTER);
         button.addActionListener(_ -> toggleTheme());
+        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)); // Set cursor to pointer when hovering
         setLayout(new BorderLayout());
         add(button, BorderLayout.CENTER);
     }

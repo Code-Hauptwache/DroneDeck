@@ -52,6 +52,9 @@ public class NavigationBar extends JComponent {
         // Set Button Dimensions
         button.setPreferredSize(new Dimension(50, 30));
 
+        // Set cursor to pointer when hovering
+        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
         // Listener to switch pages and mark the button as selected
         button.addActionListener(_ -> {
             mainPanel.showPage(page);
