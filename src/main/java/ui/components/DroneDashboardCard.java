@@ -54,8 +54,8 @@ public class DroneDashboardCard extends JComponent {
 
         // Create card with the content
         CardTemplate card = new CardTemplate(
-                dto.getTypename(),
-                dto.getManufacture(),
+                dto.getTypeName(),
+                dto.getManufacturer(),
                 contentContainer
         );
         card.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)); // Set cursor to pointer when hovering

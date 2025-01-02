@@ -39,8 +39,8 @@ public class DroneDetailedView extends JPanel {
         // Create "title pane" for name + manufacturer
         JPanel titlePane = new JPanel();
         titlePane.setLayout(new BoxLayout(titlePane, BoxLayout.Y_AXIS));
-        titlePane.add(buildTitleLabel(dto.getTypename()));
-        titlePane.add(buildSubtitleLabel(dto.getManufacture()));
+        titlePane.add(buildTitleLabel(dto.getTypeName()));
+        titlePane.add(buildSubtitleLabel(dto.getManufacturer()));
         topBar.add(titlePane);
 
         return topBar;
@@ -132,7 +132,7 @@ public class DroneDetailedView extends JPanel {
                 new JLabel(""), // empty row
                 new JLabel(dto.getWeight() + " kg"),
                 new JLabel(dto.getMaxSpeed() + " km/h"),
-                new JLabel(dto.getBatteryPercentage() + "%"),
+                new JLabel(dto.getBatteryCapacity() + " mAh"),
                 new JLabel(dto.getControlRange() + " km"),
                 new JLabel(dto.getMaxCarriageWeight() + " kg")
         };

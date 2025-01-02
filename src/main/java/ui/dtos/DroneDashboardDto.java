@@ -2,18 +2,20 @@ package main.java.ui.dtos;
 
 import main.java.services.ReverseGeocode.IReverseGeocodeService;
 import main.java.services.ReverseGeocode.ReverseGeocodeService;
+import main.java.ui.enums.CarriageType;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 /**
- * The DroneDashboardDto class is a DTO that contains information about a drone.
- * It is used to transfer information about a drone to the DroneDashboardCard component.
+ * DTO for drone-related information.
+ * Contains basic fields and light data conversion (e.g. formatting date/time).
  */
 public class DroneDashboardDto {
-    private final String typename;
-    private final String manufacture;
+
+    private final String typeName;
+    private final String manufacturer;
     private final String status;
     private final int batteryStatus;
     private final int batteryCapacity;
@@ -22,37 +24,42 @@ public class DroneDashboardDto {
     private final double latitude;
     private final String serialNumber;
     private final double carriageWeight;
-    private final String carriageType;
+    private final CarriageType carriageType;
     private final double maxCarriageWeight;
-    private final String lastSeen;
+    private final LocalDateTime lastSeenDateTime;
+    private final LocalDateTime dataTimestampDateTime;
     private final double weight;
     private final double maxSpeed;
     private final double controlRange;
-    private final String dataTimestamp;
+
+    // Format for display purposes:
+    private static final DateTimeFormatter DISPLAY_FORMAT =
+            DateTimeFormatter.ofPattern("MMMM dd, yyyy, hh:mm a", Locale.ENGLISH);
 
     /**
-     * Creates a new DroneDashboardDto with the given information.
-     *
-     * @param typename        The type name of the drone.
-     * @param manufacture      The manufacturer of the drone.
-     * @param status           The status of the drone.
-     * @param batteryStatus    The current battery status of the drone.
-     * @param batteryCapacity  The battery capacity of the drone.
-     * @param speed            The speed of the drone.
-     * @param longitude        The longitude of the drone.
-     * @param latitude         The latitude of the drone.
-     * @param serialNumber     The serial number of the drone.
-     * @param CarriageWeight   The carriage weight of the drone.
-     * @param CarriageType     The carriage type of the drone.
-     * @param MaxCarriageWeight The maximum carriage weight of the drone.
-     * @param LastSeen         The last seen time of the drone.
-     * @param Weight           The weight of the drone.
-     * @param MaxSpeed         The maximum speed of the drone.
-     * @param ControlRange     The control range of the drone.
+     * Main constructor. Note that we parse the ISO date/time strings up front.
      */
-    public DroneDashboardDto(String typename, String manufacture, String status, int batteryStatus, int batteryCapacity, double speed, double longitude, double latitude, String serialNumber, double CarriageWeight, String CarriageType, double MaxCarriageWeight, String LastSeen, double Weight, double MaxSpeed, double ControlRange, String dataTimestamp) {
-        this.typename = typename;
-        this.manufacture = manufacture;
+    public DroneDashboardDto(
+            String typeName,
+            String manufacturer,
+            String status,
+            int batteryStatus,
+            int batteryCapacity,
+            double speed,
+            double longitude,
+            double latitude,
+            String serialNumber,
+            double carriageWeight,
+            String carriageTypeCode,       // The raw string code (SEN, ACT, etc.)
+            double maxCarriageWeight,
+            String lastSeen,               // ISO date/time string
+            double weight,
+            double maxSpeed,
+            double controlRange,
+            String dataTimestamp           // ISO date/time string
+    ) {
+        this.typeName = typeName;
+        this.manufacturer = manufacturer;
         this.status = status;
         this.batteryStatus = batteryStatus;
         this.batteryCapacity = batteryCapacity;
@@ -60,26 +67,44 @@ public class DroneDashboardDto {
         this.longitude = longitude;
         this.latitude = latitude;
         this.serialNumber = serialNumber;
-        this.carriageWeight = CarriageWeight;
-        this.carriageType = CarriageType;
-        this.maxCarriageWeight = MaxCarriageWeight;
-        this.lastSeen = LastSeen;
-        this.weight = Weight;
-        this.maxSpeed = MaxSpeed;
-        this.controlRange = ControlRange;
-        this.dataTimestamp = dataTimestamp;
+        this.carriageWeight = carriageWeight;
+        // Convert string code to enum
+        this.carriageType = CarriageType.fromCode(carriageTypeCode);
+        this.maxCarriageWeight = maxCarriageWeight;
+        // Parse ISO date/time once
+        this.lastSeenDateTime = parseIsoDateTime(lastSeen);
+        this.dataTimestampDateTime = parseIsoDateTime(dataTimestamp);
+        this.weight = weight;
+        this.maxSpeed = maxSpeed;
+        this.controlRange = controlRange;
     }
 
-    public String getTypename() {
-        return typename;
+    // Helper method to parse ISO date/time
+    private LocalDateTime parseIsoDateTime(String isoDateTime) {
+        if (isoDateTime == null) {
+            return null;
+        }
+        return LocalDateTime.parse(isoDateTime, DateTimeFormatter.ISO_DATE_TIME);
     }
 
-    public String getManufacture() {
-        return manufacture;
+    // -------------------------
+    // Getters (with formatting)
+    // -------------------------
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public String getManufacturer() {
+        return manufacturer;
     }
 
     public String getStatus() {
         return status;
+    }
+
+    public int getBatteryCapacity() {
+        return batteryCapacity;
     }
 
     public double getSpeed() {
@@ -95,23 +120,19 @@ public class DroneDashboardDto {
     }
 
     public String getCarriageType() {
-    if ("SEN".equals(carriageType)) {
-        return "Sensor";
-    } else if ("ACT".equals(carriageType)) {
-        return "Actuator";
-    } else {
-        return "None";
+        // Return the user-friendly name from the enum
+        return carriageType.getDisplayName();
     }
-}
 
     public double getMaxCarriageWeight() {
         return maxCarriageWeight;
     }
 
     public String getLastSeen() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy, hh:mm a", Locale.ENGLISH);
-        LocalDateTime dateTime = LocalDateTime.parse(lastSeen, DateTimeFormatter.ISO_DATE_TIME);
-        return dateTime.format(formatter);
+        if (lastSeenDateTime == null) {
+            return "";
+        }
+        return lastSeenDateTime.format(DISPLAY_FORMAT);
     }
 
     public double getWeight() {
@@ -127,24 +148,33 @@ public class DroneDashboardDto {
     }
 
     public String getDataTimestamp() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy, hh:mm a", Locale.ENGLISH);
-        LocalDateTime dateTime = LocalDateTime.parse(dataTimestamp, DateTimeFormatter.ISO_DATE_TIME);
-        return dateTime.format(formatter);
-    }
-
-    public double getBatteryPercentage() {
-        if (batteryCapacity == 0) {
-            return 0;
+        if (dataTimestampDateTime == null) {
+            return "";
         }
-        return (double) batteryStatus / batteryCapacity * 100;
-    }
-
-    public Object getTravelDistance() {
-        return null; // TODO: Implement this
+        return dataTimestampDateTime.format(DISPLAY_FORMAT);
     }
 
     public String getLocation() {
         IReverseGeocodeService reverseGeocodeService = new ReverseGeocodeService();
         return reverseGeocodeService.getCityAndCountry(latitude, longitude);
+    }
+
+    /**
+     * Returns battery percentage in the range [0..100], or 0 if capacity is 0.
+     */
+    public double getBatteryPercentage() {
+        if (batteryCapacity <= 0) {
+            return 0;
+        }
+        // Ensure we don't exceed 100% in case batteryStatus > batteryCapacity
+        return Math.min(100.0, (double) batteryStatus / batteryCapacity * 100);
+    }
+
+    /**
+     * Placeholder method. Remove if unused or implement properly.
+     */
+    public Object getTravelDistance() {
+        // TODO: Implement or remove
+        return null;
     }
 }
