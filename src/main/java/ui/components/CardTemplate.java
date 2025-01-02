@@ -49,7 +49,7 @@ public class CardTemplate extends JComponent {
                 new Insets(15, 15, 15, 15),
                 UIManager.getColor("Component.borderColor"),
                 1,
-                30 // corner radius
+                40 // corner radius
         ));
 
         // --- Header Panel (Title + Subtitle) ---
