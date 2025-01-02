@@ -9,6 +9,8 @@ import org.kordamp.ikonli.swing.FontIcon;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class DroneDetailedView extends JPanel {
 
@@ -22,6 +24,16 @@ public class DroneDetailedView extends JPanel {
         JPanel wrapper = new JPanel(new BorderLayout());
         wrapper.add(buildCenterPanel(dto), BorderLayout.NORTH);
         add(wrapper, BorderLayout.CENTER);
+
+        // 3) Add listener to capture side mouse button (Button 4) to go back
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (e.getButton() == 4) {
+                    goBack(overlayPanel);
+                }
+            }
+        });
     }
 
     // =======================
@@ -106,7 +118,9 @@ public class DroneDetailedView extends JPanel {
                 new JLabel((int) dto.getSpeed() + " km/h"),
                 new JLabel(dto.getAverageSpeed() != null ? (int) dto.getAverageSpeed() + " km/h" : "N/A"),
                 new JLabel(dto.getLocation() != null ? dto.getLocation() : "N/A"),
-                new JLabel((dto.getTravelDistance() != null && !dto.getTravelDistance().toString().isEmpty()) ? dto.getTravelDistance().toString() + " m" : "N/A"),
+                new JLabel((dto.getTravelDistance() != null && !dto.getTravelDistance().toString().isEmpty())
+                        ? dto.getTravelDistance().toString() + " m"
+                        : "N/A"),
                 new JLabel(dto.getCarriageWeight() > 0 ? (int) dto.getCarriageWeight() + " g" : "N/A"),
                 new JLabel(dto.getCarriageType() != null ? dto.getCarriageType() : "N/A"),
                 new JLabel(dto.getLastSeen() != null ? dto.getLastSeen() : "N/A"),
@@ -175,14 +189,22 @@ public class DroneDetailedView extends JPanel {
         backButton.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
-                Container parent = overlayPanel.getParent();
-                if (parent != null) {
-                    parent.remove(overlayPanel);
-                    parent.revalidate();
-                    parent.repaint();
-                }
+                goBack(overlayPanel);
             }
         });
+    }
+
+    /**
+     * A small utility method that removes the overlayPanel from its parent,
+     * forcing the UI to update.
+     */
+    private static void goBack(JPanel overlayPanel) {
+        Container parent = overlayPanel.getParent();
+        if (parent != null) {
+            parent.remove(overlayPanel);
+            parent.revalidate();
+            parent.repaint();
+        }
     }
 
     /** Creates a JLabel with a disabled-foreground color and left alignment. */
