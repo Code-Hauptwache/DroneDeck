@@ -17,8 +17,8 @@ public class DroneDashboardDto {
     private final String typeName;
     private final String manufacturer;
     private final String status;
-    private final int batteryStatus;
-    private final int batteryCapacity;
+    private final double batteryStatus;
+    private final double batteryCapacity;
     private final double speed;
     private final double longitude;
     private final double latitude;
@@ -103,7 +103,7 @@ public class DroneDashboardDto {
         return status;
     }
 
-    public int getBatteryCapacity() {
+    public double getBatteryCapacity() {
         return batteryCapacity;
     }
 
@@ -175,6 +175,11 @@ public class DroneDashboardDto {
      */
     public Object getTravelDistance() {
         // TODO: Implement or remove
+        return null;
+    }
+
+    public Object getAverageSpeed() {
+        // Placeholder method. Remove if unused or implement properly.
         return null;
     }
 }
