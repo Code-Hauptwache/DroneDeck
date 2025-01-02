@@ -15,5 +15,6 @@
     <orderEntry type="library" name="kordamp.ikonli.swing" level="project" />
     <orderEntry type="library" name="kordamp.ikonli.fontawesome5.pack" level="project" />
     <orderEntry type="library" name="formdev.flatlaf.extras" level="project" />
+    <orderEntry type="library" name="openani.jsystemthemedetector.jSystemThemeDetector" level="project" />
   </component>
 </module>
