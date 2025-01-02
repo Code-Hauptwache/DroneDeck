@@ -43,11 +43,7 @@ public class DroneDashboardCard extends JComponent {
                 new DroneVisualBatteryStatus(dto),
                 new JLabel((int) dto.getSpeed() + " km/h"),
                 new JLabel(dto.getLocation() != null ? dto.getLocation() + " km" : "N/A"),
-                new JLabel(
-                        (dto.getTravelDistance() != null && !dto.getTravelDistance().toString().isEmpty())
-                                ? dto.getTravelDistance().toString()
-                                : "N/A"
-                ),
+                new JLabel(getTravelDistanceString(dto)),
                 new JLabel(dto.getSerialNumber())
         };
 
@@ -99,5 +95,11 @@ public class DroneDashboardCard extends JComponent {
         DroneDetailedView detailView = new DroneDetailedView(dto, overlayPanel);
         overlayPanel.add(detailView, BorderLayout.CENTER);
         return overlayPanel;
+    }
+
+    private String getTravelDistanceString(DroneDashboardCardDto dto) {
+        return (dto.getTravelDistance() != null && !dto.getTravelDistance().toString().isEmpty())
+                ? dto.getTravelDistance().toString()
+                : "N/A";
     }
 }
