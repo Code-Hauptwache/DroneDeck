@@ -1,9 +1,9 @@
-package main.java.api;
+package main.java.services.DroneApi;
 
-import main.java.api.dtos.Drone;
-import main.java.api.dtos.DroneDynamics;
-import main.java.api.dtos.DroneType;
-import main.java.api.exceptions.DroneApiException;
+import main.java.services.DroneApi.dtos.Drone;
+import main.java.services.DroneApi.dtos.DroneDynamics;
+import main.java.services.DroneApi.dtos.DroneType;
+import main.java.exceptions.DroneApiException;
 
 import java.util.ArrayList;
 

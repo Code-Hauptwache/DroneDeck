@@ -1,4 +1,6 @@
-package main.java.api.dtos;
+package main.java.services.DroneApi.dtos;
+
+import main.java.entity.DroneTypeEntity;
 
 /**
  * DroneType Data Transfer Object.
@@ -47,5 +49,13 @@ public class DroneType {
                 ", control_range=" + control_range +
                 ", max_carriage=" + max_carriage +
                 '}';
+    }
+
+    /**
+     * This method makes Dto to Entity
+     * @return new DroneTypeEntity
+     */
+    public DroneTypeEntity toEntity() {
+        return new DroneTypeEntity(id, manufacturer, typename, weight, max_speed, battery_capacity, control_range, max_carriage);
     }
 }
