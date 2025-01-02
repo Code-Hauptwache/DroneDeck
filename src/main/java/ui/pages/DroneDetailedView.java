@@ -77,7 +77,7 @@ public class DroneDetailedView extends JPanel {
         // Main container
         JPanel centerPanel = new JPanel(new GridBagLayout());
         GridBagLayout layout = (GridBagLayout) centerPanel.getLayout();
-        layout.columnWeights = new double[]{2.0, 1.0, 1.0, 1.0};
+        layout.columnWeights = new double[]{1.0, 2.0, 1.0, 2.0};
 
         // Common constraints
         GridBagConstraints gbc = new GridBagConstraints();
