@@ -89,6 +89,7 @@ public class DroneDetailedView extends JPanel {
         // 1) Column 1 (indexes for rows: 0..7)
         Component[] column1 = {
                 buildStatusPanel(dto),
+                createDisabledLabel("Speed"),
                 createDisabledLabel("Average Speed"),
                 createDisabledLabel("Location"),
                 createDisabledLabel("Traveled"),
@@ -103,13 +104,10 @@ public class DroneDetailedView extends JPanel {
         Component[] column2 = {
                 new InfoTooltip("Data Timestamp: " + dto.getDataTimestamp()),
                 new JLabel((int) dto.getSpeed() + " km/h"),
-                new JLabel(dto.getLocation() != null ? dto.getLocation() + " km" : "N/A"),
-                new JLabel(
-                        (dto.getTravelDistance() != null && !dto.getTravelDistance().toString().isEmpty())
-                                ? dto.getTravelDistance().toString()
-                                : "N/A"
-                ),
-                new JLabel(dto.getCarriageWeight() > 0 ? dto.getCarriageWeight() + " kg" : "N/A"),
+                new JLabel(dto.getAverageSpeed() != null ? (int) dto.getAverageSpeed() + " km/h" : "N/A"),
+                new JLabel(dto.getLocation() != null ? dto.getLocation() : "N/A"),
+                new JLabel((dto.getTravelDistance() != null && !dto.getTravelDistance().toString().isEmpty()) ? dto.getTravelDistance().toString() + " m" : "N/A"),
+                new JLabel(dto.getCarriageWeight() > 0 ? (int) dto.getCarriageWeight() + " g" : "N/A"),
                 new JLabel(dto.getCarriageType() != null ? dto.getCarriageType() : "N/A"),
                 new JLabel(dto.getLastSeen() != null ? dto.getLastSeen() : "N/A"),
                 new JLabel(dto.getSerialNumber())
@@ -130,11 +128,11 @@ public class DroneDetailedView extends JPanel {
         // 4) Column 4
         Component[] column4 = {
                 new JLabel(""), // empty row
-                new JLabel(dto.getWeight() + " kg"),
-                new JLabel(dto.getMaxSpeed() + " km/h"),
-                new JLabel(dto.getBatteryCapacity() + " mAh"),
-                new JLabel(dto.getControlRange() + " km"),
-                new JLabel(dto.getMaxCarriageWeight() + " kg")
+                new JLabel((int) dto.getWeight() + " g"),
+                new JLabel((int) dto.getMaxSpeed() + " km/h"),
+                new JLabel((int) dto.getBatteryCapacity() + " mAh"),
+                new JLabel((int) dto.getControlRange() + " m"),
+                new JLabel((int) dto.getMaxCarriageWeight() + " g")
         };
         addColumn(centerPanel, column4, 3, gbc);
 
@@ -172,6 +170,7 @@ public class DroneDetailedView extends JPanel {
     //   Generic Helpers
     // =======================
 
+    /** Adds a listener to the back button that removes the overlay panel. */
     private static void addBackButtonListener(JLabel backButton, JPanel overlayPanel) {
         backButton.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
