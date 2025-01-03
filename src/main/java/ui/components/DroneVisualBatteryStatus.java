@@ -38,12 +38,16 @@ public class DroneVisualBatteryStatus extends JPanel {
         // Set the battery percentage
         isPercentageAvailable = dto.getStatus() == null || !dto.getStatus().equalsIgnoreCase("OF");
         batteryPercentage = isPercentageAvailable ? (int) dto.getBatteryPercentage() : 0;
-        setPreferredSize(new Dimension(batteryIcon.getIconWidth(), batteryIcon.getIconHeight()));
 
         // Create a JLabel to display the percentage
         JLabel batteryPercentageLabel = new JLabel(
                 isPercentageAvailable ? batteryPercentage + "%" : "N/A"
         );
+
+        // Set the preferred size to ensure the text stays on the same line
+        int width = batteryIcon.getIconWidth() + batteryPercentageLabel.getPreferredSize().width + 10;
+        int height = Math.max(batteryIcon.getIconHeight(), batteryPercentageLabel.getPreferredSize().height);
+        setPreferredSize(new Dimension(width, height));
 
         // Add components to the main panel
         add(iconLabel);
