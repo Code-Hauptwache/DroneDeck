@@ -11,21 +11,37 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 
+/**
+ * The DroneDetailedView class is a JPanel that displays detailed information about a drone.
+ */
 public class DroneDetailedView extends JPanel {
 
+    /**
+     * Creates a new DroneDetailedView instance.
+     *
+     * @param dto          the DroneDashboardDto containing the drone data
+     * @param overlayPanel the overlay panel to remove when going back
+     */
     public DroneDetailedView(DroneDashboardDto dto, JPanel overlayPanel) {
         super(new BorderLayout());
 
-        // 1) Build & add top bar
+        // Build and add the top bar
         add(buildTopBar(dto, overlayPanel), BorderLayout.NORTH);
 
-        // 2) Build center panel (wrapped so it hugs top)
+        // Build the center panel and graph panel within the wrapper
         JPanel wrapper = new JPanel(new BorderLayout());
         wrapper.add(buildCenterPanel(dto), BorderLayout.NORTH);
+        JPanel graphWrapper = new JPanel(new BorderLayout());
+        graphWrapper.add(buildGraphPanel(dto), BorderLayout.NORTH);
+        wrapper.add(buildCenterPanel(dto), BorderLayout.NORTH);
+        wrapper.add(graphWrapper, BorderLayout.CENTER);
+
+        // Add the wrapper to the center of the main layout
         add(wrapper, BorderLayout.CENTER);
 
-        // 3) Add listener to capture side mouse button (Button 4) to go back
+        // Add a listener to capture side mouse button (Button 4) to go back
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -43,42 +59,41 @@ public class DroneDetailedView extends JPanel {
     private JPanel buildTopBar(DroneDashboardDto dto, JPanel overlayPanel) {
         JPanel topBar = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-        // Create "Back" button
-        JLabel backButton = buildBackButton(overlayPanel);
-        topBar.add(backButton);
-        topBar.add(Box.createHorizontalStrut(20)); // small space
+        topBar.add(buildBackButton(overlayPanel)); // Back button
+        topBar.add(Box.createHorizontalStrut(20)); // Spacer
 
-        // Create "title pane" for name + manufacturer
+        // Title pane with name and manufacturer
         JPanel titlePane = new JPanel();
         titlePane.setLayout(new BoxLayout(titlePane, BoxLayout.Y_AXIS));
-        titlePane.add(buildTitleLabel(dto.getTypeName()));
-        titlePane.add(buildSubtitleLabel(dto.getManufacturer()));
+        titlePane.add(createLabel(dto.getTypeName()));
+        titlePane.add(createLabel(dto.getManufacturer(), "medium", UIManager.getColor("Label.disabledForeground")));
         topBar.add(titlePane);
 
         return topBar;
     }
 
     private JLabel buildBackButton(JPanel overlayPanel) {
-        FontIcon backIcon = FontIcon.of(FontAwesomeSolid.CHEVRON_LEFT, 20, UIManager.getColor("Label.foreground"));
-        JLabel backButton = new JLabel(backIcon);
+        JLabel backButton = new JLabel(FontIcon.of(FontAwesomeSolid.CHEVRON_LEFT, 20, UIManager.getColor("Label.foreground")));
         backButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        addBackButtonListener(backButton, overlayPanel);
+        backButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                goBack(overlayPanel);
+            }
+        });
         return backButton;
     }
 
-    private JLabel buildTitleLabel(String text) {
-        JLabel title = new JLabel(text);
-        title.putClientProperty("FlatLaf.styleClass", "h2");
-        title.setHorizontalAlignment(SwingConstants.LEFT);
-        return title;
+    private JLabel createLabel(String text) {
+        return createLabel(text, "h2", UIManager.getColor("Label.foreground"));
     }
 
-    private JLabel buildSubtitleLabel(String text) {
-        JLabel subtitle = new JLabel(text);
-        subtitle.putClientProperty("FlatLaf.styleClass", "medium");
-        subtitle.setForeground(UIManager.getColor("Label.disabledForeground"));
-        subtitle.setHorizontalAlignment(SwingConstants.LEFT);
-        return subtitle;
+    private JLabel createLabel(String text, String styleClass, Color color) {
+        JLabel label = new JLabel(text);
+        label.putClientProperty("FlatLaf.styleClass", styleClass);
+        label.setForeground(color);
+        label.setHorizontalAlignment(SwingConstants.LEFT);
+        return label;
     }
 
     // =======================
@@ -86,118 +101,116 @@ public class DroneDetailedView extends JPanel {
     // =======================
 
     private JPanel buildCenterPanel(DroneDashboardDto dto) {
-        // Main container
-        JPanel centerPanel = new JPanel(new GridBagLayout());
-        GridBagLayout layout = (GridBagLayout) centerPanel.getLayout();
-        layout.columnWeights = new double[]{1.0, 2.0, 1.0, 2.0};
+        JPanel wrapper = new JPanel(new BorderLayout());
+        wrapper.add(buildStatusPanel(dto), BorderLayout.NORTH);
 
-        // Common constraints
+        JPanel centerPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = createDefaultGridBagConstraints();
+
+        // Populate columns with data
+        addColumn(centerPanel, createColumnLabels(new String[]{"Speed", "Average Speed", "Location", "Traveled", "Carriage Weight", "Carriage Type", "Last Seen", "Serial Number"}), 0, gbc);
+        addColumn(centerPanel, createColumnData(dto), 1, gbc);
+        addColumn(centerPanel, createColumnLabels(new String[]{"Weight", "Top Speed", "Battery Capacity", "Control Range", "Max Carriage"}), 2, gbc);
+        addColumn(centerPanel, createAdditionalData(dto), 3, gbc);
+
+        wrapper.add(centerPanel, BorderLayout.CENTER);
+        return wrapper;
+    }
+
+    private GridBagConstraints createDefaultGridBagConstraints() {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
+        return gbc;
+    }
 
-        // 1) Column 1 (indexes for rows: 0..7)
-        Component[] column1 = {
-                buildStatusPanel(dto),
-                createDisabledLabel("Speed"),
-                createDisabledLabel("Average Speed"),
-                createDisabledLabel("Location"),
-                createDisabledLabel("Traveled"),
-                createDisabledLabel("Carriage Weight"),
-                createDisabledLabel("Carriage Type"),
-                createDisabledLabel("Last Seen"),
-                createDisabledLabel("Serial Number")
-        };
-        addColumn(centerPanel, column1, 0, gbc);
+    private Component[] createColumnLabels(String[] labels) {
+        return Arrays.stream(labels)
+                .map(this::createDisabledLabel)
+                .toArray(Component[]::new);
+    }
 
-        // 2) Column 2
-        Component[] column2 = {
-                new InfoTooltip("Data Timestamp: " + dto.getDataTimestamp()),
+    private Component[] createColumnData(DroneDashboardDto dto) {
+        return new Component[]{
                 new JLabel((int) dto.getSpeed() + " km/h"),
                 new JLabel(dto.getAverageSpeed() != null ? (int) dto.getAverageSpeed() + " km/h" : "N/A"),
                 new JLabel(dto.getLocation() != null ? dto.getLocation() : "N/A"),
-                new JLabel((dto.getTravelDistance() != null && !dto.getTravelDistance().toString().isEmpty())
-                        ? dto.getTravelDistance().toString() + " m"
-                        : "N/A"),
+                new JLabel(dto.getTravelDistance() != null ? dto.getTravelDistance() + " m" : "N/A"),
                 new JLabel(dto.getCarriageWeight() > 0 ? (int) dto.getCarriageWeight() + " g" : "N/A"),
                 new JLabel(dto.getCarriageType() != null ? dto.getCarriageType() : "N/A"),
                 new JLabel(dto.getLastSeen() != null ? dto.getLastSeen() : "N/A"),
                 new JLabel(dto.getSerialNumber())
         };
-        addColumn(centerPanel, column2, 1, gbc);
+    }
 
-        // 3) Column 3
-        Component[] column3 = {
-                new JLabel(""), // empty row to align with Column 2's tooltip
-                createDisabledLabel("Weight"),
-                createDisabledLabel("Top Speed"),
-                createDisabledLabel("Battery Capacity"),
-                createDisabledLabel("Control Range"),
-                createDisabledLabel("Max Carriage")
-        };
-        addColumn(centerPanel, column3, 2, gbc);
-
-        // 4) Column 4
-        Component[] column4 = {
-                new JLabel(""), // empty row
+    private Component[] createAdditionalData(DroneDashboardDto dto) {
+        return new Component[]{
                 new JLabel((int) dto.getWeight() + " g"),
                 new JLabel((int) dto.getMaxSpeed() + " km/h"),
                 new JLabel((int) dto.getBatteryCapacity() + " mAh"),
                 new JLabel((int) dto.getControlRange() + " m"),
                 new JLabel((int) dto.getMaxCarriageWeight() + " g")
         };
-        addColumn(centerPanel, column4, 3, gbc);
-
-        return centerPanel;
     }
 
-    /** Helper: adds the given array of components as rows in a single column. */
+    private JLabel createDisabledLabel(String text) {
+        return createLabel(text, "medium", UIManager.getColor("Label.disabledForeground"));
+    }
+
     private void addColumn(JPanel panel, Component[] components, int columnIndex, GridBagConstraints gbc) {
         for (int row = 0; row < components.length; row++) {
             gbc.gridx = columnIndex;
             gbc.gridy = row;
-            // If it’s the first row in this column, and you want special alignment:
-            if (row == 0 && columnIndex == 1) {
-                gbc.anchor = GridBagConstraints.EAST; // align the tooltip to the right
-            } else {
-                gbc.anchor = GridBagConstraints.WEST;
-            }
             panel.add(components[row], gbc);
         }
     }
+
+    // =======================
+    //   Bottom Graph Panel
+    // =======================
+
+    private JPanel buildGraphPanel(DroneDashboardDto dto) {
+        JPanel graphPanel = new JPanel(new BorderLayout());
+        graphPanel.setPreferredSize(new Dimension(0, 330));
+        JLabel placeholder = new JLabel("Graphical Components (TODO)", SwingConstants.CENTER);
+        placeholder.setForeground(Color.ORANGE);
+        placeholder.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.ORANGE));
+        graphPanel.add(placeholder);
+        return graphPanel;
+    }
+
+    // =======================
+    //   Status Panel
+    // =======================
 
     private JPanel buildStatusPanel(DroneDashboardDto dto) {
         JPanel statusPanel = new JPanel();
         statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
 
-        // Add "drone status" + horizontal gap + "battery"
-        statusPanel.add(new DroneStatus(dto));
-        statusPanel.add(Box.createRigidArea(new Dimension(20, 0)));
-        statusPanel.add(new DroneVisualBatteryStatus(dto));
+        JComponent droneStatus = new DroneStatus(dto);
+        JComponent batteryStatus = new DroneVisualBatteryStatus(dto);
+        JComponent infoTooltip = new InfoTooltip("Data Timestamp: " + dto.getDataTimestamp());
+
+        Arrays.asList(droneStatus, batteryStatus, infoTooltip).forEach(component -> {
+            component.setAlignmentY(Component.CENTER_ALIGNMENT);
+            component.setMaximumSize(component.getPreferredSize());
+        });
+
+        statusPanel.add(droneStatus);
+        statusPanel.add(Box.createHorizontalStrut(10));
+        statusPanel.add(batteryStatus);
+        statusPanel.add(Box.createHorizontalStrut(95));
+        statusPanel.add(infoTooltip);
 
         return statusPanel;
     }
 
     // =======================
-    //   Generic Helpers
+    //   Navigation Helper
     // =======================
 
-    /** Adds a listener to the back button that removes the overlay panel. */
-    private static void addBackButtonListener(JLabel backButton, JPanel overlayPanel) {
-        backButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent e) {
-                goBack(overlayPanel);
-            }
-        });
-    }
-
-    /**
-     * A small utility method that removes the overlayPanel from its parent,
-     * forcing the UI to update.
-     */
     private static void goBack(JPanel overlayPanel) {
         Container parent = overlayPanel.getParent();
         if (parent != null) {
@@ -205,13 +218,5 @@ public class DroneDetailedView extends JPanel {
             parent.revalidate();
             parent.repaint();
         }
-    }
-
-    /** Creates a JLabel with a disabled-foreground color and left alignment. */
-    private JLabel createDisabledLabel(String text) {
-        JLabel label = new JLabel(text);
-        label.setForeground(UIManager.getColor("Label.disabledForeground"));
-        label.setHorizontalAlignment(SwingConstants.LEFT);
-        return label;
     }
 }
