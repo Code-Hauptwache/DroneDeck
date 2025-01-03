@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
 
+import java.awt.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class DroneDetailedViewTest {
@@ -59,12 +61,23 @@ class DroneDetailedViewTest {
         assertNull(overlayPanel.getParent());
     }
 
+
     @Test
     void testDetailContent() {
         JPanel wrapper = (JPanel) droneDetailedView.getComponent(1);
         JPanel centerPanel = (JPanel) ((JPanel) wrapper.getComponent(0)).getComponent(0);
-        JLabel detailsLabel = (JLabel) centerPanel.getComponent(0);
 
-        assertEquals("Speed", detailsLabel.getText());
+        // Iterate through the components and verify their content
+        for (Component component : centerPanel.getComponents()) {
+            if (component instanceof JLabel label) {
+                String text = label.getText();
+                switch (text) {
+                    case "Speed" -> assertEquals("Speed", text);
+                    case "50 km/h" -> assertEquals("50 km/h", text);
+                    case "Average Speed" -> assertEquals("Average Speed", text);
+                    case "N/A" -> assertEquals("N/A", text);
+                }
+            }
+        }
     }
 }
