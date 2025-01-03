@@ -4,6 +4,7 @@ import main.java.services.ReverseGeocode.IReverseGeocodeService;
 import main.java.services.ReverseGeocode.ReverseGeocodeService;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 /**
  * The DroneDashboardCardDto class is a DTO that contains information about a drone.
@@ -19,7 +20,7 @@ public class DroneDashboardCardDto {
     private final double longitude;
     private final double latitude;
     private final String serialNumber;
-    private List<Coordinate> historicalFlightDataList;
+    private double travelDistance;
 
     /**
      * Creates a new DroneDashboardCardDto with the given information.
@@ -73,12 +74,8 @@ public class DroneDashboardCardDto {
         return (double) batteryStatus / batteryCapacity * 100;
     }
 
-    public void updateHistoricalFlightDataList(List<Coordinate> historicalFlightDataList) {
-        this.historicalFlightDataList = historicalFlightDataList;
-    }
-
     public Object getTravelDistance() {
-        return null; // TODO: Implement this
+        return this.travelDistance;
     }
 
     public String getLocation() {
