@@ -59,13 +59,14 @@ public class DroneVisualBatteryStatus extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+
         if (!isPercentageAvailable) {
-            return;
+            return; // Do not draw the filling if the percentage is not available
         }
 
-        // Bounds of the battery icon
+        // Get the icon's bounds for proper overlay placement
         Rectangle bounds = iconLabel.getBounds();
-        int x = bounds.x + 3;
+        int x = bounds.x + 3; // Adjust for padding
         int y = bounds.y + 3;
         int width = bounds.width - 6;
         int height = bounds.height - 6;
@@ -94,5 +95,4 @@ public class DroneVisualBatteryStatus extends JPanel {
         g2d.setColor(fillColor);
         g2d.fillRoundRect(x, y, filledWidth, height, 4, 4); // 4 is the arc width and height for rounded corners
     }
-
 }
