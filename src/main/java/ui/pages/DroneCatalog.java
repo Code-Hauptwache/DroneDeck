@@ -28,32 +28,19 @@ public class DroneCatalog extends JPanel {
         JPanel cardPanel = new JPanel(new GridLayout(0, 1, horizontalGap, verticalGap));
 
         // Create a fake DroneDashboardCardDto
-        DroneCatalogCardDto fakeDTO = new DroneCatalogCardDto(
-                "Drone 1",
-                "DJI",
-                1060,
-                53,
-                5075,
-                1000,
-                500
-        );
+        DroneCatalogCardDto[] fakeDTO = new DroneCatalogCardDto[] {
+                new DroneCatalogCardDto("Drone 1", "DJI", 1060, 53, 5075, 1000, 500),
+                new DroneCatalogCardDto("Drone 2", "Parrot", 1200, 65, 4150, 1200, 600),
+                new DroneCatalogCardDto("Drone 3", "Yuneec", 900, 60, 4300, 1100, 550),
+                new DroneCatalogCardDto("Drone 4", "Autel", 1100, 70, 4900, 1500, 700),
+                new DroneCatalogCardDto("Drone 5", "Skydio", 950, 58, 4200, 1050, 525),
+                new DroneCatalogCardDto("Drone 6", "DJI", 1000, 55, 5000, 1250, 625),
+                new DroneCatalogCardDto("Drone 7", "Parrot", 1150, 68, 4100, 1300, 650)
+        };
 
         // Add the fake DroneDashboardCard to the cardPanel
-        cardPanel.add(new DroneCatalogCard(fakeDTO), BorderLayout.WEST);
-
-        // Create multiple CardTemplates for testing
-        for (int i = 1; i <= 19; i++) {
-            JPanel testPanel = new JPanel(new FlowLayout());
-            testPanel.add(new JButton("Card " + i + " Button"));
-            testPanel.add(new JLabel("Card " + i + " Label"));
-
-            // Suppose each CardTemplate is 250 wide
-            CardTemplate card = new CardTemplate(
-                    "Test Title #" + i,
-                    "Test Subtitle #" + i,
-                    testPanel
-            );
-            cardPanel.add(card);
+        for (DroneCatalogCardDto dto : fakeDTO) {
+            cardPanel.add(new DroneCatalogCard(dto), BorderLayout.WEST);
         }
 
         // Add a resize listener to adjust the number of columns
