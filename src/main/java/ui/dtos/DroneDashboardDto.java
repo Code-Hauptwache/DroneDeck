@@ -179,7 +179,7 @@ public class DroneDashboardDto {
     }
 
     public Object getAverageSpeed() {
-        // Placeholder method. Remove if unused or implement properly.
+        // TODO: Implement or remove
         return null;
     }
 }
