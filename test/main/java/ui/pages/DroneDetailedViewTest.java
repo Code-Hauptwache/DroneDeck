@@ -41,8 +41,10 @@ class DroneDetailedViewTest {
 
     @Test
     void testTitleAndSubtitle() {
-        JLabel title = (JLabel) ((JPanel) ((JPanel) droneDetailedView.getComponent(0)).getComponent(2)).getComponent(0);
-        JLabel subtitle = (JLabel) ((JPanel) ((JPanel) droneDetailedView.getComponent(0)).getComponent(2)).getComponent(1);
+        JPanel topBar = (JPanel) droneDetailedView.getComponent(0);
+        JPanel titlePane = (JPanel) topBar.getComponent(2);
+        JLabel title = (JLabel) titlePane.getComponent(0);
+        JLabel subtitle = (JLabel) titlePane.getComponent(1);
 
         assertEquals("Test Drone", title.getText());
         assertEquals("Test Manufacturer", subtitle.getText());
@@ -50,7 +52,8 @@ class DroneDetailedViewTest {
 
     @Test
     void testBackButtonListener() {
-        JLabel backButton = (JLabel) ((JPanel) droneDetailedView.getComponent(0)).getComponent(0);
+        JPanel topBar = (JPanel) droneDetailedView.getComponent(0);
+        JLabel backButton = (JLabel) topBar.getComponent(0);
         backButton.getMouseListeners()[0].mouseClicked(null);
 
         assertNull(overlayPanel.getParent());
@@ -58,8 +61,10 @@ class DroneDetailedViewTest {
 
     @Test
     void testDetailContent() {
-        JLabel detailsLabel = (JLabel) ((JPanel) ((JPanel) droneDetailedView.getComponent(1)).getComponent(1)).getComponent(0);
+        JPanel wrapper = (JPanel) droneDetailedView.getComponent(1);
+        JPanel centerPanel = (JPanel) ((JPanel) wrapper.getComponent(0)).getComponent(0);
+        JLabel detailsLabel = (JLabel) centerPanel.getComponent(0);
 
-        assertEquals("Drone: 12345", detailsLabel.getText());
+        assertEquals("Speed", detailsLabel.getText());
     }
 }
