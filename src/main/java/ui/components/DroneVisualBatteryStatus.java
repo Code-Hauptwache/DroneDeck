@@ -21,7 +21,8 @@ public class DroneVisualBatteryStatus extends JPanel {
      * @param dto The DTO containing the information to display.
      */
     public DroneVisualBatteryStatus(DroneDashboardDto dto) {
-        setLayout(new FlowLayout(FlowLayout.LEFT));
+        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        setAlignmentY(Component.CENTER_ALIGNMENT);
 
         // Create a FlatSVGIcon for the battery outline
         FlatSVGIcon batteryIcon = new FlatSVGIcon("EmptyBatteryIcon.svg", (float) 0.75);
@@ -44,13 +45,26 @@ public class DroneVisualBatteryStatus extends JPanel {
                 isPercentageAvailable ? batteryPercentage + "%" : "N/A"
         );
 
-        // Set the preferred size to ensure the text stays on the same line
-        int width = batteryIcon.getIconWidth() + batteryPercentageLabel.getPreferredSize().width + 10;
-        int height = Math.max(batteryIcon.getIconHeight(), batteryPercentageLabel.getPreferredSize().height);
-        setPreferredSize(new Dimension(width, height));
+        // Ensure consistent height by calculating the maximum height of components
+        int maxHeight = Math.max(batteryIcon.getIconHeight(), batteryPercentageLabel.getPreferredSize().height);
+        Dimension consistentSize = new Dimension(
+                batteryIcon.getIconWidth() + batteryPercentageLabel.getPreferredSize().width + 10,
+                maxHeight
+        );
+
+        iconLabel.setPreferredSize(new Dimension(batteryIcon.getIconWidth(), maxHeight));
+        batteryPercentageLabel.setPreferredSize(new Dimension(batteryPercentageLabel.getPreferredSize().width, maxHeight));
+
+        // Set the preferred, maximum, and minimum sizes for this panel
+        setPreferredSize(consistentSize);
+        setMaximumSize(consistentSize);
+        setMinimumSize(consistentSize);
 
         // Add components to the main panel
+        iconLabel.setAlignmentY(Component.CENTER_ALIGNMENT);
+        batteryPercentageLabel.setAlignmentY(Component.CENTER_ALIGNMENT);
         add(iconLabel);
+        add(Box.createHorizontalStrut(5)); // Add spacing between icon and label
         add(batteryPercentageLabel);
     }
 
