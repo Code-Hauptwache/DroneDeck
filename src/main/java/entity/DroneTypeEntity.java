@@ -7,6 +7,9 @@ import java.io.Serializable;
  */
 public class DroneTypeEntity implements Serializable {
 
+    // To fix the serialVersionUID
+    private static final long serialVersionUID = 1879467100886065125L;
+
     /// The Id of the DroneType
     public int id = 0;
 

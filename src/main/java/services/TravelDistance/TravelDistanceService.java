@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 /**
  * A service that provides travel distance of drone
  */
-public class TravelDistanceService {
+public class TravelDistanceService implements ITravelDistanceService {
 
     private final IDroneApiService droneApiService;
     private static final int DATA_NUM = 500;
