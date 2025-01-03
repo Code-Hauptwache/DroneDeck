@@ -9,7 +9,11 @@ import java.util.List;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
+/**
+ * A service that provides travel distance of drone
+ */
 public class TravelDistanceService {
+
     private final IDroneApiService droneApiService;
     private static final int DATA_NUM = 500;
     private static final int LIMIT = 100;
@@ -19,6 +23,12 @@ public class TravelDistanceService {
         this.droneApiService = droneApiService;
     }
 
+    /**
+     * Calculate distance from 500 data of dynamic drone list
+     * Using threads for faster calculate
+     * @param droneId
+     * @return total travel distance of drone (km)
+     */
     public double getTravelDistance(int droneId) {
         ExecutorService executorService = Executors.newFixedThreadPool(THREAD_NUM);
 

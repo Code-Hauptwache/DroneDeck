@@ -1,6 +1,10 @@
 package main.java.services.TravelDistance;
 
+/**
+ * Coordinate data with longitude and latitude
+ */
 public class Coordinate {
+
     private double longitude;
     private double latitude;
 
@@ -9,14 +13,28 @@ public class Coordinate {
         this.latitude = latitude;
     }
 
+    /**
+     * Getter method of longitude
+     * @return longitude
+     */
     public double getLongitude() {
         return longitude;
     }
 
+    /**
+     * Getter method of latitude
+     * @return longitude
+     */
     public double getLatitude() {
         return latitude;
     }
 
+    /**
+     * Static method for calculating distance of two coordinate
+     * @param coordinate1
+     * @param coordinate2
+     * @return
+     */
     public static double distance(Coordinate coordinate1, Coordinate coordinate2) {
         double lat1 = coordinate1.getLatitude();
         double lon1 = coordinate1.getLongitude();
