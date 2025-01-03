@@ -21,18 +21,17 @@ public class DroneDashboard extends JPanel {
         super(new BorderLayout());
 
         // Horizontal and vertical gaps for the GridLayout
-        int horizontalGap = 30;
-        int verticalGap = 30;
+        int gap = 30;
 
         // This is a placeholder in orange for the graphical components of the drone dashboard
         JLabel label = new JLabel("Graphical Components (TODO)", SwingConstants.CENTER);
         label.setForeground(Color.ORANGE);
-        label.setPreferredSize(new Dimension(0, 300 + horizontalGap));
+        label.setPreferredSize(new Dimension(0, 300 + gap));
         label.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.ORANGE));
         add(label, BorderLayout.NORTH);
 
         // Add CardTemplate instances to the center panel using GridLayout
-        JPanel cardPanel = new JPanel(new GridLayout(0, 1, horizontalGap, verticalGap));
+        JPanel cardPanel = new JPanel(new GridLayout(0, 1, gap, gap));
 
         // Create a fake DroneDashboardDto
         DroneDashboardDto fakeDTO = new DroneDashboardDto(
@@ -81,7 +80,7 @@ public class DroneDashboard extends JPanel {
 
                 // Each CardTemplate is ~250 wide, plus we have a 10px gap (GridLayout hGap)
                 // We'll assume some extra spacing; adjust as needed
-                int cardTotalWidth = 250 +  horizontalGap; // 250 for card + 10 for right gap
+                int cardTotalWidth = 250 +  gap; // 250 for card + 10 for right gap
                 // Compute how many columns can fit
                 int columns = Math.max(1, panelWidth / cardTotalWidth);
 
