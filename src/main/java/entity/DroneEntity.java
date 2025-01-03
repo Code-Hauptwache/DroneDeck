@@ -9,6 +9,9 @@ import java.util.regex.Pattern;
  */
 public class DroneEntity implements Serializable {
 
+    // To fix the serialVersionUID
+    private static final long serialVersionUID = 1879467100886065125L;
+
     /**
      * The Id of the Drone
      */
@@ -79,5 +82,29 @@ public class DroneEntity implements Serializable {
                 ", carriage_weight=" + carriage_weight +
                 ", carriage_type='" + carriage_type + '\'' +
                 '}';
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public DroneTypeEntity getDronetype() {
+        return dronetype;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public String getSerialnumber() {
+        return serialnumber;
+    }
+
+    public int getCarriage_weight() {
+        return carriage_weight;
+    }
+
+    public String getCarriage_type() {
+        return carriage_type;
     }
 }
