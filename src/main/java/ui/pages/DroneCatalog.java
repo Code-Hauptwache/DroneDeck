@@ -1,5 +1,6 @@
 package main.java.ui.pages;
 
+import main.java.services.ScrollPane.ScrollPaneService;
 import main.java.ui.components.CardTemplate;
 import main.java.ui.components.DroneCatalogCard;
 import main.java.ui.dtos.DroneCatalogCardDto;
@@ -65,19 +66,7 @@ public class DroneCatalog extends JPanel {
         });
 
         // Make it scrollable (vertical only)
-        JScrollPane scrollPane = new JScrollPane(cardPanel);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setPreferredSize(new Dimension(0, 0));
-
-        // Hide the vertical scrollbar track, but allow mouse-wheel scrolling
-        scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(0, 0));
-        scrollPane.setWheelScrollingEnabled(true);
-
-        // Scroll speed adjustments (optional)
-        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
-        scrollPane.getVerticalScrollBar().setBlockIncrement(50);
+        JScrollPane scrollPane = ScrollPaneService.createScrollPane(cardPanel);
 
         add(scrollPane, BorderLayout.CENTER);
     }
