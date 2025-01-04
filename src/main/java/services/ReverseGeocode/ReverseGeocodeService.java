@@ -22,7 +22,7 @@ public class ReverseGeocodeService implements IReverseGeocodeService {
      */
     @Override
     public String getCityAndCountry(double latitude, double longitude) {
-        String urlString = String.format("%s?latitude=%f&longitude=%f&localityLanguage=en", API_URL, latitude, longitude, "en");
+        String urlString = String.format("%s?latitude=%f&longitude=%f&localityLanguage=en", API_URL, latitude, longitude);
         try {
             URL url = new URL(urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -31,7 +31,7 @@ public class ReverseGeocodeService implements IReverseGeocodeService {
 
             int responseCode = conn.getResponseCode();
             if (responseCode != 200) {
-                throw new RuntimeException("HttpResponseCode: " + responseCode);
+                return null;
             } else {
                 StringBuilder inline = new StringBuilder();
                 Scanner scanner = new Scanner(url.openStream());
@@ -41,10 +41,13 @@ public class ReverseGeocodeService implements IReverseGeocodeService {
                 scanner.close();
 
                 JsonObject json = JsonParser.parseString(inline.toString()).getAsJsonObject();
-                String city = json.get("city").getAsString();
-                String country = json.get("countryName").getAsString();
-
-                return city + ", " + country;
+                if (json.has("city") && json.has("countryName")) {
+                    String city = json.get("city").getAsString();
+                    String country = json.get("countryName").getAsString();
+                    return city + ", " + country;
+                } else {
+                    return null;
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
