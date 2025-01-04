@@ -61,6 +61,12 @@ public class DroneDashboardCard extends JComponent {
         card.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)); // Set cursor to pointer when hovering
         add(card, BorderLayout.CENTER);
 
+        // Set the preferred, minimum, and maximum sizes to match the CardTemplate
+        Dimension cardSize = card.getPreferredSize();
+        setPreferredSize(cardSize);
+        setMinimumSize(cardSize);
+        setMaximumSize(cardSize);
+
         // Add a mouse listener that shows the overlay on click
         this.addMouseListener(new MouseAdapter() {
             @Override
