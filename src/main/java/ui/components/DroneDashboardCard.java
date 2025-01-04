@@ -77,31 +77,56 @@ public class DroneDashboardCard extends JComponent {
         });
     }
 
+    private JPanel createLoadingPanel() {
+        JPanel loadingPanel = new JPanel();
+        loadingPanel.setLayout(new BorderLayout());
+        JLabel loadingLabel = new JLabel("Loading...", SwingConstants.CENTER);
+        loadingPanel.add(loadingLabel, BorderLayout.CENTER);
+        return loadingPanel;
+    }
+
     private void showDetailOverlay() {
-        // Find the MainPanel and the JLayeredPane
         MainPanel mainPanel = (MainPanel) SwingUtilities.getAncestorOfClass(MainPanel.class, this);
         if (mainPanel == null) {
             return;
         }
 
-        // Add the overlay panel to the JLayeredPane
         JLayeredPane layeredPane = mainPanel.getMainLayeredPane();
 
         // Create the overlay panel
-        JPanel overlayPanel = getOverlayPanel();
+        JPanel overlayPanel = new JPanel(new BorderLayout());
+
+        // Create and add the loading panel to the overlay
+        JPanel loadingPanel = createLoadingPanel();
+        overlayPanel.add(loadingPanel, BorderLayout.CENTER);
 
         // Add the overlay panel to the layered pane
         layeredPane.add(overlayPanel, JLayeredPane.MODAL_LAYER);
+
+        // Activate a glass pane to block events during loading
+        Component glassPane = mainPanel.getRootPane().getGlassPane();
+        glassPane.setVisible(true);
+        glassPane.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+        // Repaint and revalidate to ensure it displays properly
         layeredPane.revalidate();
         layeredPane.repaint();
-    }
 
-    private JPanel getOverlayPanel() {
-        JPanel overlayPanel = new JPanel(new BorderLayout());
-        overlayPanel.setBackground(new Color(0, 0, 0, 100)); // slight transparency
-        DroneDetailedView detailView = new DroneDetailedView(dto, overlayPanel);
-        overlayPanel.add(detailView, BorderLayout.CENTER);
-        return overlayPanel;
+        // Load the detailed view asynchronously
+        SwingUtilities.invokeLater(() -> {
+            DroneDetailedView detailView = new DroneDetailedView(dto, overlayPanel);
+
+            // Remove loading panel and add detailed view
+            overlayPanel.remove(loadingPanel);
+            overlayPanel.add(detailView, BorderLayout.CENTER);
+
+            // Deactivate the glass pane
+            glassPane.setVisible(false);
+            glassPane.setCursor(Cursor.getDefaultCursor());
+
+            overlayPanel.revalidate();
+            overlayPanel.repaint();
+        });
     }
 
     private String getTravelDistanceString(DroneDashboardDto dto) {
