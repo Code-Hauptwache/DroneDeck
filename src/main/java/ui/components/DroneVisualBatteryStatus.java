@@ -1,6 +1,6 @@
 package main.java.ui.components;
 
-import main.java.ui.dtos.DroneDashboardCardDto;
+import main.java.ui.dtos.DroneDashboardDto;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 import javax.swing.*;
@@ -20,8 +20,9 @@ public class DroneVisualBatteryStatus extends JPanel {
      *
      * @param dto The DTO containing the information to display.
      */
-    public DroneVisualBatteryStatus(DroneDashboardCardDto dto) {
-        setLayout(new FlowLayout(FlowLayout.LEFT));
+    public DroneVisualBatteryStatus(DroneDashboardDto dto) {
+        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        setAlignmentY(Component.CENTER_ALIGNMENT);
 
         // Create a FlatSVGIcon for the battery outline
         FlatSVGIcon batteryIcon = new FlatSVGIcon("EmptyBatteryIcon.svg", (float) 0.75);
@@ -38,15 +39,32 @@ public class DroneVisualBatteryStatus extends JPanel {
         // Set the battery percentage
         isPercentageAvailable = dto.getStatus() == null || !dto.getStatus().equalsIgnoreCase("OF");
         batteryPercentage = isPercentageAvailable ? (int) dto.getBatteryPercentage() : 0;
-        setPreferredSize(new Dimension(batteryIcon.getIconWidth(), batteryIcon.getIconHeight()));
 
         // Create a JLabel to display the percentage
         JLabel batteryPercentageLabel = new JLabel(
                 isPercentageAvailable ? batteryPercentage + "%" : "N/A"
         );
 
+        // Ensure consistent height by calculating the maximum height of components
+        int maxHeight = Math.max(batteryIcon.getIconHeight(), batteryPercentageLabel.getPreferredSize().height);
+        Dimension consistentSize = new Dimension(
+                batteryIcon.getIconWidth() + batteryPercentageLabel.getPreferredSize().width + 10,
+                maxHeight
+        );
+
+        iconLabel.setPreferredSize(new Dimension(batteryIcon.getIconWidth(), maxHeight));
+        batteryPercentageLabel.setPreferredSize(new Dimension(batteryPercentageLabel.getPreferredSize().width, maxHeight));
+
+        // Set the preferred, maximum, and minimum sizes for this panel
+        setPreferredSize(consistentSize);
+        setMaximumSize(consistentSize);
+        setMinimumSize(consistentSize);
+
         // Add components to the main panel
+        iconLabel.setAlignmentY(Component.CENTER_ALIGNMENT);
+        batteryPercentageLabel.setAlignmentY(Component.CENTER_ALIGNMENT);
         add(iconLabel);
+        add(Box.createHorizontalStrut(5)); // Add spacing between icon and label
         add(batteryPercentageLabel);
     }
 

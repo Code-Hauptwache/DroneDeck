@@ -14,9 +14,6 @@ import java.util.List;
  */
 public class CardTemplate extends JComponent {
     private static final List<CardTemplate> instances = new ArrayList<>();
-    private final int cardHeight = 275;
-    private final int cardWidth = 225;
-    private final JLabel titleLabel;
     private final JLabel subtitleLabel;
     private final JSeparator separator;
 
@@ -38,7 +35,9 @@ public class CardTemplate extends JComponent {
         setOpaque(true);
         setBackground(UIManager.getColor("Panel.background"));
 
-        // Set a fixed width/height here (adjust to your needs)
+        // Set a fixed width/height for the card
+        int cardHeight = 275;
+        int cardWidth = 225;
         Dimension fixedSize = new Dimension(cardWidth, cardHeight);
         setPreferredSize(fixedSize);
         setMinimumSize(fixedSize);
@@ -59,7 +58,7 @@ public class CardTemplate extends JComponent {
         headerPanel.setOpaque(false);
 
         // Create and style the title label
-        titleLabel = new JLabel(title);
+        JLabel titleLabel = new JLabel(title);
         titleLabel.putClientProperty("FlatLaf.styleClass", "h3");
 
         // Create and style the subtitle label

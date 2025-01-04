@@ -1,7 +1,7 @@
 package main.java.ui.components;
 
 import main.java.ui.MainPanel;
-import main.java.ui.dtos.DroneDashboardCardDto;
+import main.java.ui.dtos.DroneDashboardDto;
 import main.java.ui.pages.DroneDetailedView;
 
 import javax.swing.*;
@@ -16,16 +16,16 @@ import java.awt.event.MouseEvent;
  * information about a drone.
  */
 public class DroneDashboardCard extends JComponent {
-    private final DroneDashboardCardDto dto;
+    private final DroneDashboardDto dto;
 
     /**
      * Creates a new DroneDashboardCard with the given DTO.
      *
      * @param dto The DTO containing the information to display.
      */
-    public DroneDashboardCard(DroneDashboardCardDto dto) {
-        this.dto = dto;
+    public DroneDashboardCard(DroneDashboardDto dto) {
         setLayout(new BorderLayout());
+        this.dto = dto;
 
         // Main content container with GridLayout
         JPanel contentContainer = new JPanel(new GridLayout(5, 2, 0, 4));
@@ -54,11 +54,18 @@ public class DroneDashboardCard extends JComponent {
 
         // Create card with the content
         CardTemplate card = new CardTemplate(
-                dto.getTypename(),
-                dto.getManufacture(),
+                dto.getTypeName(),
+                dto.getManufacturer(),
                 contentContainer
         );
         card.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)); // Set cursor to pointer when hovering
+
+        // Set the preferred, minimum, and maximum sizes to match the CardTemplate
+        Dimension cardSize = card.getPreferredSize();
+        setPreferredSize(cardSize);
+        setMinimumSize(cardSize);
+        setMaximumSize(cardSize);
+
         add(card, BorderLayout.CENTER);
 
         // Add a mouse listener that shows the overlay on click
@@ -97,7 +104,7 @@ public class DroneDashboardCard extends JComponent {
         return overlayPanel;
     }
 
-    private String getTravelDistanceString(DroneDashboardCardDto dto) {
+    private String getTravelDistanceString(DroneDashboardDto dto) {
         return (dto.getTravelDistance() != null && !dto.getTravelDistance().toString().isEmpty())
                 ? dto.getTravelDistance().toString()
                 : "N/A";

@@ -25,6 +25,10 @@ public class DroneDeck {
     }
 
     private static void createAndShowGUI() {
+        // Set up ToolTipManager
+        ToolTipManager.sharedInstance().setInitialDelay(0);
+        ToolTipManager.sharedInstance().setReshowDelay(0);
+
         // Set up FlatLaf look and feel
         FlatLaf.registerCustomDefaultsSource("main.java.ui.themes");
 
