@@ -1,14 +1,18 @@
 package main.java.controllers;
 
 import main.java.dao.ILocalDroneDao;
+import main.java.dao.LocalDroneDao;
 import main.java.entity.DroneEntity;
 import main.java.entity.DroneTypeEntity;
 import main.java.exceptions.DroneApiException;
+import main.java.services.DroneApi.DroneApiService;
 import main.java.services.DroneApi.IDroneApiService;
 import main.java.services.DroneApi.dtos.Drone;
 import main.java.services.DroneApi.dtos.DroneDynamics;
 import main.java.services.ReverseGeocode.IReverseGeocodeService;
+import main.java.services.ReverseGeocode.ReverseGeocodeService;
 import main.java.services.TravelDistance.ITravelDistanceService;
+import main.java.services.TravelDistance.TravelDistanceService;
 import main.java.ui.dtos.DroneDashboardCardDto;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,17 +28,11 @@ import java.util.concurrent.Executors;
  */
 public class DroneDashboardController implements IDroneDashboardController {
 
-    private final ITravelDistanceService travelDistanceService;
-    private final IDroneApiService droneApiService;
-    private final ILocalDroneDao localDroneDao;
-    private final IReverseGeocodeService reverseGeocodeService;
-
-    public DroneDashboardController(ITravelDistanceService travelDistanceService, IDroneApiService droneApiService, ILocalDroneDao localDroneDao, IReverseGeocodeService reverseGeocodeService) {
-        this.travelDistanceService = travelDistanceService;
-        this.droneApiService = droneApiService;
-        this.localDroneDao = localDroneDao;
-        this.reverseGeocodeService = reverseGeocodeService;
-    }
+    private static final String API_KEY = System.getenv("DRONE_API_KEY");
+    private final IDroneApiService droneApiService = new DroneApiService(API_KEY);
+    private final ITravelDistanceService travelDistanceService = new TravelDistanceService(droneApiService);
+    private final ILocalDroneDao localDroneDao = new LocalDroneDao();
+    private final IReverseGeocodeService reverseGeocodeService = new ReverseGeocodeService();
 
     /**
      * Retrieves a paginated list of drones and generates a corresponding list of DroneDashboardCardDto objects.
