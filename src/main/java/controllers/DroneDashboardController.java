@@ -19,7 +19,10 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class DroneDashboardController {
+/**
+ * A controller that provides List of DroneDashboardCardDto
+ */
+public class DroneDashboardController implements IDroneDashboardController {
 
     private final ITravelDistanceService travelDistanceService;
     private final IDroneApiService droneApiService;
@@ -33,6 +36,17 @@ public class DroneDashboardController {
         this.reverseGeocodeService = reverseGeocodeService;
     }
 
+    /**
+     * Retrieves a paginated list of drones and generates a corresponding list of DroneDashboardCardDto objects.
+     * This method processes the drone data asynchronously using a thread pool to enhance performance
+     * when generating the dashboard card DTOs.
+     *
+     * @param limit the maximum number of drones to process and include in the result.
+     * @param offset the starting index within the dataset from which to retrieve the drones.
+     * @return a list of DroneDashboardCardDto objects corresponding to the drones retrieved,
+     *         or an empty list if no drones are found within the specified range.
+     */
+    @Override
     public List<DroneDashboardCardDto> getDroneDashboardCardsThreads(int limit, int offset) {
         List<DroneEntity> drones = localDroneDao.loadDroneData().subList(offset, offset + limit);
 
