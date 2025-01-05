@@ -1,4 +1,4 @@
-package main.java.services.ApiTokenStore;
+package main.java.services.ApiToken;
 
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class ApiTokenStoreServiceTest {
     @Test
-    void IsTokenAvailable_returnsTrue_whenTokenFileExists() {
+    void IsTokenAvailable_returnsTrue_whenSavedTokenFileExists() {
         // Setup
         // Create a dummy token file
         File file = new File("api_token.bin");
@@ -23,7 +23,7 @@ class ApiTokenStoreServiceTest {
         }
 
         // Act
-        boolean result = ApiTokenStoreService.IsTokenAvailable();
+        boolean result = ApiTokenStoreService.IsSavedTokenAvailable();
 
         // Assert
         assertTrue(result);
@@ -33,9 +33,9 @@ class ApiTokenStoreServiceTest {
     }
 
     @Test
-    void IsTokenAvailable_returnsFalse_whenTokenFileDoesNotExist() {
+    void IsTokenAvailable_returnsFalse_whenSavedTokenFileDoesNotExist() {
         // Act
-        boolean result = ApiTokenStoreService.IsTokenAvailable();
+        boolean result = ApiTokenStoreService.IsSavedTokenAvailable();
 
         // Assert
         assertFalse(result);

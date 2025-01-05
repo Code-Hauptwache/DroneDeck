@@ -1,4 +1,7 @@
-package main.java.services.ApiTokenStore;
+package main.java.services.ApiToken;
+
+import main.java.services.DroneApi.DroneApiService;
+import main.java.services.DroneApi.dtos.Drone;
 
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
@@ -12,9 +15,12 @@ import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.Base64;
+import java.util.List;
 
 /**
  * Service for storing and retrieving API tokens securely.
+ *
+ * This Service SHOULD NOT be used directly.
  */
 public class ApiTokenStoreService {
 
@@ -23,15 +29,43 @@ public class ApiTokenStoreService {
     private static String ApiToken = "";
 
     /**
+     * Checks if a saved API Token is available.
+     * This DOES NOT check the validity of the Token.
+     * This DOES NOT load the Token. The Token must be loaded separately.
+     *
+     * @return True if a saved Token is available
+     */
+    public static Boolean IsSavedTokenAvailable() {
+        //Check if API_TOKEN_FILE Exists
+        File file = new File(API_TOKEN_FILE);
+        return file.exists();
+    }
+
+    /**
      * Checks if an API Token is available.
      * This DOES NOT check the validity of the Token.
      *
      * @return True if Token is available
      */
     public static Boolean IsTokenAvailable() {
-        //Check if API_TOKEN_FILE Exists
-        File file = new File(API_TOKEN_FILE);
-        return file.exists();
+        return !ApiToken.isEmpty();
+    }
+
+    /**
+     * Checks if the current API Token is valid.
+     *
+     * @return True if the Token is valid
+     */
+    public static Boolean IsTokenValid() {
+        DroneApiService droneApiService = new DroneApiService(ApiToken);
+
+        try {
+            List<Drone> drones = droneApiService.getDrones();
+
+            return drones != null && !drones.isEmpty();
+        } catch (Exception ex) {
+            return false;
+        }
     }
 
     /**

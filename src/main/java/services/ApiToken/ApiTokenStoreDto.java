@@ -1,4 +1,4 @@
-package main.java.services.ApiTokenStore;
+package main.java.services.ApiToken;
 
 import java.io.Serializable;
 

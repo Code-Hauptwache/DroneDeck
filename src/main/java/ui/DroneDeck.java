@@ -4,12 +4,16 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.jthemedetecor.OsThemeDetector;
-import main.java.services.ApiTokenStore.ApiTokenStoreService;
-import main.java.ui.TokenPanels.InputTokenPanel;
+import main.java.exceptions.DroneApiException;
+import main.java.services.ApiToken.ApiTokenService;
+import main.java.services.DroneApi.DroneApiService;
+import main.java.services.DroneApi.dtos.Drone;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Console;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Objects;
 
 public class DroneDeck {
@@ -30,10 +34,23 @@ public class DroneDeck {
         // Set up FlatLaf look and feel
         setupFlatLaf();
 
-        // Check if an API token is available
-        if (!ApiTokenStoreService.IsTokenAvailable()) {
-            // Request the API token from the user
-            requestToken();
+        // Set up MainPanel
+        setupMainPanel();
+
+        String apiToken = ApiTokenService.getApiToken();
+
+        DroneApiService droneApiService = new DroneApiService(apiToken);
+
+        System.out.println("Getting drones...");
+
+        try {
+            List<Drone> test =  droneApiService.getDrones();
+
+            for (Drone drone : test) {
+                System.out.println(drone);
+            }
+        } catch (DroneApiException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -67,6 +84,9 @@ public class DroneDeck {
     private static void setupMainPanel() {
         // Create the frame
         JFrame frame = new JFrame("DroneDeck");
+
+        ApiTokenService.setParent(frame); //Initialize the ApiTokenService with the parent frame
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Load the logo image
@@ -83,40 +103,6 @@ public class DroneDeck {
 
         // Enforce the minimum size (the user cannot shrink the window below this)
         frame.setMinimumSize(new Dimension(1100, 900));
-
-        // Center the frame on the screen and make it visible
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-    }
-
-    private static void requestToken() {
-        // Create the frame
-        JFrame frame = new JFrame("DroneDeck - API Token");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new BorderLayout());
-
-        // Load the logo image
-        ImageIcon logoIcon = new ImageIcon(Objects.requireNonNull(DroneDeck.class.getResource("/DroneDeck_Logo.png")));
-        Image scaledLogo = logoIcon.getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
-        frame.setIconImage(scaledLogo);
-
-        // Create and add the token panel
-        InputTokenPanel tokenPanel = new InputTokenPanel(e -> {
-
-            setupMainPanel();
-
-            frame.setVisible(false);
-
-            SwingUtilities.invokeLater(frame::dispose);
-
-        });
-        frame.getContentPane().add(tokenPanel, BorderLayout.CENTER);
-
-        // Call pack() so that components are laid out properly
-        frame.pack();
-
-        // Enforce the minimum size (the user cannot shrink the window below this)
-        frame.setMinimumSize(new Dimension(400, 300));
 
         // Center the frame on the screen and make it visible
         frame.setLocationRelativeTo(null);
