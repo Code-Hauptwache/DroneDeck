@@ -5,6 +5,11 @@ import main.java.services.ApiToken.ApiTokenStoreService;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Dialog to prompt the user to enter the password to decrypt the token.
+ *
+ * This dialog will automatically save the token if the user wants to.
+ */
 public class TokenInputDialog extends JDialog {
 
     public TokenInputDialog(JFrame parent) {
