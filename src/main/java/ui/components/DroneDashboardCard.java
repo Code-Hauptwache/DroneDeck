@@ -42,7 +42,8 @@ public class DroneDashboardCard extends JComponent {
         Component[] rightContent = {
                 new DroneVisualBatteryStatus(dto),
                 new JLabel((int) dto.getSpeed() + " km/h"),
-                new JLabel(dto.getLocation() != null ? dto.getLocation() + " km" : "N/A"),
+                // new JLabel(dto.getLocation() != null ? dto.getLocation() + " km" : "N/A"),
+                new JLabel("N/A"), // Location is temporarily disabled
                 new JLabel(getTravelDistanceString(dto)),
                 new JLabel(dto.getSerialNumber())
         };
