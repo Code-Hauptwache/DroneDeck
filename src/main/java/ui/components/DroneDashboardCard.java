@@ -106,7 +106,6 @@ public class DroneDashboardCard extends JComponent {
         // Activate a glass pane to block events during loading
         Component glassPane = mainPanel.getRootPane().getGlassPane();
         glassPane.setVisible(true);
-        glassPane.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
         // Repaint and revalidate to ensure it displays properly
         layeredPane.revalidate();
@@ -122,7 +121,6 @@ public class DroneDashboardCard extends JComponent {
 
             // Deactivate the glass pane
             glassPane.setVisible(false);
-            glassPane.setCursor(Cursor.getDefaultCursor());
 
             overlayPanel.revalidate();
             overlayPanel.repaint();
