@@ -136,7 +136,7 @@ public class DroneDetailedView extends JPanel {
         return new Component[]{
                 new JLabel((int) dto.getSpeed() + " km/h"),
                 new JLabel(dto.getAverageSpeed() != null ? (int) dto.getAverageSpeed() + " km/h" : "N/A"),
-                new JLabel(dto.getLocation() != null ? dto.getLocation() : "N/A"),
+                new JLabel("N/A"), // Location is temporarily disabled
                 new JLabel(dto.getTravelDistance() != null ? dto.getTravelDistance() + " m" : "N/A"),
                 new JLabel(dto.getCarriageWeight() > 0 ? (int) dto.getCarriageWeight() + " g" : "N/A"),
                 new JLabel(dto.getCarriageType() != null ? dto.getCarriageType() : "N/A"),
