@@ -23,8 +23,8 @@ class DroneDashboardCardTest {
                 50.0,
                 12.34,
                 56.78,
-                "1234567890"
-        );
+                "1234567890",
+                0, "location");
 
         // Create a DroneDashboardCard instance
         DroneDashboardCard card = new DroneDashboardCard(dto);

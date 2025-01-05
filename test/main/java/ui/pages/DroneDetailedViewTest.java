@@ -24,8 +24,8 @@ class DroneDetailedViewTest {
                 50.0,
                 10.0,
                 20.0,
-                "12345"
-        );
+                "12345",
+                0, "location");
 
         overlayPanel = new JPanel();
         droneDetailedView = new DroneDetailedView(dto, overlayPanel);

@@ -98,8 +98,8 @@ public class DroneDashboardCard extends JComponent {
     }
 
     private String getTravelDistanceString(DroneDashboardCardDto dto) {
-        return (dto.getTravelDistance() != null && !dto.getTravelDistance().toString().isEmpty())
-                ? dto.getTravelDistance().toString()
+        return dto.getTravelDistance() != 0.0
+                ? String.valueOf(dto.getTravelDistance())
                 : "N/A";
     }
 }
