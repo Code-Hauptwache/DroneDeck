@@ -3,9 +3,6 @@ package main.java.ui.dtos;
 import main.java.services.ReverseGeocode.IReverseGeocodeService;
 import main.java.services.ReverseGeocode.ReverseGeocodeService;
 
-import java.util.List;
-import java.util.stream.IntStream;
-
 /**
  * The DroneDashboardCardDto class is a DTO that contains information about a drone.
  * It is used to transfer information about a drone to the DroneDashboardCard component.
@@ -20,22 +17,25 @@ public class DroneDashboardCardDto {
     private final double longitude;
     private final double latitude;
     private final String serialNumber;
-    private double travelDistance;
+    private final double travelDistance;
+    private final String location;
 
     /**
      * Creates a new DroneDashboardCardDto with the given information.
      *
      * @param typename        The type name of the drone.
-     * @param manufacture      The manufacturer of the drone.
-     * @param status           The status of the drone.
-     * @param batteryStatus    The current battery status of the drone.
-     * @param batteryCapacity  The battery capacity of the drone.
-     * @param speed            The speed of the drone.
-     * @param longitude        The longitude of the drone.
-     * @param latitude         The latitude of the drone.
-     * @param serialNumber     The serial number of the drone.
+     * @param manufacture     The manufacturer of the drone.
+     * @param status          The status of the drone.
+     * @param batteryStatus   The current battery status of the drone.
+     * @param batteryCapacity The battery capacity of the drone.
+     * @param speed           The speed of the drone.
+     * @param longitude       The longitude of the drone.
+     * @param latitude        The latitude of the drone.
+     * @param serialNumber    The serial number of the drone.
+     * @param travelDistance  The travel distance of the drone.
+     * @param location        The current location of the drone.
      */
-    public DroneDashboardCardDto(String typename, String manufacture, String status, int batteryStatus, int batteryCapacity, double speed, double longitude, double latitude, String serialNumber) {
+    public DroneDashboardCardDto(String typename, String manufacture, String status, int batteryStatus, int batteryCapacity, double speed, double longitude, double latitude, String serialNumber, double travelDistance, String location) {
         this.typename = typename;
         this.manufacture = manufacture;
         this.status = status;
@@ -45,6 +45,8 @@ public class DroneDashboardCardDto {
         this.longitude = longitude;
         this.latitude = latitude;
         this.serialNumber = serialNumber;
+        this.travelDistance = travelDistance;
+        this.location = location;
     }
 
     public String getTypename() {
@@ -74,12 +76,28 @@ public class DroneDashboardCardDto {
         return (double) batteryStatus / batteryCapacity * 100;
     }
 
-    public Object getTravelDistance() {
-        return this.travelDistance;
+    public double getTravelDistance() {
+        return travelDistance;
     }
 
     public String getLocation() {
-        IReverseGeocodeService reverseGeocodeService = new ReverseGeocodeService();
-        return reverseGeocodeService.getCityAndCountry(latitude, longitude);
+        return location;
+    }
+
+    @Override
+    public String toString() {
+        return "DroneDashboardCardDto{" +
+                "typename='" + typename + '\'' +
+                ", manufacture='" + manufacture + '\'' +
+                ", status='" + status + '\'' +
+                ", batteryStatus=" + batteryStatus +
+                ", batteryCapacity=" + batteryCapacity +
+                ", speed=" + speed +
+                ", longitude=" + longitude +
+                ", latitude=" + latitude +
+                ", serialNumber='" + serialNumber + '\'' +
+                ", travelDistance=" + travelDistance +
+                ", location='" + location + '\'' +
+                '}';
     }
 }

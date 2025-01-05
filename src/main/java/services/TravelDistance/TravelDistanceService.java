@@ -29,6 +29,7 @@ public class TravelDistanceService implements ITravelDistanceService {
      * @param droneId
      * @return total travel distance of drone (km)
      */
+    @Override
     public double getTravelDistance(int droneId) {
         ExecutorService executorService = Executors.newFixedThreadPool(THREAD_NUM);
 

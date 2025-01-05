@@ -44,8 +44,8 @@ public class DroneDashboard extends JPanel {
                 50.0,
                 12.34,
                 56.78,
-                "1234567890"
-        );
+                "1234567890",
+                0, "location");
 
         // Add the fake DroneDashboardCard to the cardPanel
         cardPanel.add(new DroneDashboardCard(fakeDTO), BorderLayout.WEST);
