@@ -38,7 +38,6 @@ public class DroneCatalogCard extends JComponent {
             contentContainer.add(rightContent[i]);
         }
 
-
         // Create card with the content
         CardTemplate card = new CardTemplate(
                 dto.getTypename(),
