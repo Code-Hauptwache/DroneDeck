@@ -44,6 +44,13 @@ public class DroneCatalogCard extends JComponent {
                 dto.getManufacturer(),
                 contentContainer
         );
+
+        // Set the preferred, minimum, and maximum sizes to match the CardTemplate
+        Dimension cardSize = card.getPreferredSize();
+        setPreferredSize(cardSize);
+        setMinimumSize(cardSize);
+        setMaximumSize(cardSize);
+
         add(card, BorderLayout.CENTER);
     }
 }
