@@ -36,6 +36,6 @@ public class SearchBarAndThemeSwitcherPanel extends JPanel {
         add(buttonPanel, BorderLayout.EAST);
 
         // Set padding for the main panel
-        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
     }
 }
