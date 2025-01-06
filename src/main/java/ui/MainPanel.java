@@ -15,10 +15,8 @@ import java.awt.event.ComponentEvent;
  * It uses a CardLayout to switch between different pages.
  */
 public class MainPanel extends JPanel {
-    private final int maxContentWidth = 1200;
     private final int minLeftRightPadding = 100;
     private final int topAndBottomMainPanelPadding = 10;
-    private final int northBottomPadding = 10;
 
     public enum Page {
         CATALOG, DASHBOARD
@@ -82,6 +80,7 @@ public class MainPanel extends JPanel {
 
         // 4) Create a north panel (header/navigation)
         JPanel northWrapper = new JPanel(new BorderLayout());
+        int northBottomPadding = 10;
         northWrapper.setBorder(BorderFactory.createEmptyBorder(0, 0, northBottomPadding, 0));
         northWrapper.add(new NorthPanel(this), BorderLayout.CENTER);
 
@@ -127,6 +126,7 @@ public class MainPanel extends JPanel {
      */
     private void adjustPadding() {
         int panelWidth = getWidth();
+        int maxContentWidth = 1200;
         int extraWidth = panelWidth - maxContentWidth;
 
         int horizontalPadding = (extraWidth > 0) ? extraWidth / 2 : minLeftRightPadding;
