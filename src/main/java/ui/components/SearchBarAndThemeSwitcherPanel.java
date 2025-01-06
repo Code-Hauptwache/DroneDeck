@@ -26,9 +26,14 @@ public class SearchBarAndThemeSwitcherPanel extends JPanel {
         // Add some padding to the center panel
         centerPanel.setBorder(BorderFactory.createEmptyBorder(0, 150, 0, 150));
 
+        // Wrap the ButtonThemeSwitcher in a panel to enforce its size
+        JPanel buttonPanel = new JPanel(new GridBagLayout()); // Use GridBagLayout for centering
+        buttonPanel.add(buttonThemeSwitcher); // Add the square button
+        buttonPanel.setPreferredSize(new Dimension(buttonThemeSwitcher.getPreferredSize().width, searchBar.getPreferredSize().height)); // Match height to SearchBar
+
         // Add components to the main panel
         add(centerPanel, BorderLayout.CENTER);
-        add(buttonThemeSwitcher, BorderLayout.EAST);
+        add(buttonPanel, BorderLayout.EAST);
 
         // Set padding for the main panel
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
