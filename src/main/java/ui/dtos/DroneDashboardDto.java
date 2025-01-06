@@ -154,6 +154,9 @@ public class DroneDashboardDto {
         return dataTimestampDateTime.format(DISPLAY_FORMAT);
     }
 
+    /**
+     * Returns the location of the drone as a string (city, country).
+     */
     public String getLocation() {
         IReverseGeocodeService reverseGeocodeService = new ReverseGeocodeService();
         return reverseGeocodeService.getCityAndCountry(latitude, longitude);
@@ -178,6 +181,9 @@ public class DroneDashboardDto {
         return null;
     }
 
+    /**
+     * Placeholder method. Remove if unused or implement properly.
+     */
     public Object getAverageSpeed() {
         // TODO: Implement or remove
         return null;

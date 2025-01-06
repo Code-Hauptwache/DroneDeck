@@ -1,5 +1,8 @@
 package main.java.ui.enums;
 
+/**
+ * Enum for carriage types.
+ */
 public enum CarriageType {
     SEN("Sensor"),
     ACT("Actuator"),
@@ -23,10 +26,10 @@ public enum CarriageType {
         if (code == null) {
             return NONE;
         }
-        switch (code) {
-            case "SEN": return SEN;
-            case "ACT": return ACT;
-            default:    return NONE;
-        }
+        return switch (code) {
+            case "SEN" -> SEN;
+            case "ACT" -> ACT;
+            default -> NONE;
+        };
     }
 }
