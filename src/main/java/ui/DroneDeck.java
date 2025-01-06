@@ -71,7 +71,7 @@ public class DroneDeck {
         frame.pack();
 
         // Enforce the minimum size (the user cannot shrink the window below this)
-        frame.setMinimumSize(new Dimension(1100, 900));
+        frame.setMinimumSize(new Dimension(1100, 850));
 
         // Center the frame on the screen and make it visible
         frame.setLocationRelativeTo(null);
