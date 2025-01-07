@@ -1,6 +1,6 @@
 package main.java.controllers;
 
-import main.java.ui.dtos.DroneDashboardCardDto;
+import main.java.ui.dtos.DroneDashboardDto;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -12,11 +12,11 @@ public class DroneDashboardControllerTest {
         DroneDashboardController droneDashboardController = new DroneDashboardController();
 
         long start = System.currentTimeMillis();
-        List<DroneDashboardCardDto> droneDashboardCards = droneDashboardController.getDroneDashboardCardsThreads(6, 0);
+        List<DroneDashboardDto> droneDashboardCards = droneDashboardController.getDroneDashboardCardsThreads(6, 0);
         long end = System.currentTimeMillis();
         System.out.println(end - start + "ms");
 
-        for (DroneDashboardCardDto droneDashboardCard : droneDashboardCards) {
+        for (DroneDashboardDto droneDashboardCard : droneDashboardCards) {
             System.out.println("droneDashboardCard.toString() = " + droneDashboardCard.toString());
         }
     }

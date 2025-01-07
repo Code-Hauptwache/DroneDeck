@@ -5,6 +5,7 @@ import main.java.services.ReverseGeocode.ReverseGeocodeService;
 import main.java.ui.enums.CarriageType;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
@@ -31,6 +32,16 @@ public class DroneDashboardDto {
     private final double weight;
     private final double maxSpeed;
     private final double controlRange;
+    private double travelDistance;
+    private String location;
+
+    public void setTravelDistance(double travelDistance) {
+        this.travelDistance = travelDistance;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
     // Format for display purposes:
     private static final DateTimeFormatter DISPLAY_FORMAT =
@@ -84,7 +95,9 @@ public class DroneDashboardDto {
         if (isoDateTime == null) {
             return null;
         }
-        return LocalDateTime.parse(isoDateTime, DateTimeFormatter.ISO_DATE_TIME);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+        ZonedDateTime zonedDateTime = ZonedDateTime.parse(isoDateTime, formatter);
+        return zonedDateTime.toLocalDateTime();
     }
 
     // -------------------------
