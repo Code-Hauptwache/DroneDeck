@@ -67,7 +67,7 @@ public class DroneDashboardController implements IDroneDashboardController {
     }
 
     private DroneDashboardDto getDroneDashboardCardDto(DroneEntity drone) {
-        ArrayList<DroneDynamics> latestDroneDynamic = null;
+        ArrayList<DroneDynamics> latestDroneDynamic;
         try {
             // get latest drone dynamic info
             latestDroneDynamic = droneApiService.getDroneDynamicsByDroneId(drone.getId(), 1, 0);
@@ -76,10 +76,7 @@ public class DroneDashboardController implements IDroneDashboardController {
             throw new RuntimeException(e);
         }
 
-        if (latestDroneDynamic.isEmpty()) {
-            return null;
-        }
-        DroneDynamics droneDynamic = latestDroneDynamic.get(0);
+        DroneDynamics droneDynamic = latestDroneDynamic.getFirst();
 
         DroneTypeEntity droneType = drone.getDronetype();
 

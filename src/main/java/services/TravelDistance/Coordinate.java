@@ -5,8 +5,8 @@ package main.java.services.TravelDistance;
  */
 public class Coordinate {
 
-    private double longitude;
-    private double latitude;
+    private final double longitude;
+    private final double latitude;
 
     public Coordinate(double longitude, double latitude) {
         this.longitude = longitude;
@@ -31,9 +31,9 @@ public class Coordinate {
 
     /**
      * Static method for calculating distance of two coordinate
-     * @param coordinate1
-     * @param coordinate2
-     * @return
+     * @param coordinate1 first coordinate to calculate
+     * @param coordinate2 second coordinate to calculate
+     * @return Distance between two coordinate in kilometers
      */
     public static double distance(Coordinate coordinate1, Coordinate coordinate2) {
         double lat1 = coordinate1.getLatitude();

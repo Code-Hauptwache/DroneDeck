@@ -1,5 +1,6 @@
 package main.java.entity;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -8,6 +9,7 @@ import java.io.Serializable;
 public class DroneTypeEntity implements Serializable {
 
     // To fix the serialVersionUID
+    @Serial
     private static final long serialVersionUID = 1879467100886065125L;
 
     /// The Id of the DroneType

@@ -1,5 +1,6 @@
 package main.java.entity;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.regex.Pattern;
@@ -10,6 +11,7 @@ import java.util.regex.Pattern;
 public class DroneEntity implements Serializable {
 
     // To fix the serialVersionUID
+    @Serial
     private static final long serialVersionUID = 1879467100886065125L;
 
     /**
@@ -64,8 +66,8 @@ public class DroneEntity implements Serializable {
         Pattern pattern = Pattern.compile(Pattern.quote(keyword), Pattern.CASE_INSENSITIVE);
 
         return pattern.matcher(this.serialnumber).find()
-                || pattern.matcher(this.dronetype.typename).find()
-                || pattern.matcher(this.dronetype.manufacturer).find();
+                || (dronetype != null && (pattern.matcher(this.dronetype.typename).find()
+                || pattern.matcher(this.dronetype.manufacturer).find()));
     }
 
     /**

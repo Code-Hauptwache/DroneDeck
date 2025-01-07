@@ -19,6 +19,10 @@ public class TravelDistanceService implements ITravelDistanceService {
     private static final int LIMIT = 100;
     private static final int THREAD_NUM = DATA_NUM / LIMIT;
 
+    /**
+     * Constructor for TravelDistanceService
+     * @param droneApiService the impl object of IDroneApiService
+     */
     public TravelDistanceService(IDroneApiService droneApiService) {
         this.droneApiService = droneApiService;
     }
@@ -26,7 +30,7 @@ public class TravelDistanceService implements ITravelDistanceService {
     /**
      * Calculate distance from 500 data of dynamic drone list
      * Using threads for faster calculate
-     * @param droneId
+     * @param droneId drone's ID that we want to find
      * @return total travel distance of drone (km)
      */
     @Override
@@ -41,13 +45,14 @@ public class TravelDistanceService implements ITravelDistanceService {
                     return getDistanceSum(droneId, taskId * LIMIT);
                 } catch (DroneApiException e) {
                     e.printStackTrace();
+                    // TODO: Handle exception
                     return 0.0;
                 }
             }, executorService));
         }
 
         double sum = futures.stream()
-                .mapToDouble(f -> f.join())
+                .mapToDouble(CompletableFuture::join)
                 .sum();
 
         executorService.shutdown();
@@ -59,7 +64,7 @@ public class TravelDistanceService implements ITravelDistanceService {
 
         List<Coordinate> coordinates = droneDynamics.stream()
                 .map(d -> new Coordinate(d.longitude, d.latitude))
-                .collect(Collectors.toList());
+                .toList();
 
         double sum = 0.0;
         for (int i = 0; i < coordinates.size() - 1; i++) {
