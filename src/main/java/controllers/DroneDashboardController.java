@@ -89,7 +89,7 @@ public class DroneDashboardController implements IDroneDashboardController {
                 droneDynamic.speed,
                 droneDynamic.longitude,
                 droneDynamic.latitude,
-                drone.getSerialnumber(),
+                drone.getSerialNumber(),
                 drone.getCarriage_weight(),
                 drone.getCarriage_type(),
                 droneType.max_carriage,

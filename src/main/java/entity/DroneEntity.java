@@ -15,9 +15,9 @@ public class DroneEntity implements Serializable {
     private static final long serialVersionUID = 1879467100886065125L;
 
     /**
-     * The Id of the Drone
+     * The ID of the Drone
      */
-    private int id = 0;
+    private final int id;
 
     /**
      * Linked Dronetype Entity
@@ -25,28 +25,27 @@ public class DroneEntity implements Serializable {
     private DroneTypeEntity dronetype;
 
     /// Creation Date of the Drone
-    private Date created = new Date();
+    private final Date created;
 
     /// Serial number of the Drone
-    private String serialnumber = "";
+    private final String serialNumber;
 
     /// The carriage weight of the drone
-    private int carriage_weight = 0;
+    private final int carriage_weight;
 
     /// The carriage type of the drone
-    private String carriage_type = "";
+    private final String carriage_type;
 
-    public DroneEntity(int id, Date created, String serialnumber, int carriage_weight, String carriage_type) {
+    public DroneEntity(int id, Date created, String serialNumber, int carriage_weight, String carriage_type) {
         this.id = id;
         this.created = created;
-        this.serialnumber = serialnumber;
+        this.serialNumber = serialNumber;
         this.carriage_weight = carriage_weight;
         this.carriage_type = carriage_type;
     }
 
     /**
      * Dronetype Setter for Lazy Initialization
-     * @param dronetype
      */
     public void setDronetype(DroneTypeEntity dronetype) {
         this.dronetype = dronetype;
@@ -58,17 +57,17 @@ public class DroneEntity implements Serializable {
      * @param keyword for searching
      * @return boolean value that this drone matches with condition
      */
-    public boolean checkIfKeywordMatches(String keyword) {
-        if (keyword == null || keyword.isEmpty()) {
-            return true; // If empty value comes in, all the drones return.
-        }
-
-        Pattern pattern = Pattern.compile(Pattern.quote(keyword), Pattern.CASE_INSENSITIVE);
-
-        return pattern.matcher(this.serialnumber).find()
-                || (dronetype != null && (pattern.matcher(this.dronetype.typename).find()
-                || pattern.matcher(this.dronetype.manufacturer).find()));
+public boolean checkIfKeywordMatches(String keyword) {
+    if (keyword == null || keyword.isEmpty()) {
+        return true; // If empty value comes in, all the drones return.
     }
+
+    Pattern pattern = Pattern.compile(Pattern.quote(keyword), Pattern.CASE_INSENSITIVE);
+
+    return (serialNumber != null && pattern.matcher(this.serialNumber).find())
+            || (dronetype != null && ((dronetype.typename != null && pattern.matcher(this.dronetype.typename).find())
+            || (dronetype.manufacturer != null && pattern.matcher(this.dronetype.manufacturer).find())));
+}
 
     /**
      * ToString Override method for Test
@@ -80,7 +79,7 @@ public class DroneEntity implements Serializable {
                 "id=" + id +
                 ", dronetype=" + dronetype +
                 ", created=" + created +
-                ", serialnumber='" + serialnumber + '\'' +
+                ", serial number='" + serialNumber + '\'' +
                 ", carriage_weight=" + carriage_weight +
                 ", carriage_type='" + carriage_type + '\'' +
                 '}';
@@ -94,12 +93,8 @@ public class DroneEntity implements Serializable {
         return dronetype;
     }
 
-    public Date getCreated() {
-        return created;
-    }
-
-    public String getSerialnumber() {
-        return serialnumber;
+    public String getSerialNumber() {
+        return serialNumber;
     }
 
     public int getCarriage_weight() {
