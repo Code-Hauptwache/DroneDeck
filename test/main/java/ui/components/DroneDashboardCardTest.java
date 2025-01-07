@@ -1,6 +1,6 @@
 package main.java.ui.components;
 
-import main.java.ui.dtos.DroneDashboardCardDto;
+import main.java.ui.dtos.DroneDashboardDto;
 import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
@@ -13,8 +13,8 @@ class DroneDashboardCardTest {
 
     @Test
     void testDashboardDroneCardContent() {
-        // Create a fake DroneDashboardCardDto
-        DroneDashboardCardDto dto = new DroneDashboardCardDto(
+        // Create a fake DroneDashboardDto
+        DroneDashboardDto dto = new DroneDashboardDto(
                 "Drone 1",
                 "DJI",
                 "IS",
@@ -24,7 +24,15 @@ class DroneDashboardCardTest {
                 12.34,
                 56.78,
                 "1234567890",
-                0, "location");
+                52.0,
+                "SEN",
+                60.0,
+                "2024-12-15T17:00:52.588123+01:00",
+                732.0,
+                54.0,
+                250.0,
+                "2024-12-15T17:00:52.588123+01:00"
+        );
 
         // Create a DroneDashboardCard instance
         DroneDashboardCard card = new DroneDashboardCard(dto);
