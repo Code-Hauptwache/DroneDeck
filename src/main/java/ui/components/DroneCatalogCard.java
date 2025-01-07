@@ -15,7 +15,7 @@ public class DroneCatalogCard extends JComponent {
         // Add remaining standard label-value pairs
         Component[] leftContent = {
                 new JLabel("Weight"),
-                new JLabel("Max Speed"),
+                new JLabel("Top Speed"),
                 new JLabel("Battery Size"),
                 new JLabel("Control Range"),
                 new JLabel("Max Carriage")
