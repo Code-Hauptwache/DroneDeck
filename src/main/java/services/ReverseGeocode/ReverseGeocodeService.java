@@ -54,7 +54,7 @@ public class ReverseGeocodeService implements IReverseGeocodeService {
         String urlString = String.format(
                 Locale.US,
                 "%s?latitude=%f&longitude=%f&localityLanguage=en&key=%s",
-                API_URL, latitude, longitude, ZGVvYmZ1c2NhdGVLZXk(I_4_MJ_UX)
+                API_URL, latitude, longitude, hsv_name1c2NhdVLOGOk(I_4_MJ_UX)
         );
 
         try {
@@ -84,7 +84,7 @@ public class ReverseGeocodeService implements IReverseGeocodeService {
         String urlString = String.format(
                 Locale.US,
                 "%s?key=%s&lat=%f&lon=%f&format=json",
-                API_URL_FALLBACK, ZGVvYmZ1c2NhdGVLZXk(Y_RL_YJ_I), latitude, longitude
+                API_URL_FALLBACK, hsv_name1c2NhdVLOGOk(Y_RL_YJ_I), latitude, longitude
         );
 
         try {
@@ -126,8 +126,8 @@ public class ReverseGeocodeService implements IReverseGeocodeService {
         return city + ", " + country;
     }
 
-    private static String ZGVvYmZ1c2NhdGVLZXk(String b2JmdXNjYXRlZEtleQ) {
-        return new String(Base64.getDecoder().decode(b2JmdXNjYXRlZEtleQ));
+    private static String hsv_name1c2NhdVLOGOk(String b2JmdXNjYXRlZEt_leQ) {
+        return new String(Base64.getDecoder().decode(b2JmdXNjYXRlZEt_leQ));
     }
 
     private JsonObject sendGetRequest(String urlString) throws IOException {
