@@ -1,6 +1,6 @@
 package main.java.ui.components;
 
-import main.java.ui.dtos.DroneDashboardDto;
+import main.java.ui.dtos.DroneDto;
 import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
@@ -13,8 +13,8 @@ class DroneDashboardCardTest {
 
     @Test
     void testDashboardDroneCardContent() {
-        // Create a fake DroneDashboardDto
-        DroneDashboardDto dto = new DroneDashboardDto(
+        // Create a fake DroneDto
+        DroneDto dto = new DroneDto(
                 "Drone 1",
                 "DJI",
                 "IS",

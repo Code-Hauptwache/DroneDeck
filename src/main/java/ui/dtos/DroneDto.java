@@ -1,7 +1,5 @@
 package main.java.ui.dtos;
 
-import main.java.services.ReverseGeocode.IReverseGeocodeService;
-import main.java.services.ReverseGeocode.ReverseGeocodeService;
 import main.java.ui.enums.CarriageType;
 
 import java.time.LocalDateTime;
@@ -14,7 +12,7 @@ import java.util.Locale;
  * DTO for drone-related information.
  * Contains basic fields and light data conversion (e.g. formatting date/time).
  */
-public class DroneDashboardDto {
+public class DroneDto {
 
     private final String typeName;
     private final String manufacturer;
@@ -43,7 +41,7 @@ public class DroneDashboardDto {
     /**
      * Main constructor. Note that we parse the ISO date/time strings up front.
      */
-    public DroneDashboardDto(
+    public DroneDto(
             String typeName,
             String manufacturer,
             String status,

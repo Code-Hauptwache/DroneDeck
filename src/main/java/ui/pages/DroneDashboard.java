@@ -1,10 +1,8 @@
 package main.java.ui.pages;
 
 import main.java.services.ScrollPane.ScrollPaneService;
-import main.java.ui.components.CardTemplate;
 import main.java.ui.components.DroneDashboardCard;
-import main.java.ui.dtos.DroneCatalogCardDto;
-import main.java.ui.dtos.DroneDashboardDto;
+import main.java.ui.dtos.DroneDto;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,17 +33,17 @@ public class DroneDashboard extends JPanel {
         // Add CardTemplate instances to the center panel using GridLayout
         JPanel cardPanel = new JPanel(new GridLayout(0, 1, gap, gap));
 
-        // Create a fake DroneDashboardDto
-        DroneDashboardDto[] fakeDTO = new DroneDashboardDto[] {
-                new DroneDashboardDto("Drone 1", "DJI", "ON", 314, 400, 50.0, 12.34, 56.78, "1234567890", 52.0, "SEN", 60.0, "2024-12-15T17:00:52.588123+01:00", 732.0, 54.0, 250.0, "2024-12-15T17:00:52.588123+01:00"),
-                new DroneDashboardDto("Drone 2", "Parrot", "ON", 120, 410, 55.0, 13.34, 57.78, "0987654321", 53.0, "AC", 65.0, "2024-12-16T17:00:52.588123+01:00", 742.0, 55.0, 260.0, "2024-12-16T17:00:52.588123+01:00"),
-                new DroneDashboardDto("Drone 3", "Yuneec", "IS", 30, 420, 60.0, 14.34, 58.78, "1122334455", 54.0, "SEN", 70.0, "2024-12-17T17:00:52.588123+01:00", 752.0, 56.0, 270.0, "2024-12-17T17:00:52.588123+01:00"),
-                new DroneDashboardDto("Drone 4", "DJI", "OF", 0, 400, 50.0, 12.34, 56.78, "1234567890", 52.0, "", 60.0, "2024-12-15T17:00:52.588123+01:00", 732.0, 54.0, 250.0, "2024-12-15T17:00:52.588123+01:00"),
-                new DroneDashboardDto("Drone 5", "Parrot", "ON", 120, 410, 55.0, 13.34, 57.78, "0987654321", 53.0, "AC", 65.0, "2024-12-16T17:00:52.588123+01:00", 742.0, 55.0, 260.0, "2024-12-16T17:00:52.588123+01:00"),
+        // Create a fake DroneDto
+        DroneDto[] fakeDTO = new DroneDto[] {
+                new DroneDto("Drone 1", "DJI", "ON", 314, 400, 50.0, 12.34, 56.78, "1234567890", 52.0, "SEN", 60.0, "2024-12-15T17:00:52.588123+01:00", 732.0, 54.0, 250.0, "2024-12-15T17:00:52.588123+01:00"),
+                new DroneDto("Drone 2", "Parrot", "ON", 120, 410, 55.0, 13.34, 57.78, "0987654321", 53.0, "AC", 65.0, "2024-12-16T17:00:52.588123+01:00", 742.0, 55.0, 260.0, "2024-12-16T17:00:52.588123+01:00"),
+                new DroneDto("Drone 3", "Yuneec", "IS", 30, 420, 60.0, 14.34, 58.78, "1122334455", 54.0, "SEN", 70.0, "2024-12-17T17:00:52.588123+01:00", 752.0, 56.0, 270.0, "2024-12-17T17:00:52.588123+01:00"),
+                new DroneDto("Drone 4", "DJI", "OF", 0, 400, 50.0, 12.34, 56.78, "1234567890", 52.0, "", 60.0, "2024-12-15T17:00:52.588123+01:00", 732.0, 54.0, 250.0, "2024-12-15T17:00:52.588123+01:00"),
+                new DroneDto("Drone 5", "Parrot", "ON", 120, 410, 55.0, 13.34, 57.78, "0987654321", 53.0, "AC", 65.0, "2024-12-16T17:00:52.588123+01:00", 742.0, 55.0, 260.0, "2024-12-16T17:00:52.588123+01:00"),
         };
 
         // Add the fake DroneDashboardCard to the cardPanel
-        for (DroneDashboardDto dto : fakeDTO) {
+        for (DroneDto dto : fakeDTO) {
             cardPanel.add(new DroneDashboardCard(dto), BorderLayout.WEST);
         }
 

@@ -12,7 +12,7 @@ import main.java.services.ReverseGeocode.IReverseGeocodeService;
 import main.java.services.ReverseGeocode.ReverseGeocodeService;
 import main.java.services.TravelDistance.ITravelDistanceService;
 import main.java.services.TravelDistance.TravelDistanceService;
-import main.java.ui.dtos.DroneDashboardDto;
+import main.java.ui.dtos.DroneDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,31 +42,31 @@ public class DroneDashboardController implements IDroneDashboardController {
      *         or an empty list if no drones are found within the specified range.
      */
     @Override
-    public List<DroneDashboardDto> getDroneDashboardCardsThreads(int limit, int offset) {
+    public List<DroneDto> getDroneThreads(int limit, int offset) {
         List<DroneEntity> drones = localDroneDao.loadDroneData().subList(offset, offset + limit);
 
         ExecutorService executorService = Executors.newFixedThreadPool(limit);
 
-        List<CompletableFuture<DroneDashboardDto>> futures = new ArrayList<>();
+        List<CompletableFuture<DroneDto>> futures = new ArrayList<>();
 
         drones.parallelStream()
-                .map(d -> CompletableFuture.supplyAsync(() -> getDroneDashboardCardDto(d), executorService))
+                .map(d -> CompletableFuture.supplyAsync(() -> getDroneDto(d), executorService))
                 .forEach(futures::add);
 
-        List<DroneDashboardDto> droneDashboardDtoList = new ArrayList<>();
-        for (CompletableFuture<DroneDashboardDto> future : futures) {
-            DroneDashboardDto droneDashboardDto = future.join();
-            if (droneDashboardDto != null) {
-                droneDashboardDtoList.add(droneDashboardDto);
+        List<DroneDto> droneDtoList = new ArrayList<>();
+        for (CompletableFuture<DroneDto> future : futures) {
+            DroneDto droneDto = future.join();
+            if (droneDto != null) {
+                droneDtoList.add(droneDto);
             }
         }
 
         executorService.shutdown();
 
-        return droneDashboardDtoList;
+        return droneDtoList;
     }
 
-    private DroneDashboardDto getDroneDashboardCardDto(DroneEntity drone) {
+    private DroneDto getDroneDto(DroneEntity drone) {
         ArrayList<DroneDynamics> latestDroneDynamic;
         try {
             // get latest drone dynamic info
@@ -80,7 +80,7 @@ public class DroneDashboardController implements IDroneDashboardController {
 
         DroneTypeEntity droneType = drone.getDronetype();
 
-        DroneDashboardDto droneDashboardDto = new DroneDashboardDto(
+        DroneDto droneDto = new DroneDto(
                 droneType.typename,
                 droneType.manufacturer,
                 droneDynamic.status,
@@ -99,9 +99,9 @@ public class DroneDashboardController implements IDroneDashboardController {
                 droneType.control_range,
                 droneDynamic.timestamp.toString()
         );
-        droneDashboardDto.setTravelDistance(travelDistanceService.getTravelDistance(drone.getId()));
-        droneDashboardDto.setLocation(reverseGeocodeService.getCityAndCountry(droneDynamic.latitude, droneDynamic.longitude));
+        droneDto.setTravelDistance(travelDistanceService.getTravelDistance(drone.getId()));
+        droneDto.setLocation(reverseGeocodeService.getCityAndCountry(droneDynamic.latitude, droneDynamic.longitude));
 
-        return droneDashboardDto;
+        return droneDto;
     }
 }

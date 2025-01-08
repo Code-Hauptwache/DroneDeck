@@ -1,6 +1,6 @@
 package main.java.ui.components;
 
-import main.java.ui.dtos.DroneDashboardDto;
+import main.java.ui.dtos.DroneDto;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 import javax.swing.*;
@@ -20,7 +20,7 @@ public class DroneVisualBatteryStatus extends JPanel {
      *
      * @param dto The DTO containing the information to display.
      */
-    public DroneVisualBatteryStatus(DroneDashboardDto dto) {
+    public DroneVisualBatteryStatus(DroneDto dto) {
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         setAlignmentY(Component.CENTER_ALIGNMENT);
 
