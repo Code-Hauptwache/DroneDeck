@@ -5,7 +5,9 @@ import main.java.services.ReverseGeocode.ReverseGeocodeService;
 import main.java.ui.enums.CarriageType;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Locale;
 
 /**
@@ -31,6 +33,8 @@ public class DroneDashboardDto {
     private final double weight;
     private final double maxSpeed;
     private final double controlRange;
+    private double travelDistance;
+    private String location;
 
     // Format for display purposes:
     private static final DateTimeFormatter DISPLAY_FORMAT =
@@ -84,7 +88,20 @@ public class DroneDashboardDto {
         if (isoDateTime == null) {
             return null;
         }
-        return LocalDateTime.parse(isoDateTime, DateTimeFormatter.ISO_DATE_TIME);
+
+        try {
+            return LocalDateTime.parse(isoDateTime, DateTimeFormatter.ISO_DATE_TIME);
+        } catch (DateTimeParseException _) {
+        }
+
+        try {
+            DateTimeFormatter customFormatter = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+            ZonedDateTime zonedDateTime = ZonedDateTime.parse(isoDateTime, customFormatter);
+            return zonedDateTime.toLocalDateTime();
+        } catch (DateTimeParseException _) {
+        }
+
+        throw new IllegalArgumentException("Invalid date time format: " + isoDateTime);
     }
 
     // -------------------------
@@ -154,12 +171,19 @@ public class DroneDashboardDto {
         return dataTimestampDateTime.format(DISPLAY_FORMAT);
     }
 
+    public void setTravelDistance(double travelDistance) {
+        this.travelDistance = travelDistance;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     /**
      * Returns the location of the drone as a string (city, country).
      */
     public String getLocation() {
-        IReverseGeocodeService reverseGeocodeService = new ReverseGeocodeService();
-        return reverseGeocodeService.getCityAndCountry(latitude, longitude);
+        return location;
     }
 
     /**
@@ -177,8 +201,7 @@ public class DroneDashboardDto {
      * Placeholder method. Remove if unused or implement properly.
      */
     public Object getTravelDistance() {
-        // TODO: Implement or remove
-        return null;
+        return travelDistance;
     }
 
     /**
