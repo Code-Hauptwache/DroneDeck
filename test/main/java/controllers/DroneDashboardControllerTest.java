@@ -12,12 +12,12 @@ public class DroneDashboardControllerTest {
         DroneDashboardController droneDashboardController = new DroneDashboardController();
 
         long start = System.currentTimeMillis();
-        List<DroneDto> droneDashboardCards = droneDashboardController.getDroneThreads(6, 0);
+        List<DroneDto> droneDtoList = droneDashboardController.getDroneThreads(6, 0);
         long end = System.currentTimeMillis();
         System.out.println(end - start + "ms");
 
-        for (DroneDto droneDashboardCard : droneDashboardCards) {
-            System.out.println("droneDashboardCard.toString() = " + droneDashboardCard.toString());
+        for (DroneDto droneDto : droneDtoList) {
+            System.out.println("droneDto.toString() = " + droneDto.toString());
         }
     }
 }
