@@ -18,6 +18,7 @@ class DroneDetailedViewTest {
     @BeforeEach
     void setUp() {
         DroneDto dto = new DroneDto(
+                1,
                 "Test Drone",
                 "Test Manufacturer",
                 "Active",
