@@ -77,7 +77,7 @@ public boolean checkIfKeywordMatches(String keyword) {
     public String toString() {
         return "DroneEntity{" +
                 "id=" + id +
-                ", dronetype=" + dronetype +
+                ", drone_type=" + dronetype +
                 ", created=" + created +
                 ", serial number='" + serialNumber + '\'' +
                 ", carriage_weight=" + carriage_weight +
