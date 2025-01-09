@@ -3,6 +3,8 @@ package main.java.ui.components;
 import com.formdev.flatlaf.ui.FlatLineBorder;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
@@ -35,12 +37,27 @@ public class SearchBar extends JComponent {
                 BorderFactory.createEmptyBorder(1, 1, 1, 1)
         ));
 
+        // Add a DocumentListener to update searchText as the user types
+        textField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateSearchText();
+            }
 
-        // Bind the entered text to the searchText variable when Enter is pressed
-        textField.addActionListener(e -> {
-            searchText = textField.getText();
-            // Call search logic or event here if needed
-            System.out.println("Search Text: " + searchText);
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateSearchText();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateSearchText();
+            }
+
+            private void updateSearchText() {
+                searchText = textField.getText();
+                System.out.println("Search Text: " + searchText);
+            }
         });
 
         add(textField, BorderLayout.CENTER);
