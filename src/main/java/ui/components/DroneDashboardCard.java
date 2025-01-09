@@ -42,7 +42,7 @@ public class DroneDashboardCard extends JComponent {
                 new DroneStatus(dto),
                 new JLabel("Speed"),
                 new JLabel("Top Speed"),
-                new JLabel("Location"),
+                new JLabel("Carriage Type"),
                 new JLabel("Serial")
         };
 
@@ -51,7 +51,7 @@ public class DroneDashboardCard extends JComponent {
                 new JLabel((int) dto.getSpeed() + " km/h"),
                 new JLabel((int) dto.getMaxSpeed() + " km/h"),
                 // new JLabel(dto.getLocation() != null ? dto.getLocation() + " km" : "N/A"),
-                new JLabel("N/A"), // Location is temporarily disabled
+                new JLabel(dto.getCarriageType()),
                 new JLabel(dto.getSerialNumber())
         };
 
