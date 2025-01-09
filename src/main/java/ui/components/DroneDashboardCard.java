@@ -1,5 +1,9 @@
 package main.java.ui.components;
 
+import main.java.services.DroneApi.DroneApiService;
+import main.java.services.DroneApi.IDroneApiService;
+import main.java.services.TravelDistance.ITravelDistanceService;
+import main.java.services.TravelDistance.TravelDistanceService;
 import main.java.ui.MainPanel;
 import main.java.ui.dtos.DroneDto;
 import main.java.ui.pages.DroneDetailedView;
@@ -16,6 +20,9 @@ import java.awt.event.MouseEvent;
  * information about a drone.
  */
 public class DroneDashboardCard extends JComponent {
+    private static final String API_KEY = System.getenv("DRONE_API_KEY");
+    private final IDroneApiService droneApiService = new DroneApiService(API_KEY);
+    private final ITravelDistanceService travelDistanceService = new TravelDistanceService(droneApiService);
     private final DroneDto dto;
 
     /**
@@ -87,6 +94,10 @@ public class DroneDashboardCard extends JComponent {
     }
 
     private void showDetailOverlay() {
+        if (!dto.isTravelDistanceSet()) {
+            dto.setTravelDistance((int) travelDistanceService.getTravelDistance(dto.getId()));
+        }
+
         MainPanel mainPanel = (MainPanel) SwingUtilities.getAncestorOfClass(MainPanel.class, this);
         if (mainPanel == null) {
             return;
@@ -126,11 +137,5 @@ public class DroneDashboardCard extends JComponent {
             overlayPanel.revalidate();
             overlayPanel.repaint();
         });
-    }
-
-    private String getTravelDistanceString(DroneDto dto) {
-        return (dto.getTravelDistance() != null && !dto.getTravelDistance().toString().isEmpty())
-                ? dto.getTravelDistance().toString()
-                : "N/A";
     }
 }

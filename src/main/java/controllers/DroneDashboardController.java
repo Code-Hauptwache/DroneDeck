@@ -13,8 +13,6 @@ import main.java.services.DroneApi.dtos.DroneDynamicsResponse;
 import main.java.services.DroneApi.dtos.DroneType;
 import main.java.services.ReverseGeocode.IReverseGeocodeService;
 import main.java.services.ReverseGeocode.ReverseGeocodeService;
-import main.java.services.TravelDistance.ITravelDistanceService;
-import main.java.services.TravelDistance.TravelDistanceService;
 import main.java.ui.dtos.DroneDto;
 
 import java.util.ArrayList;
@@ -31,7 +29,6 @@ public class DroneDashboardController implements IDroneDashboardController {
 
     private static final String API_KEY = System.getenv("DRONE_API_KEY");
     private final IDroneApiService droneApiService = new DroneApiService(API_KEY);
-    private final ITravelDistanceService travelDistanceService = new TravelDistanceService(droneApiService);
     private final ILocalDroneDao localDroneDao = new LocalDroneDao();
     private final IReverseGeocodeService reverseGeocodeService = new ReverseGeocodeService();
 
@@ -117,6 +114,7 @@ public class DroneDashboardController implements IDroneDashboardController {
         DroneTypeEntity droneType = drone.getDronetype();
 
         DroneDto droneDto = new DroneDto(
+                drone.getId(),
                 droneType.typename,
                 droneType.manufacturer,
                 droneDynamic.status,
@@ -135,7 +133,6 @@ public class DroneDashboardController implements IDroneDashboardController {
                 droneType.control_range,
                 droneDynamic.timestamp.toString()
         );
-        droneDto.setTravelDistance(travelDistanceService.getTravelDistance(drone.getId()));
         droneDto.setLocation(reverseGeocodeService.getCityAndCountry(droneDynamic.latitude, droneDynamic.longitude));
 
         return droneDto;

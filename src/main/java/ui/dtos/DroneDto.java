@@ -13,7 +13,7 @@ import java.util.Locale;
  * Contains basic fields and light data conversion (e.g. formatting date/time).
  */
 public class DroneDto {
-
+    private final int id;
     private final String typeName;
     private final String manufacturer;
     private final String status;
@@ -33,6 +33,8 @@ public class DroneDto {
     private final double controlRange;
     private double travelDistance;
     private String location;
+    private boolean isTravelDistanceSet = false;
+
 
     // Format for display purposes:
     private static final DateTimeFormatter DISPLAY_FORMAT =
@@ -42,6 +44,7 @@ public class DroneDto {
      * Main constructor. Note that we parse the ISO date/time strings up front.
      */
     public DroneDto(
+            int id,
             String typeName,
             String manufacturer,
             String status,
@@ -60,6 +63,7 @@ public class DroneDto {
             double controlRange,
             String dataTimestamp           // ISO date/time string
     ) {
+        this.id = id;
         this.typeName = typeName;
         this.manufacturer = manufacturer;
         this.status = status;
@@ -105,6 +109,8 @@ public class DroneDto {
     // -------------------------
     // Getters (with formatting)
     // -------------------------
+
+    public int getId() { return id; }
 
     public String getTypeName() {
         return typeName;
@@ -169,8 +175,15 @@ public class DroneDto {
         return dataTimestampDateTime.format(DISPLAY_FORMAT);
     }
 
+    // Modify the setTravelDistance method
     public void setTravelDistance(double travelDistance) {
         this.travelDistance = travelDistance;
+        this.isTravelDistanceSet = true;
+    }
+
+    // Add a method to check if travel distance is set
+    public boolean isTravelDistanceSet() {
+        return isTravelDistanceSet;
     }
 
     public void setLocation(String location) {
@@ -198,7 +211,7 @@ public class DroneDto {
     /**
      * Placeholder method. Remove if unused or implement properly.
      */
-    public Object getTravelDistance() {
+    public double getTravelDistance() {
         return travelDistance;
     }
 
