@@ -1,6 +1,7 @@
 package main.java.ui.pages;
 
 import main.java.controllers.DroneDashboardController;
+import main.java.dao.LocalDroneDao;
 import main.java.services.ScrollPane.ScrollPaneService;
 import main.java.ui.components.DroneDashboardCard;
 import main.java.ui.dtos.DroneDto;
@@ -36,8 +37,9 @@ public class DroneDashboard extends JPanel {
         JPanel cardPanel = new JPanel(new GridLayout(0, 1, gap, gap));
 
         // Create a fake DroneDto
+        LocalDroneDao localDroneDao = new LocalDroneDao();
         DroneDashboardController droneDashboardController = new DroneDashboardController();
-        List<DroneDto> testDtoList = droneDashboardController.getDroneThreads(4, 0);
+        List<DroneDto> testDtoList = droneDashboardController.getDroneThreads(localDroneDao.getDroneDataCount(), 0);
 
         // Add the fake DroneDashboardCard to the cardPanel
         for (DroneDto droneDto : testDtoList) {

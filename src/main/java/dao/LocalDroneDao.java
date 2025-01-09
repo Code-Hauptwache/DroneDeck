@@ -42,6 +42,14 @@ public class LocalDroneDao implements ILocalDroneDao {
         return singletonList;
     }
 
+    /**
+     * Get count of drone data
+     * @return count of drone data
+     */
+    public int getDroneDataCount() {
+        return loadDroneData().size();
+    }
+
     private List<DroneEntity> getDroneDataFromFile() {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(DRONE_FILE_NAME))) {
             return (List<DroneEntity>) ois.readObject();
