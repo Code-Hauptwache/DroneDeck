@@ -45,10 +45,10 @@ public class DroneEntity implements Serializable {
     }
 
     /**
-     * Dronetype Setter for Lazy Initialization
+     * Drone type Setter for Lazy Initialization
      */
-    public void setDronetype(DroneTypeEntity dronetype) {
-        this.dronetype = dronetype;
+    public void setDroneType(DroneTypeEntity droneTypeEntity) {
+        this.dronetype = droneTypeEntity;
     }
 
     /**
