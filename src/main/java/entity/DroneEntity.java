@@ -22,7 +22,7 @@ public class DroneEntity implements Serializable {
     /**
      * Linked Dronetype Entity
      */
-    private DroneTypeEntity dronetype;
+    private DroneTypeEntity droneType;
 
     /// Creation Date of the Drone
     private final Date created;
@@ -48,7 +48,7 @@ public class DroneEntity implements Serializable {
      * Drone type Setter for Lazy Initialization
      */
     public void setDroneType(DroneTypeEntity droneTypeEntity) {
-        this.dronetype = droneTypeEntity;
+        this.droneType = droneTypeEntity;
     }
 
     /**
@@ -65,8 +65,8 @@ public boolean checkIfKeywordMatches(String keyword) {
     Pattern pattern = Pattern.compile(Pattern.quote(keyword), Pattern.CASE_INSENSITIVE);
 
     return (serialNumber != null && pattern.matcher(this.serialNumber).find())
-            || (dronetype != null && ((dronetype.typename != null && pattern.matcher(this.dronetype.typename).find())
-            || (dronetype.manufacturer != null && pattern.matcher(this.dronetype.manufacturer).find())));
+            || (droneType != null && ((droneType.typename != null && pattern.matcher(this.droneType.typename).find())
+            || (droneType.manufacturer != null && pattern.matcher(this.droneType.manufacturer).find())));
 }
 
     /**
@@ -77,7 +77,7 @@ public boolean checkIfKeywordMatches(String keyword) {
     public String toString() {
         return "DroneEntity{" +
                 "id=" + id +
-                ", drone_type=" + dronetype +
+                ", drone_type=" + droneType +
                 ", created=" + created +
                 ", serial number='" + serialNumber + '\'' +
                 ", carriage_weight=" + carriage_weight +
@@ -89,8 +89,8 @@ public boolean checkIfKeywordMatches(String keyword) {
         return id;
     }
 
-    public DroneTypeEntity getDronetype() {
-        return dronetype;
+    public DroneTypeEntity getDroneType() {
+        return droneType;
     }
 
     public String getSerialNumber() {
