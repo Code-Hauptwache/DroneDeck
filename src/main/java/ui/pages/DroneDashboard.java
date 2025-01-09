@@ -37,7 +37,7 @@ public class DroneDashboard extends JPanel {
 
         // Create a fake DroneDto
         DroneDashboardController droneDashboardController = new DroneDashboardController();
-        List<DroneDto> testDtoList = droneDashboardController.getDroneThreads(6, 0);
+        List<DroneDto> testDtoList = droneDashboardController.getDroneThreads(4, 0);
 
         // Add the fake DroneDashboardCard to the cardPanel
         for (DroneDto droneDto : testDtoList) {
