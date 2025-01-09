@@ -110,7 +110,7 @@ public class DroneDetailedView extends JPanel {
         // Populate columns with data
         addColumn(centerPanel, createColumnLabels(new String[]{"Speed", "Average Speed", "Location", "Traveled", "Carriage Weight", "Carriage Type", "Last Seen", "Serial Number"}), 0, gbc);
         addColumn(centerPanel, createColumnData(dto), 1, gbc);
-        addColumn(centerPanel, createColumnLabels(new String[]{"Weight", "Top Speed", "Battery Capacity", "Control Range", "Max Carriage"}), 2, gbc);
+        addColumn(centerPanel, createColumnLabels(new String[]{"Top Speed", "Weight", "Battery Capacity", "Control Range", "Max Carriage"}), 2, gbc);
         addColumn(centerPanel, createAdditionalData(dto), 3, gbc);
 
         wrapper.add(centerPanel, BorderLayout.CENTER);
@@ -148,8 +148,8 @@ public class DroneDetailedView extends JPanel {
 
     private Component[] createAdditionalData(DroneDto dto) {
         return new Component[]{
-                new JLabel((int) dto.getWeight() + " g"),
                 new JLabel((int) dto.getMaxSpeed() + " km/h"),
+                new JLabel((int) dto.getWeight() + " g"),
                 new JLabel((int) dto.getBatteryCapacity() + " mAh"),
                 new JLabel((int) dto.getControlRange() + " m"),
                 new JLabel((int) dto.getMaxCarriageWeight() + " g")
