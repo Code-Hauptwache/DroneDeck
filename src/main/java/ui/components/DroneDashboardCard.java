@@ -94,10 +94,6 @@ public class DroneDashboardCard extends JComponent {
     }
 
     private void showDetailOverlay() {
-        if (!dto.isTravelDistanceSet()) {
-            dto.setTravelDistance((int) travelDistanceService.getTravelDistance(dto.getId()));
-        }
-
         MainPanel mainPanel = (MainPanel) SwingUtilities.getAncestorOfClass(MainPanel.class, this);
         if (mainPanel == null) {
             return;
@@ -125,6 +121,8 @@ public class DroneDashboardCard extends JComponent {
 
         // Load the detailed view asynchronously
         SwingUtilities.invokeLater(() -> {
+            ensureTravelDistanceSet();
+
             DroneDetailedView detailView = new DroneDetailedView(dto, overlayPanel);
 
             // Remove loading panel and add detailed view
@@ -137,5 +135,11 @@ public class DroneDashboardCard extends JComponent {
             overlayPanel.revalidate();
             overlayPanel.repaint();
         });
+    }
+
+    private void ensureTravelDistanceSet() {
+        if (!dto.isTravelDistanceSet()) {
+            dto.setTravelDistance((int) travelDistanceService.getTravelDistance(dto.getId()));
+        }
     }
 }
