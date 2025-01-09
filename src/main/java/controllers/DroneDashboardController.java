@@ -8,6 +8,7 @@ import main.java.exceptions.DroneApiException;
 import main.java.services.DroneApi.DroneApiService;
 import main.java.services.DroneApi.IDroneApiService;
 import main.java.services.DroneApi.dtos.DroneDynamics;
+import main.java.services.DroneApi.dtos.DroneDynamicsResponse;
 import main.java.services.ReverseGeocode.IReverseGeocodeService;
 import main.java.services.ReverseGeocode.ReverseGeocodeService;
 import main.java.services.TravelDistance.ITravelDistanceService;
@@ -70,7 +71,9 @@ public class DroneDashboardController implements IDroneDashboardController {
         ArrayList<DroneDynamics> latestDroneDynamic;
         try {
             // get latest drone dynamic info
-            latestDroneDynamic = droneApiService.getDroneDynamicsByDroneId(drone.getId(), 1, 0);
+            DroneDynamicsResponse droneDynamicsResponse = droneApiService.getDroneDynamicsResponseByDroneId(drone.getId(), 1, 0);
+
+            latestDroneDynamic = droneApiService.getDroneDynamicsByDroneId(drone.getId(), 1, droneDynamicsResponse.getCount() - 1);
         } catch (DroneApiException e) {
             // TODO : Exception needs detail
             throw new RuntimeException(e);

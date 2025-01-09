@@ -26,4 +26,11 @@ public class DroneDynamicsResponse {
     /// The Results
     public ArrayList<DroneDynamics> results = new ArrayList<DroneDynamics>();
 
+    /**
+     * Get the number of total results available on the API
+     * @return the number of total results available on the API
+     */
+    public int getCount() {
+        return count;
+    }
 }
