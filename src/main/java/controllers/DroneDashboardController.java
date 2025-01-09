@@ -7,8 +7,10 @@ import main.java.entity.DroneTypeEntity;
 import main.java.exceptions.DroneApiException;
 import main.java.services.DroneApi.DroneApiService;
 import main.java.services.DroneApi.IDroneApiService;
+import main.java.services.DroneApi.dtos.Drone;
 import main.java.services.DroneApi.dtos.DroneDynamics;
 import main.java.services.DroneApi.dtos.DroneDynamicsResponse;
+import main.java.services.DroneApi.dtos.DroneType;
 import main.java.services.ReverseGeocode.IReverseGeocodeService;
 import main.java.services.ReverseGeocode.ReverseGeocodeService;
 import main.java.services.TravelDistance.ITravelDistanceService;
@@ -17,6 +19,7 @@ import main.java.ui.dtos.DroneDto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -44,6 +47,9 @@ public class DroneDashboardController implements IDroneDashboardController {
      */
     @Override
     public List<DroneDto> getDroneThreads(int limit, int offset) {
+        // Update the drone data before loading it
+        localDroneDao.updateDroneData(fetchLatestDroneData());
+
         List<DroneEntity> drones = localDroneDao.loadDroneData().subList(offset, offset + limit);
 
         ExecutorService executorService = Executors.newFixedThreadPool(limit);
@@ -65,6 +71,33 @@ public class DroneDashboardController implements IDroneDashboardController {
         executorService.shutdown();
 
         return droneDtoList;
+    }
+
+    private List<DroneEntity> fetchLatestDroneData() {
+        List<DroneEntity> droneEntityList = new ArrayList<>();
+        try {
+            List<Drone> drones = droneApiService.getDrones();
+            List<DroneType> droneTypes = droneApiService.getDroneTypes();
+
+            mapDronesToEntities(droneEntityList, drones, droneTypes);
+        } catch (DroneApiException e) {
+            throw new RuntimeException(e);
+        }
+        return droneEntityList;
+    }
+
+    public static void mapDronesToEntities(List<DroneEntity> droneEntityList, List<Drone> drones, List<DroneType> droneTypes) {
+        for (Drone drone : drones) {
+            DroneEntity entity = drone.toEntity();
+            DroneTypeEntity droneTypeEntity = droneTypes.stream()
+                    .filter(droneType -> Objects.equals(droneType.id, drone.getDronetypeId()))
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException())
+                    .toEntity();
+
+            entity.setDronetype(droneTypeEntity);
+            droneEntityList.add(entity);
+        }
     }
 
     private DroneDto getDroneDto(DroneEntity drone) {

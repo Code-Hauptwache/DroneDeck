@@ -1,16 +1,15 @@
 package main.java.services.LocalSearch;
 
+import main.java.controllers.DroneDashboardController;
 import main.java.services.DroneApi.IDroneApiService;
 import main.java.services.DroneApi.dtos.Drone;
 import main.java.services.DroneApi.dtos.DroneType;
 import main.java.exceptions.DroneApiException;
 import main.java.dao.ILocalDroneDao;
 import main.java.entity.DroneEntity;
-import main.java.entity.DroneTypeEntity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -42,18 +41,7 @@ public class LocalSearchService implements ILocalSearchService {
 
         List<DroneEntity> droneEntityList = new ArrayList<>();
 
-        for (Drone drone : drones) {
-            DroneEntity entity = drone.toEntity();
-            DroneTypeEntity droneTypeEntity = droneTypes.stream()
-                    .filter(droneType -> Objects.equals(droneType.id, drone.getDronetypeId()))
-                    .findFirst()
-                    .orElseThrow(() -> new RuntimeException())
-                    .toEntity();
-
-            entity.setDronetype(droneTypeEntity);
-
-            droneEntityList.add(entity);
-        }
+        DroneDashboardController.mapDronesToEntities(droneEntityList, drones, droneTypes);
 
         localDroneDao.updateDroneData(droneEntityList);
     }
