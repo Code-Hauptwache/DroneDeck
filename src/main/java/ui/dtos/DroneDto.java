@@ -126,9 +126,7 @@ public class DroneDto {
         return speed;
     }
 
-    public String getSerialNumber() {
-        return serialNumber;
-    }
+    public String getSerialNumber() { return serialNumber; }
 
     public double getCarriageWeight() {
         return carriageWeight;
