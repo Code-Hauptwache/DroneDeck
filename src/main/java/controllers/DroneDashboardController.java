@@ -81,7 +81,7 @@ public class DroneDashboardController implements IDroneDashboardController {
 
         DroneDynamics droneDynamic = latestDroneDynamic.getFirst();
 
-        DroneTypeEntity droneType = drone.getDroneType();
+        DroneTypeEntity droneType = drone.getDrone_type();
 
         DroneDto droneDto = new DroneDto(
                 droneType.typename,

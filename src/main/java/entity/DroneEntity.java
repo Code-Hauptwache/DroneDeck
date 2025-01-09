@@ -22,7 +22,7 @@ public class DroneEntity implements Serializable {
     /**
      * Linked Dronetype Entity
      */
-    private DroneTypeEntity droneType;
+    private DroneTypeEntity drone_type;
 
     /// Creation Date of the Drone
     private final Date created;
@@ -47,8 +47,8 @@ public class DroneEntity implements Serializable {
     /**
      * Drone type Setter for Lazy Initialization
      */
-    public void setDroneType(DroneTypeEntity droneTypeEntity) {
-        this.droneType = droneTypeEntity;
+    public void setDrone_type(DroneTypeEntity droneTypeEntity) {
+        this.drone_type = droneTypeEntity;
     }
 
     /**
@@ -65,8 +65,8 @@ public boolean checkIfKeywordMatches(String keyword) {
     Pattern pattern = Pattern.compile(Pattern.quote(keyword), Pattern.CASE_INSENSITIVE);
 
     return (serialNumber != null && pattern.matcher(this.serialNumber).find())
-            || (droneType != null && ((droneType.typename != null && pattern.matcher(this.droneType.typename).find())
-            || (droneType.manufacturer != null && pattern.matcher(this.droneType.manufacturer).find())));
+            || (drone_type != null && ((drone_type.typename != null && pattern.matcher(this.drone_type.typename).find())
+            || (drone_type.manufacturer != null && pattern.matcher(this.drone_type.manufacturer).find())));
 }
 
     /**
@@ -77,7 +77,7 @@ public boolean checkIfKeywordMatches(String keyword) {
     public String toString() {
         return "DroneEntity{" +
                 "id=" + id +
-                ", drone_type=" + droneType +
+                ", drone_type=" + drone_type +
                 ", created=" + created +
                 ", serial number='" + serialNumber + '\'' +
                 ", carriage_weight=" + carriage_weight +
@@ -89,8 +89,8 @@ public boolean checkIfKeywordMatches(String keyword) {
         return id;
     }
 
-    public DroneTypeEntity getDroneType() {
-        return droneType;
+    public DroneTypeEntity getDrone_type() {
+        return drone_type;
     }
 
     public String getSerialNumber() {

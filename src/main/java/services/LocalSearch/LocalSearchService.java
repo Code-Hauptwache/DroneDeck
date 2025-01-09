@@ -50,7 +50,7 @@ public class LocalSearchService implements ILocalSearchService {
                     .orElseThrow(() -> new RuntimeException())
                     .toEntity();
 
-            entity.setDroneType(droneTypeEntity);
+            entity.setDrone_type(droneTypeEntity);
 
             droneEntityList.add(entity);
         }
