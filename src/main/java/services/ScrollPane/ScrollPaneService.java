@@ -30,7 +30,6 @@ public class ScrollPaneService {
 
         // Set the vertical scrollbar width
         JScrollBar vBar = scrollPane.getVerticalScrollBar();
-        vBar.setPreferredSize(new Dimension(10, Integer.MAX_VALUE));
 
         // Adjust scroll speed
         scrollPane.setWheelScrollingEnabled(true);
