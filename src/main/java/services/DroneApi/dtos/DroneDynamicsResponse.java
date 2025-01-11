@@ -24,7 +24,7 @@ public class DroneDynamicsResponse {
     public String previous = "";
 
     /// The Results
-    public ArrayList<DroneDynamics> results = new ArrayList<DroneDynamics>();
+    public ArrayList<DroneDynamics> results = new ArrayList<>();
 
     /**
      * Get the number of total results available on the API

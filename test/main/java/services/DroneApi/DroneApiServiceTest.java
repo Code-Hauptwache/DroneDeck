@@ -53,5 +53,4 @@ class DroneApiServiceTest {
             fail("Exception occurred during test execution: " + ex.getMessage());
         }
     }
-
 }
