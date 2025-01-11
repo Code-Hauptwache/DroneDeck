@@ -51,8 +51,8 @@ public class LocalSearchService implements ILocalSearchService {
      */
     @Override
     public void initLocalData() {
-        List<Drone> drones = null;
-        List<DroneType> droneTypes = null;
+        List<Drone> drones;
+        List<DroneType> droneTypes;
         try {
             drones = droneApiService.getDrones();
             droneTypes = droneApiService.getDroneTypes();
@@ -92,6 +92,7 @@ public class LocalSearchService implements ILocalSearchService {
      * @return All Drone Types
      */
     public List<DroneTypeEntity> getAllDroneTypes() {
+        assert localDroneTypeDao != null;
         return localDroneTypeDao.loadDroneTypeData();
     }
 
