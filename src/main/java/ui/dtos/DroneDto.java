@@ -87,7 +87,7 @@ public class DroneDto {
 
     // Helper method to parse ISO date/time
     private LocalDateTime parseIsoDateTime(String isoDateTime) {
-        if (isoDateTime == null) {
+        if (isoDateTime == null || "N/A".equals(isoDateTime)) {
             return null;
         }
 

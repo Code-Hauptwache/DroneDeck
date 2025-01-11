@@ -5,14 +5,14 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class DroneDashboardControllerTest {
+public class DroneControllerTest {
 
     @Test
     void test() {
-        DroneDashboardController droneDashboardController = new DroneDashboardController();
+        DroneController droneController = new DroneController();
 
         long start = System.currentTimeMillis();
-        List<DroneDto> droneDtoList = droneDashboardController.getDroneThreads(6, 0);
+        List<DroneDto> droneDtoList = droneController.getDroneThreads(6, 0);
         long end = System.currentTimeMillis();
         System.out.println(end - start + "ms");
 

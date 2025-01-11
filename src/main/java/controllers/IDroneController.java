@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * A controller that provides List of DroneDto
  */
-public interface IDroneDashboardController {
+public interface IDroneController {
 
     /**
      * Retrieves a paginated list of drones and generates a corresponding list of DroneDto objects.

@@ -1,12 +1,14 @@
 package main.java.services.LocalSearch;
 
-import main.java.controllers.DroneDashboardController;
+import main.java.controllers.DroneController;
+import main.java.dao.ILocalDroneTypeDao;
 import main.java.services.DroneApi.IDroneApiService;
 import main.java.services.DroneApi.dtos.Drone;
 import main.java.services.DroneApi.dtos.DroneType;
 import main.java.exceptions.DroneApiException;
 import main.java.dao.ILocalDroneDao;
 import main.java.entity.DroneEntity;
+import main.java.entity.DroneTypeEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +20,29 @@ import java.util.stream.Collectors;
 public class LocalSearchService implements ILocalSearchService {
 
     private final ILocalDroneDao localDroneDao;
+    private final ILocalDroneTypeDao localDroneTypeDao;
     private final IDroneApiService droneApiService;
 
+    /**
+     * Constructor for LocalSearchService
+     * @param localDroneDao for accessing local drone data
+     * @param droneApiService for accessing drone api
+     */
     public LocalSearchService(ILocalDroneDao localDroneDao, IDroneApiService droneApiService) {
         this.localDroneDao = localDroneDao;
+        this.localDroneTypeDao = null;
+        this.droneApiService = droneApiService;
+    }
+
+    /**
+     * Constructor for LocalSearchService
+     * @param localDroneDao for accessing local drone data
+     * @param localDroneTypeDao for accessing local drone type data
+     * @param droneApiService for accessing drone api
+     */
+    public LocalSearchService(ILocalDroneDao localDroneDao, ILocalDroneTypeDao localDroneTypeDao, IDroneApiService droneApiService) {
+        this.localDroneDao = localDroneDao;
+        this.localDroneTypeDao = localDroneTypeDao;
         this.droneApiService = droneApiService;
     }
 
@@ -39,11 +60,22 @@ public class LocalSearchService implements ILocalSearchService {
             throw new RuntimeException(e);
         }
 
-        List<DroneEntity> droneEntityList = new ArrayList<>();
+        System.out.println("Number of drones fetched: " + drones.size());
+        System.out.println("Number of drone types fetched: " + droneTypes.size());
 
-        DroneDashboardController.mapDronesToEntities(droneEntityList, drones, droneTypes);
+        List<DroneEntity> droneEntityList = new ArrayList<>();
+        List<DroneTypeEntity> droneTypeEntityList = droneTypes.stream()
+                .map(DroneType::toEntity)
+                .collect(Collectors.toList());
+
+        DroneController.mapDronesToEntities(droneEntityList, drones, droneTypes);
+
+        System.out.println("Number of drone entities mapped: " + droneEntityList.size());
 
         localDroneDao.updateDroneData(droneEntityList);
+        if (localDroneTypeDao != null) {
+            localDroneTypeDao.updateDroneTypeData(droneTypeEntityList);
+        }
     }
 
     /**
@@ -53,6 +85,14 @@ public class LocalSearchService implements ILocalSearchService {
     @Override
     public List<DroneEntity> getAllDrones() {
         return localDroneDao.loadDroneData();
+    }
+
+    /**
+     * Get All Drone Types from local cached drone type data
+     * @return All Drone Types
+     */
+    public List<DroneTypeEntity> getAllDroneTypes() {
+        return localDroneTypeDao.loadDroneTypeData();
     }
 
     /**

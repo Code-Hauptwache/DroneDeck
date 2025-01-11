@@ -25,7 +25,7 @@ import java.util.concurrent.Executors;
 /**
  * A controller that provides List of DroneDashboardCardDto
  */
-public class DroneDashboardController implements IDroneDashboardController {
+public class DroneController implements IDroneController {
 
     private static final String API_KEY = System.getenv("DRONE_API_KEY");
     private final IDroneApiService droneApiService = new DroneApiService(API_KEY);
@@ -44,9 +44,6 @@ public class DroneDashboardController implements IDroneDashboardController {
      */
     @Override
     public List<DroneDto> getDroneThreads(int limit, int offset) {
-        // Update the drone data before loading it
-        localDroneDao.updateDroneData(fetchLatestDroneData());
-
         List<DroneEntity> drones = localDroneDao.loadDroneData().subList(offset, offset + limit);
 
         ExecutorService executorService = Executors.newFixedThreadPool(limit);
@@ -70,27 +67,27 @@ public class DroneDashboardController implements IDroneDashboardController {
         return droneDtoList;
     }
 
-    private List<DroneEntity> fetchLatestDroneData() {
-        List<DroneEntity> droneEntityList = new ArrayList<>();
-        try {
-            List<Drone> drones = droneApiService.getDrones();
-            List<DroneType> droneTypes = droneApiService.getDroneTypes();
-
-            mapDronesToEntities(droneEntityList, drones, droneTypes);
-        } catch (DroneApiException e) {
-            throw new RuntimeException(e);
-        }
-        return droneEntityList;
-    }
-
+    /**
+     * Maps a list of Drone objects to a list of DroneEntity objects.
+     *
+     * @param droneEntityList the list of DroneEntity objects to populate.
+     * @param drones the list of Drone objects to map to DroneEntity objects.
+     * @param droneTypes the list of DroneType objects to map to DroneTypeEntity objects.
+     */
     public static void mapDronesToEntities(List<DroneEntity> droneEntityList, List<Drone> drones, List<DroneType> droneTypes) {
         for (Drone drone : drones) {
             DroneEntity entity = drone.toEntity();
             DroneTypeEntity droneTypeEntity = droneTypes.stream()
-                    .filter(droneType -> Objects.equals(droneType.id, drone.getDronetypeId()))
+                    .filter(droneType -> Objects.equals(droneType.id, drone.getDroneTypeId()))
                     .findFirst()
-                    .orElseThrow(() -> new RuntimeException())
-                    .toEntity();
+                    .map(DroneType::toEntity)
+                    .orElse(null);
+
+            if (droneTypeEntity == null) {
+                // Log an error or handle the case where the DroneType is not found
+                System.err.println("DroneType not found for Drone ID: " + drone.getId() + ", DroneType ID: " + drone.getDroneTypeId());
+                continue;
+            }
 
             entity.setDronetype(droneTypeEntity);
             droneEntityList.add(entity);

@@ -4,6 +4,11 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.jthemedetecor.OsThemeDetector;
+import main.java.dao.LocalDroneDao;
+import main.java.dao.LocalDroneTypeDao;
+import main.java.services.DroneApi.DroneApiService;
+import main.java.services.LocalSearch.LocalSearchService;
+import main.java.services.LocalSearch.ILocalSearchService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,6 +58,15 @@ public class DroneDeck {
             //noinspection CallToPrintStackTrace
             e.printStackTrace();
         }
+
+        // Initialize LocalSearchService
+        LocalDroneDao localDroneDao = new LocalDroneDao();
+        LocalDroneTypeDao localDroneTypeDao = new LocalDroneTypeDao();
+        DroneApiService droneApiService = new DroneApiService(System.getenv("DRONE_API_KEY"));
+        ILocalSearchService localSearchService = new LocalSearchService(localDroneDao, localDroneTypeDao, droneApiService);
+
+        // Update local data
+        localSearchService.initLocalData();
 
         // Create the frame
         JFrame frame = new JFrame("DroneDeck");
