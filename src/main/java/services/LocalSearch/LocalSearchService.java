@@ -92,7 +92,9 @@ public class LocalSearchService implements ILocalSearchService {
      * @return All Drone Types
      */
     public List<DroneTypeEntity> getAllDroneTypes() {
-        assert localDroneTypeDao != null;
+        if (localDroneTypeDao == null) {
+            throw new IllegalStateException("localDroneTypeDao is not initialized");
+        }
         return localDroneTypeDao.loadDroneTypeData();
     }
 
