@@ -87,29 +87,35 @@ public class DroneCatalog extends JPanel {
         // Load drone types from local file
         List<DroneTypeEntity> droneTypes = localSearchService.findDroneTypesByKeyword(keyword);
 
-        // Add the DroneCatalogCard to the cardPanel
-        for (DroneTypeEntity droneType : droneTypes) {
-            DroneDto dto = new DroneDto(
-                    droneType.id,
-                    droneType.typename,
-                    droneType.manufacturer,
-                    "N/A", // Status
-                    0, // Battery status
-                    droneType.battery_capacity,
-                    0, // Speed
-                    0.0, // Longitude
-                    0.0, // Latitude
-                    "N/A", // Serial number
-                    0.0, // Carriage weight
-                    "N/A", // Carriage type
-                    droneType.max_carriage,
-                    "N/A", // Last seen
-                    droneType.weight,
-                    droneType.max_speed,
-                    droneType.control_range,
-                    "N/A" // Timestamp
-            );
-            cardPanel.add(new DroneCatalogCard(dto), BorderLayout.WEST);
+        if (droneTypes.isEmpty()) {
+            JLabel noResultsLabel = new JLabel("No results", SwingConstants.CENTER);
+            cardPanel.setLayout(new BorderLayout());
+            cardPanel.add(noResultsLabel, BorderLayout.CENTER);
+        } else {
+            // Add the DroneCatalogCard to the cardPanel
+            for (DroneTypeEntity droneType : droneTypes) {
+                DroneDto dto = new DroneDto(
+                        droneType.id,
+                        droneType.typename,
+                        droneType.manufacturer,
+                        "N/A", // Status
+                        0, // Battery status
+                        droneType.battery_capacity,
+                        0, // Speed
+                        0.0, // Longitude
+                        0.0, // Latitude
+                        "N/A", // Serial number
+                        0.0, // Carriage weight
+                        "N/A", // Carriage type
+                        droneType.max_carriage,
+                        "N/A", // Last seen
+                        droneType.weight,
+                        droneType.max_speed,
+                        droneType.control_range,
+                        "N/A" // Timestamp
+                );
+                cardPanel.add(new DroneCatalogCard(dto), BorderLayout.WEST);
+            }
         }
 
         cardPanel.revalidate();
