@@ -14,8 +14,11 @@ import java.awt.event.ComponentEvent;
 import java.util.List;
 
 public class DroneCatalog extends JPanel {
+    private static DroneCatalog instance;
+    private final JPanel cardPanel;
+    private final ILocalSearchService localSearchService;
 
-    public DroneCatalog() {
+    private DroneCatalog() {
         // Use BorderLayout for main arrangement
         super(new BorderLayout());
 
@@ -24,36 +27,13 @@ public class DroneCatalog extends JPanel {
         int verticalGap = 30;
 
         // Add CardTemplate instances to the center panel using GridLayout
-        JPanel cardPanel = new JPanel(new GridLayout(0, 1, horizontalGap, verticalGap));
+        cardPanel = new JPanel(new GridLayout(0, 1, horizontalGap, verticalGap));
 
-        // Load drone types from local file
-        ILocalSearchService localSearchService = LocalSearchService.getCurrentInstance();
-        List<DroneTypeEntity> droneTypes = localSearchService.getAllDroneTypes();
+        // Initialize the local search service
+        localSearchService = LocalSearchService.getCurrentInstance();
 
-        // Add the DroneCatalogCard to the cardPanel
-        for (DroneTypeEntity droneType : droneTypes) {
-            DroneDto dto = new DroneDto(
-                    droneType.id,
-                    droneType.typename,
-                    droneType.manufacturer,
-                    "N/A", // Status
-                    0, // Battery status
-                    droneType.battery_capacity,
-                    0, // Speed
-                    0.0, // Longitude
-                    0.0, // Latitude
-                    "N/A", // Serial number
-                    0.0, // Carriage weight
-                    "N/A", // Carriage type
-                    droneType.max_carriage,
-                    "N/A", // Last seen
-                    droneType.weight,
-                    droneType.max_speed,
-                    droneType.control_range,
-                    "N/A" // Timestamp
-            );
-            cardPanel.add(new DroneCatalogCard(dto), BorderLayout.WEST);
-        }
+        // Load initial drone types
+        updateDroneTypes("");
 
         // Add a resize listener to adjust the number of columns
         cardPanel.addComponentListener(new ComponentAdapter() {
@@ -80,5 +60,47 @@ public class DroneCatalog extends JPanel {
         JScrollPane scrollPane = ScrollPaneService.createScrollPane(cardPanel);
 
         add(scrollPane, BorderLayout.CENTER);
+    }
+
+    public static DroneCatalog getInstance() {
+        if (instance == null) {
+            instance = new DroneCatalog();
+        }
+        return instance;
+    }
+
+    public void updateDroneTypes(String keyword) {
+        cardPanel.removeAll();
+
+        // Load drone types from local file
+        List<DroneTypeEntity> droneTypes = localSearchService.findDroneTypesByKeyword(keyword);
+
+        // Add the DroneCatalogCard to the cardPanel
+        for (DroneTypeEntity droneType : droneTypes) {
+            DroneDto dto = new DroneDto(
+                    droneType.id,
+                    droneType.typename,
+                    droneType.manufacturer,
+                    "N/A", // Status
+                    0, // Battery status
+                    droneType.battery_capacity,
+                    0, // Speed
+                    0.0, // Longitude
+                    0.0, // Latitude
+                    "N/A", // Serial number
+                    0.0, // Carriage weight
+                    "N/A", // Carriage type
+                    droneType.max_carriage,
+                    "N/A", // Last seen
+                    droneType.weight,
+                    droneType.max_speed,
+                    droneType.control_range,
+                    "N/A" // Timestamp
+            );
+            cardPanel.add(new DroneCatalogCard(dto), BorderLayout.WEST);
+        }
+
+        cardPanel.revalidate();
+        cardPanel.repaint();
     }
 }

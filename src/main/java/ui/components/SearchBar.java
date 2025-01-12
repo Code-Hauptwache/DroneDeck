@@ -1,6 +1,7 @@
 package main.java.ui.components;
 
 import com.formdev.flatlaf.ui.FlatLineBorder;
+import main.java.ui.pages.DroneCatalog;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -57,6 +58,8 @@ public class SearchBar extends JComponent {
             private void updateSearchText() {
                 searchText = textField.getText();
                 System.out.println("Search Text: " + searchText);
+
+                DroneCatalog.getInstance().updateDroneTypes(searchText);
             }
         });
 

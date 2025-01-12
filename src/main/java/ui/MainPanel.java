@@ -26,6 +26,7 @@ public class MainPanel extends JPanel {
     private final JPanel cardPanel;
     private final CardLayout cardLayout;
     private Page currentPage;
+    private final DroneCatalog droneCatalog;
 
     /**
      * Creates a new MainPanel with a BorderLayout.
@@ -70,6 +71,7 @@ public class MainPanel extends JPanel {
         cardPanel = new JPanel(cardLayout);
 
         // Instantiate the pages
+        droneCatalog = DroneCatalog.getInstance();
         JPanel droneCatalogPanel = createCatalogPanel();
         JPanel droneDashboardPanel = createDashboardPanel();
 
@@ -108,7 +110,7 @@ public class MainPanel extends JPanel {
      */
     private JPanel createCatalogPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-        panel.add(new DroneCatalog(), BorderLayout.CENTER);
+        panel.add(droneCatalog, BorderLayout.CENTER);
         return panel;
     }
 
