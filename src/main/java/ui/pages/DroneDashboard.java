@@ -17,6 +17,9 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.List;
 
+/**
+ * The DroneDashboard class is a JPanel that displays a list of drones.
+ */
 public class DroneDashboard extends JPanel {
     private static DroneDashboard instance;
     private final JPanel cardPanel;
@@ -26,7 +29,7 @@ public class DroneDashboard extends JPanel {
     private boolean isGridLayout = true; // Track the current layout type
 
     /**
-     * The DroneDashboard class is a JPanel that displays a list of drones.
+     * The DroneDashboard method is the constructor for the DroneDashboard class.
      */
     private DroneDashboard() {
         super(new BorderLayout());

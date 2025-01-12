@@ -14,13 +14,16 @@ import java.awt.event.ComponentEvent;
 import java.util.List;
 
 /**
- * The DroneCatalog class is a JPanel... (TODO)
+ * The DroneCatalog class is a JPanel that displays a list of drone types.
  */
 public class DroneCatalog extends JPanel {
     private static DroneCatalog instance;
     private final JPanel cardPanel;
     private final ILocalSearchService localSearchService;
 
+    /**
+     * The DroneCatalog method is the constructor for the DroneCatalog class.
+     */
     private DroneCatalog() {
         // Use BorderLayout for main arrangement
         super(new BorderLayout());
