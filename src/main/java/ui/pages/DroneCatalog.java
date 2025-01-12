@@ -26,11 +26,10 @@ public class DroneCatalog extends JPanel {
         super(new BorderLayout());
 
         // Horizontal and vertical gaps for the GridLayout
-        int horizontalGap = 30;
-        int verticalGap = 30;
+        int gap = 30;
 
         // Add CardTemplate instances to the center panel using GridLayout
-        cardPanel = new JPanel(new GridLayout(0, 1, horizontalGap, verticalGap));
+        cardPanel = new JPanel(new GridLayout(0, 1, gap, gap));
 
         // Initialize the local search service
         localSearchService = LocalSearchService.getCurrentInstance();
@@ -46,7 +45,7 @@ public class DroneCatalog extends JPanel {
 
                 // Each CardTemplate is ~250 wide, plus we have a 10px gap (GridLayout hGap)
                 // We'll assume some extra spacing; adjust as needed
-                int cardTotalWidth = 250 + horizontalGap; // 250 for card + 10 for right gap
+                int cardTotalWidth = 250 + gap; // 250 for card + 10 for right gap
                 // Compute how many columns can fit
                 int columns = Math.max(1, panelWidth / cardTotalWidth);
 
