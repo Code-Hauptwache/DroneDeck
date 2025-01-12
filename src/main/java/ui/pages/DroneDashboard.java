@@ -1,7 +1,12 @@
 package main.java.ui.pages;
 
 import main.java.controllers.DroneController;
+import main.java.controllers.IDroneController;
+import main.java.dao.ILocalDroneDao;
 import main.java.dao.LocalDroneDao;
+import main.java.entity.DroneEntity;
+import main.java.services.LocalSearch.ILocalSearchService;
+import main.java.services.LocalSearch.LocalSearchService;
 import main.java.services.ScrollPane.ScrollPaneService;
 import main.java.ui.components.DroneDashboardCard;
 import main.java.ui.dtos.DroneDto;
@@ -13,14 +18,15 @@ import java.awt.event.ComponentEvent;
 import java.util.List;
 
 public class DroneDashboard extends JPanel {
+    private static DroneDashboard instance;
+    private final JPanel cardPanel;
+    private final ILocalSearchService localSearchService;
+    private final List<DroneDto> fetchedDrones;
+
     /**
      * The DroneDashboard class is a JPanel... (TODO)
      */
-    public DroneDashboard() {
-        // TODO: Implement the Drone Dashboard
-
-        // *** THIS IS AN EXAMPLE OF HOW THE CardTemplate AND DroneDashboardCard CAN BE USED ***
-        // Use BorderLayout for main arrangement
+    private DroneDashboard() {
         super(new BorderLayout());
 
         // Horizontal and vertical gaps for the GridLayout
@@ -34,17 +40,20 @@ public class DroneDashboard extends JPanel {
         add(label, BorderLayout.NORTH);
 
         // Add CardTemplate instances to the center panel using GridLayout
-        JPanel cardPanel = new JPanel(new GridLayout(0, 1, gap, gap));
+        cardPanel = new JPanel(new GridLayout(0, 1, gap, gap));
 
-        // Create a fake DroneDto
-        LocalDroneDao localDroneDao = new LocalDroneDao();
-        DroneController droneController = new DroneController();
-        List<DroneDto> testDtoList = droneController.getDroneThreads(localDroneDao.getDroneDataCount(), 0);
+        // Initialize the local search service
+        localSearchService = LocalSearchService.getCurrentInstance();
 
-        // Add the fake DroneDashboardCard to the cardPanel
-        for (DroneDto droneDto : testDtoList) {
-            cardPanel.add(new DroneDashboardCard(droneDto));
-        }
+        ILocalDroneDao localDroneDao = new LocalDroneDao();
+        IDroneController droneController = new DroneController();
+        fetchedDrones = droneController.getDroneThreads(localDroneDao.getDroneDataCount(), 0);
+
+
+        // Load initial drones
+        updateDrones("");
+
+
 
         // Add a resize listener to adjust the number of columns
         cardPanel.addComponentListener(new ComponentAdapter() {
@@ -69,5 +78,37 @@ public class DroneDashboard extends JPanel {
         JScrollPane scrollPane = ScrollPaneService.createScrollPane(cardPanel);
 
         add(scrollPane, BorderLayout.CENTER);
+    }
+
+    /**
+     * Gets the instance of the DroneDashboard.
+     *
+     * @return the instance of the DroneDashboard
+     */
+    public static DroneDashboard getInstance() {
+        if (instance == null) {
+            instance = new DroneDashboard();
+        }
+        return instance;
+    }
+
+    public void updateDrones(String keyword) {
+        cardPanel.removeAll();
+
+        // Load drones from local file
+        List<DroneEntity> drones = localSearchService.findDronesByKeyword(keyword);
+
+        // Filter fetchedDrones based on the IDs of the drones in the drones list
+        List<DroneDto> filteredDrones = fetchedDrones.stream()
+                .filter(dto -> drones.stream().anyMatch(drone -> drone.getId() == dto.getId()))
+                .toList();
+
+        // Add the DroneDashboardCard to the cardPanel
+        for (DroneDto drone : filteredDrones) {
+            cardPanel.add(new DroneDashboardCard(drone));
+        }
+
+        cardPanel.revalidate();
+        cardPanel.repaint();
     }
 }
