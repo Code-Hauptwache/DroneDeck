@@ -65,7 +65,7 @@ public class DroneDeck {
         DroneApiService droneApiService = new DroneApiService(System.getenv("DRONE_API_KEY"));
         ILocalSearchService localSearchService = LocalSearchService.createInstance(localDroneDao, localDroneTypeDao, droneApiService);
 
-        // Update local data
+        // Update local drone data
         localSearchService.initLocalData();
 
         // Create the frame
