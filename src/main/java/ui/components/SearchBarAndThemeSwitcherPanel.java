@@ -9,6 +9,11 @@ import java.awt.*;
  * The SearchBarAndThemeSwitcherPanel is used in the NorthPanel.
  */
 public class SearchBarAndThemeSwitcherPanel extends JPanel {
+    /**
+     * The SearchBarAndThemeSwitcherPanel method is the constructor for the SearchBarAndThemeSwitcherPanel class.
+     * It sets the layout of the SearchBarAndThemeSwitcherPanel to BorderLayout.
+     * It then adds the SearchBar and the ThemeSwitcher to the SearchBarAndThemeSwitcherPanel.
+     */
     public SearchBarAndThemeSwitcherPanel() {
         // Use BorderLayout for simpler layout management
         setLayout(new BorderLayout());
