@@ -1,10 +1,11 @@
 package main.java.ui.pages;
 
-import main.java.dao.LocalDroneTypeDao;
 import main.java.entity.DroneTypeEntity;
-import main.java.services.ScrollPane.ScrollPaneService;
+import main.java.services.LocalSearch.LocalSearchService;
+import main.java.services.LocalSearch.ILocalSearchService;
 import main.java.ui.components.DroneCatalogCard;
 import main.java.ui.dtos.DroneDto;
+import main.java.services.ScrollPane.ScrollPaneService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,9 +14,7 @@ import java.awt.event.ComponentEvent;
 import java.util.List;
 
 public class DroneCatalog extends JPanel {
-    /**
-     * The DroneCatalog class is a JPanel... (TODO)
-     */
+
     public DroneCatalog() {
         // Use BorderLayout for main arrangement
         super(new BorderLayout());
@@ -28,8 +27,8 @@ public class DroneCatalog extends JPanel {
         JPanel cardPanel = new JPanel(new GridLayout(0, 1, horizontalGap, verticalGap));
 
         // Load drone types from local file
-        LocalDroneTypeDao localDroneTypeDao = new LocalDroneTypeDao();
-        List<DroneTypeEntity> droneTypes = localDroneTypeDao.loadDroneTypeData();
+        ILocalSearchService localSearchService = LocalSearchService.getCurrentInstance();
+        List<DroneTypeEntity> droneTypes = localSearchService.getAllDroneTypes();
 
         // Add the DroneCatalogCard to the cardPanel
         for (DroneTypeEntity droneType : droneTypes) {

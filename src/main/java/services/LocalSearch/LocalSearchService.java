@@ -19,20 +19,45 @@ import java.util.stream.Collectors;
  */
 public class LocalSearchService implements ILocalSearchService {
 
+    private static LocalSearchService instance;
+
     private final ILocalDroneDao localDroneDao;
     private final ILocalDroneTypeDao localDroneTypeDao;
     private final IDroneApiService droneApiService;
 
     /**
-     * Constructor for LocalSearchService
+     * Private constructor for LocalSearchService
      * @param localDroneDao for accessing local drone data
      * @param localDroneTypeDao for accessing local drone type data
      * @param droneApiService for accessing drone api
      */
-    public LocalSearchService(ILocalDroneDao localDroneDao, ILocalDroneTypeDao localDroneTypeDao, IDroneApiService droneApiService) {
+    private LocalSearchService(ILocalDroneDao localDroneDao, ILocalDroneTypeDao localDroneTypeDao, IDroneApiService droneApiService) {
         this.localDroneDao = localDroneDao;
         this.localDroneTypeDao = localDroneTypeDao;
         this.droneApiService = droneApiService;
+    }
+
+    /**
+     * Create a new instance of LocalSearchService
+     * @param localDroneDao for accessing local drone data
+     * @param localDroneTypeDao for accessing local drone type data
+     * @param droneApiService for accessing drone api
+     * @return the new instance of LocalSearchService
+     */
+    public static LocalSearchService createInstance(ILocalDroneDao localDroneDao, ILocalDroneTypeDao localDroneTypeDao, IDroneApiService droneApiService) {
+        instance = new LocalSearchService(localDroneDao, localDroneTypeDao, droneApiService);
+        return instance;
+    }
+
+    /**
+     * Get the current instance of LocalSearchService
+     * @return the current instance of LocalSearchService
+     */
+    public static LocalSearchService getCurrentInstance() {
+        if (instance == null) {
+            throw new IllegalStateException("LocalSearchService instance is not created yet. Call createInstance() first.");
+        }
+        return instance;
     }
 
     /**

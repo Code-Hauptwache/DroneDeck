@@ -28,7 +28,7 @@ class LocalSearchServiceTest {
         ILocalDroneDao localDroneDao = new LocalDroneDao();
         localDroneTypeDao = new LocalDroneTypeDao();
         IDroneApiService droneApiService = new DroneApiService(System.getenv("DRONE_API_KEY"));
-        localSearchService = new LocalSearchService(localDroneDao, localDroneTypeDao, droneApiService);
+        localSearchService = LocalSearchService.createInstance(localDroneDao, localDroneTypeDao, droneApiService);
 
         localSearchService.initLocalData();
     }

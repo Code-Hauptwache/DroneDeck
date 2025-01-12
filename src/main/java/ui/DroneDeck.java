@@ -63,7 +63,7 @@ public class DroneDeck {
         LocalDroneDao localDroneDao = new LocalDroneDao();
         LocalDroneTypeDao localDroneTypeDao = new LocalDroneTypeDao();
         DroneApiService droneApiService = new DroneApiService(System.getenv("DRONE_API_KEY"));
-        ILocalSearchService localSearchService = new LocalSearchService(localDroneDao, localDroneTypeDao, droneApiService);
+        ILocalSearchService localSearchService = LocalSearchService.createInstance(localDroneDao, localDroneTypeDao, droneApiService);
 
         // Update local data
         localSearchService.initLocalData();
