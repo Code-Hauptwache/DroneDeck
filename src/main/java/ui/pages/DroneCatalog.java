@@ -13,6 +13,9 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.List;
 
+/**
+ * The DroneCatalog class is a JPanel... (TODO)
+ */
 public class DroneCatalog extends JPanel {
     private static DroneCatalog instance;
     private final JPanel cardPanel;
@@ -62,6 +65,11 @@ public class DroneCatalog extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
     }
 
+    /**
+     * Gets the instance of the DroneCatalog.
+     *
+     * @return the instance of the DroneCatalog
+     */
     public static DroneCatalog getInstance() {
         if (instance == null) {
             instance = new DroneCatalog();
@@ -69,6 +77,11 @@ public class DroneCatalog extends JPanel {
         return instance;
     }
 
+    /**
+     * Updates the drone types displayed in the DroneCatalog.
+     *
+     * @param keyword the keyword to search for
+     */
     public void updateDroneTypes(String keyword) {
         cardPanel.removeAll();
 
