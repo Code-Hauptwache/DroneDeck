@@ -57,17 +57,17 @@ public class DroneEntity implements Serializable {
      * @param keyword for searching
      * @return boolean value that this drone matches with condition
      */
-public boolean checkIfKeywordMatches(String keyword) {
-    if (keyword == null || keyword.isEmpty()) {
-        return true; // If empty value comes in, all the drones return.
+    public boolean checkIfKeywordMatches(String keyword) {
+        if (keyword == null || keyword.isEmpty()) {
+            return true; // If empty value comes in, all the drones return.
+        }
+
+        Pattern pattern = Pattern.compile(Pattern.quote(keyword), Pattern.CASE_INSENSITIVE);
+
+        return (serialNumber != null && pattern.matcher(this.serialNumber).find())
+                || (dronetype != null && ((dronetype.typename != null && pattern.matcher(this.dronetype.typename).find())
+                || (dronetype.manufacturer != null && pattern.matcher(this.dronetype.manufacturer).find())));
     }
-
-    Pattern pattern = Pattern.compile(Pattern.quote(keyword), Pattern.CASE_INSENSITIVE);
-
-    return (serialNumber != null && pattern.matcher(this.serialNumber).find())
-            || (dronetype != null && ((dronetype.typename != null && pattern.matcher(this.dronetype.typename).find())
-            || (dronetype.manufacturer != null && pattern.matcher(this.dronetype.manufacturer).find())));
-}
 
     /**
      * ToString Override method for Test

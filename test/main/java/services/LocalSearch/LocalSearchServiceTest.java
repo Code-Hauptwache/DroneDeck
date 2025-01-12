@@ -13,6 +13,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 /**
  * Test Class for LocalSearchService
  */
@@ -52,12 +55,30 @@ class LocalSearchServiceTest {
 
         // singleton start
         long start = System.currentTimeMillis();
-        List<DroneEntity> drones1 = localSearchService.findDronesByKeyword("YuTy-2027.033F54");
+        List<DroneEntity> drones1 = localSearchService.findDronesByKeyword("hub");
         for (DroneEntity drone : drones1) {
             System.out.println(drone);
         }
         long end = System.currentTimeMillis();
         System.out.println(end - start + "ms");
+    }
+
+    @Test
+    void searchDroneTypes() {
+        List<DroneTypeEntity> droneTypes = localSearchService.findDroneTypesByKeyword("evo");
+
+        assertNotNull(droneTypes, "The drone types list should not be null");
+        assertFalse(droneTypes.isEmpty(), "The drone types list should not be empty");
+
+        for (DroneTypeEntity droneType : droneTypes) {
+            System.out.println(droneType);
+        }
+
+        // Additional test case for a specific keyword
+        List<DroneTypeEntity> specificDroneTypes = localSearchService.findDroneTypesByKeyword("hub");
+        for (DroneTypeEntity droneType : specificDroneTypes) {
+            System.out.println(droneType);
+        }
     }
 
     @Test

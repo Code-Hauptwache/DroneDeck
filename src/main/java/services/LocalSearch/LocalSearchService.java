@@ -26,17 +26,6 @@ public class LocalSearchService implements ILocalSearchService {
     /**
      * Constructor for LocalSearchService
      * @param localDroneDao for accessing local drone data
-     * @param droneApiService for accessing drone api
-     */
-    public LocalSearchService(ILocalDroneDao localDroneDao, IDroneApiService droneApiService) {
-        this.localDroneDao = localDroneDao;
-        this.localDroneTypeDao = null;
-        this.droneApiService = droneApiService;
-    }
-
-    /**
-     * Constructor for LocalSearchService
-     * @param localDroneDao for accessing local drone data
      * @param localDroneTypeDao for accessing local drone type data
      * @param droneApiService for accessing drone api
      */
@@ -110,6 +99,24 @@ public class LocalSearchService implements ILocalSearchService {
 
         return drones.stream()
                 .filter(droneEntity -> droneEntity.checkIfKeywordMatches(keyword))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Find Drone Types that matches with keyword
+     * Especially for drone type's manufacturer and typename.
+     * @param keyword that user wants to find with
+     * @return Drone Types that matches with keyword
+     */
+    @Override
+    public List<DroneTypeEntity> findDroneTypesByKeyword(String keyword) {
+        if (localDroneTypeDao == null) {
+            throw new IllegalStateException("localDroneTypeDao is not initialized");
+        }
+        List<DroneTypeEntity> droneTypes = localDroneTypeDao.loadDroneTypeData();
+
+        return droneTypes.stream()
+                .filter(droneTypeEntity -> droneTypeEntity.checkIfKeywordMatches(keyword))
                 .collect(Collectors.toList());
     }
 }
