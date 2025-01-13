@@ -59,10 +59,7 @@ public class DroneDeck {
             Font font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(is)).deriveFont(16f);
             UIManager.put("defaultFont", font);
         } catch (Exception e) {
-            // TODO: Handle exception properly
-
-            //noinspection CallToPrintStackTrace
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Failed to load the font. The application will use the default font.", "Font Load Error", JOptionPane.ERROR_MESSAGE);
         }
 
         // Create the frame
