@@ -5,11 +5,14 @@ import java.awt.*;
 import java.util.Objects;
 
 /**
- * The StartupLoadingScreen class is a JPanel
- * that displays a loading message, logo image, and a progress bar
- * while the application is starting up.
+ * A panel that displays a logo image and a loading progress bar.
  */
 public class StartupLoadingScreen extends JPanel {
+
+    /**
+     * Creates a new StartupLoadingScreen panel.
+     * This panel displays a logo image and a loading progress bar.
+     */
     public StartupLoadingScreen() {
         // Set layout for the panel
         setLayout(new BorderLayout());
