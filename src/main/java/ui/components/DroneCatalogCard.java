@@ -1,12 +1,12 @@
 package main.java.ui.components;
 
-import main.java.ui.dtos.DroneCatalogCardDto;
+import main.java.ui.dtos.DroneDto;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class DroneCatalogCard extends JComponent {
-    public DroneCatalogCard(DroneCatalogCardDto dto) {
+    public DroneCatalogCard(DroneDto dto) {
         setLayout(new BorderLayout());
 
         // Main content container with GridLayout
@@ -15,7 +15,7 @@ public class DroneCatalogCard extends JComponent {
         // Add remaining standard label-value pairs
         Component[] leftContent = {
                 new JLabel("Weight"),
-                new JLabel("Max Speed"),
+                new JLabel("Top Speed"),
                 new JLabel("Battery Size"),
                 new JLabel("Control Range"),
                 new JLabel("Max Carriage")
@@ -26,7 +26,7 @@ public class DroneCatalogCard extends JComponent {
                 new JLabel((int) dto.getMaxSpeed() + " km/h"),
                 new JLabel((int) dto.getBatteryCapacity() + " mAh"),
                 new JLabel((int) dto.getControlRange() + " m"),
-                new JLabel((int) dto.getMaxCarriage() + " g")
+                new JLabel((int) dto.getMaxCarriageWeight() + " g")
         };
 
         // Add remaining rows
@@ -40,7 +40,7 @@ public class DroneCatalogCard extends JComponent {
 
         // Create card with the content
         CardTemplate card = new CardTemplate(
-                dto.getTypename(),
+                dto.getTypeName(),
                 dto.getManufacturer(),
                 contentContainer
         );

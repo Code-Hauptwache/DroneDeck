@@ -16,8 +16,8 @@ import java.awt.*;
  * when clicked.
  */
 public class ButtonThemeSwitcher extends JComponent {
-    private final FontIcon darkThemeIcon = FontIcon.of(FontAwesomeSolid.MOON, 13, UIManager.getColor("Label.foreground"));
-    private final FontIcon lightThemeIcon = FontIcon.of(FontAwesomeSolid.SUN, 13, UIManager.getColor("Label.foreground"));
+    private final FontIcon darkThemeIcon = FontIcon.of(FontAwesomeSolid.MOON, 14, UIManager.getColor("Label.foreground"));
+    private final FontIcon lightThemeIcon = FontIcon.of(FontAwesomeSolid.SUN, 14, UIManager.getColor("Label.foreground"));
     private boolean isDarkTheme = FlatLaf.isLafDark();
     private final JButton button;
 

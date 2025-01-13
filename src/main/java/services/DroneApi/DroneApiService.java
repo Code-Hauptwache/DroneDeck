@@ -201,6 +201,18 @@ public class DroneApiService implements IDroneApiService {
     }
 
     /**
+     * Get 100 DroneDynamics by Drone id
+     * @param id the id of the Drone
+     * @param offset the offset from 0
+     * @return the DroneDynamics of said Drone
+     * @throws DroneApiException if an error occurs while fetching the data
+     */
+    public DroneDynamicsResponse getDroneDynamicsResponseByDroneId(int id, int limit, int offset) throws DroneApiException {
+        validateLimitAndOffset(limit, offset);
+        return fetchDroneDynamicsResponse(URL + "/" + id + DRONE_DYNAMICS_BY_DRONE_ID + "?limit=" + limit + "&offset=" + offset);
+    }
+
+    /**
      * Gets a drone's DroneDynamics
      * @param id the id of the drone of which to retrieve the DroneDynamics
      * @param limit the number of DroneDynamics to get. Must be between 10_000 and 1
@@ -260,6 +272,22 @@ public class DroneApiService implements IDroneApiService {
             HttpResponse<String> response = this.HttpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
             Gson gson = new Gson();
             return gson.fromJson(response.body(), DroneDynamicsResponse.class).results;
+        } catch (Exception e) {
+            throw new DroneApiException("Error getting drone dynamics: " + e.getMessage());
+        }
+    }
+
+    private DroneDynamicsResponse fetchDroneDynamicsResponse(String url) throws DroneApiException {
+        try {
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .GET()
+                    .header("Authorization", "Token " + this.ApiKey)
+                    .build();
+
+            HttpResponse<String> response = this.HttpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            Gson gson = new Gson();
+            return gson.fromJson(response.body(), DroneDynamicsResponse.class);
         } catch (Exception e) {
             throw new DroneApiException("Error getting drone dynamics: " + e.getMessage());
         }

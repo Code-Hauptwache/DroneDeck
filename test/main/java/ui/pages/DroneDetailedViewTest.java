@@ -1,6 +1,6 @@
 package main.java.ui.pages;
 
-import main.java.ui.dtos.DroneDashboardDto;
+import main.java.ui.dtos.DroneDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +17,8 @@ class DroneDetailedViewTest {
 
     @BeforeEach
     void setUp() {
-        DroneDashboardDto dto = new DroneDashboardDto(
+        DroneDto dto = new DroneDto(
+                1,
                 "Test Drone",
                 "Test Manufacturer",
                 "Active",

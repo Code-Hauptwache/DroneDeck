@@ -1,7 +1,11 @@
 package main.java.ui.components;
 
+import main.java.services.DroneApi.DroneApiService;
+import main.java.services.DroneApi.IDroneApiService;
+import main.java.services.TravelDistance.ITravelDistanceService;
+import main.java.services.TravelDistance.TravelDistanceService;
 import main.java.ui.MainPanel;
-import main.java.ui.dtos.DroneDashboardDto;
+import main.java.ui.dtos.DroneDto;
 import main.java.ui.pages.DroneDetailedView;
 
 import javax.swing.*;
@@ -16,14 +20,17 @@ import java.awt.event.MouseEvent;
  * information about a drone.
  */
 public class DroneDashboardCard extends JComponent {
-    private final DroneDashboardDto dto;
+    private static final String API_KEY = System.getenv("DRONE_API_KEY");
+    private final IDroneApiService droneApiService = new DroneApiService(API_KEY);
+    private final ITravelDistanceService travelDistanceService = new TravelDistanceService(droneApiService);
+    private final DroneDto dto;
 
     /**
      * Creates a new DroneDashboardCard with the given DTO.
      *
      * @param dto The DTO containing the information to display.
      */
-    public DroneDashboardCard(DroneDashboardDto dto) {
+    public DroneDashboardCard(DroneDto dto) {
         setLayout(new BorderLayout());
         this.dto = dto;
 
@@ -34,17 +41,17 @@ public class DroneDashboardCard extends JComponent {
         Component[] leftContent = {
                 new DroneStatus(dto),
                 new JLabel("Speed"),
-                new JLabel("Location"),
-                new JLabel("Traveled"),
+                new JLabel("Top Speed"),
+                new JLabel("Carriage Type"),
                 new JLabel("Serial")
         };
 
         Component[] rightContent = {
                 new DroneVisualBatteryStatus(dto),
                 new JLabel((int) dto.getSpeed() + " km/h"),
+                new JLabel((int) dto.getMaxSpeed() + " km/h"),
                 // new JLabel(dto.getLocation() != null ? dto.getLocation() + " km" : "N/A"),
-                new JLabel("N/A"), // Location is temporarily disabled
-                new JLabel(getTravelDistanceString(dto)),
+                new JLabel(dto.getCarriageType()),
                 new JLabel(dto.getSerialNumber())
         };
 
@@ -114,6 +121,8 @@ public class DroneDashboardCard extends JComponent {
 
         // Load the detailed view asynchronously
         SwingUtilities.invokeLater(() -> {
+            ensureTravelDistanceSet();
+
             DroneDetailedView detailView = new DroneDetailedView(dto, overlayPanel);
 
             // Remove loading panel and add detailed view
@@ -128,9 +137,9 @@ public class DroneDashboardCard extends JComponent {
         });
     }
 
-    private String getTravelDistanceString(DroneDashboardDto dto) {
-        return (dto.getTravelDistance() != null && !dto.getTravelDistance().toString().isEmpty())
-                ? dto.getTravelDistance().toString()
-                : "N/A";
+    private void ensureTravelDistanceSet() {
+        if (!dto.isTravelDistanceSet()) {
+            dto.setTravelDistance((int) travelDistanceService.getTravelDistance(dto.getId()));
+        }
     }
 }

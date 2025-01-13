@@ -4,6 +4,11 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.jthemedetecor.OsThemeDetector;
+import main.java.dao.LocalDroneDao;
+import main.java.dao.LocalDroneTypeDao;
+import main.java.services.DroneApi.DroneApiService;
+import main.java.services.LocalSearch.LocalSearchService;
+import main.java.services.LocalSearch.ILocalSearchService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -54,6 +59,15 @@ public class DroneDeck {
             e.printStackTrace();
         }
 
+        // Initialize LocalSearchService
+        LocalDroneDao localDroneDao = new LocalDroneDao();
+        LocalDroneTypeDao localDroneTypeDao = new LocalDroneTypeDao();
+        DroneApiService droneApiService = new DroneApiService(System.getenv("DRONE_API_KEY"));
+        ILocalSearchService localSearchService = LocalSearchService.createInstance(localDroneDao, localDroneTypeDao, droneApiService);
+
+        // Update local drone data
+        localSearchService.initLocalData();
+
         // Create the frame
         JFrame frame = new JFrame("DroneDeck");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -71,7 +85,7 @@ public class DroneDeck {
         frame.pack();
 
         // Enforce the minimum size (the user cannot shrink the window below this)
-        frame.setMinimumSize(new Dimension(1100, 900));
+        frame.setMinimumSize(new Dimension(1100, 850));
 
         // Center the frame on the screen and make it visible
         frame.setLocationRelativeTo(null);
