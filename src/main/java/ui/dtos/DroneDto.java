@@ -20,8 +20,8 @@ public class DroneDto {
     private final double batteryStatus;
     private final double batteryCapacity;
     private final double speed;
-    private final double longitude;
     private final double latitude;
+    private final double longitude;
     private final String serialNumber;
     private final double carriageWeight;
     private final CarriageType carriageType;
@@ -34,6 +34,7 @@ public class DroneDto {
     private double travelDistance;
     private String location;
     private boolean isTravelDistanceSet = false;
+    private boolean isLocationSet = false;
 
 
     // Format for display purposes:
@@ -132,6 +133,10 @@ public class DroneDto {
         return speed;
     }
 
+    public double getLatitude() { return latitude; }
+
+    public double getLongitude() { return longitude; }
+
     public String getSerialNumber() {
         return serialNumber;
     }
@@ -175,19 +180,14 @@ public class DroneDto {
         return dataTimestampDateTime.format(DISPLAY_FORMAT);
     }
 
-    // Modify the setTravelDistance method
-    public void setTravelDistance(double travelDistance) {
-        this.travelDistance = travelDistance;
-        this.isTravelDistanceSet = true;
-    }
-
-    // Add a method to check if travel distance is set
-    public boolean isTravelDistanceSet() {
-        return isTravelDistanceSet;
-    }
 
     public void setLocation(String location) {
         this.location = location;
+        this.isLocationSet = true;
+    }
+
+    public boolean isLocationSet() {
+        return isLocationSet;
     }
 
     /**
@@ -213,6 +213,17 @@ public class DroneDto {
      */
     public double getTravelDistance() {
         return travelDistance;
+    }
+
+    // Modify the setTravelDistance method
+    public void setTravelDistance(double travelDistance) {
+        this.travelDistance = travelDistance;
+        this.isTravelDistanceSet = true;
+    }
+
+    // Add a method to check if travel distance is set
+    public boolean isTravelDistanceSet() {
+        return isTravelDistanceSet;
     }
 
     /**

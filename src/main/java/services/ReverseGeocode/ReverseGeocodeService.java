@@ -37,13 +37,21 @@ public class ReverseGeocodeService implements IReverseGeocodeService {
     @Override
     public String getCityAndCountry(double latitude, double longitude) {
         // 1) Try the primary API (BDC)
+        System.out.println("Attempting to get city and country from BDC API...");
         String cityCountry = getCityAndCountryFromBDC(latitude, longitude);
         if (cityCountry != null && !cityCountry.isEmpty()) {
+            System.out.println("Successfully retrieved city and country from BDC API.");
             return cityCountry;
         }
 
         // 2) Fallback to LocationIQ if primary fails or has incomplete data
+        System.out.println("BDC API failed or returned incomplete data. Attempting to get city and country from LocationIQ API...");
         cityCountry = getCityAndCountryFromLocationIQ(latitude, longitude);
+        if (cityCountry != null && !cityCountry.isEmpty()) {
+            System.out.println("Successfully retrieved city and country from LocationIQ API.");
+        } else {
+            System.out.println("Failed to retrieve city and country from both BDC and LocationIQ APIs.");
+        }
         return cityCountry; // can be null if fallback also fails
     }
 
