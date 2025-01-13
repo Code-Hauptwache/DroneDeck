@@ -35,6 +35,27 @@ public class ScrollPaneService {
         scrollPane.setWheelScrollingEnabled(true);
         vBar.setUnitIncrement(16);
         vBar.setBlockIncrement(50);
+        vBar.setPreferredSize(new Dimension(0, 0));
+
+        // Add AdjustmentListener to print to console on scroll
+        vBar.addAdjustmentListener(e -> {
+            JScrollBar vBar1 = (JScrollBar) e.getAdjustable();
+            Dimension originalSize = vBar1.getPreferredSize();
+
+            // Set to default dimension
+            vBar1.setPreferredSize(new Dimension(10, originalSize.height));
+            vBar1.revalidate();
+            vBar1.repaint();
+
+            // Create a timer to reset the dimension after 2 seconds
+            Timer timer = new Timer(2000, _ -> {
+                vBar1.setPreferredSize(new Dimension(0, 0));
+                vBar1.revalidate();
+                vBar1.repaint();
+            });
+            timer.setRepeats(false); // Only execute once
+            timer.start();
+        });
 
         // Add middle-click auto-scrolling
         AutoScrollHandler autoScrollHandler = new AutoScrollHandler(scrollPane);
@@ -42,7 +63,6 @@ public class ScrollPaneService {
 
         return scrollPane;
     }
-
 
     /**
      * Custom layout manager that places the scrollbar on top of
