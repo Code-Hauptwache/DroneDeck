@@ -2,6 +2,7 @@ package main.java.services.DroneApi;
 
 import main.java.services.DroneApi.dtos.Drone;
 import main.java.services.DroneApi.dtos.DroneDynamics;
+import main.java.services.DroneApi.dtos.DroneDynamicsResponse;
 import main.java.services.DroneApi.dtos.DroneType;
 import main.java.exceptions.DroneApiException;
 
@@ -114,6 +115,16 @@ public interface IDroneApiService {
      * @throws DroneApiException Api Exceptions
      */
     DroneType getDroneTypeById(int id) throws DroneApiException;
+
+    /**
+     * Gets a drones DroneDynamics
+     * @param id     the id of the drone of which to retrieve the DroneDynamics
+     * @param limit  the number of DroneDynamics to get. Must be between 10_000 and 1
+     * @param offset the offset from 0
+     * @return the DroneDynamics of said Drone
+     * @throws DroneApiException Api Exceptions
+     */
+    DroneDynamicsResponse getDroneDynamicsResponseByDroneId(int id, int limit, int offset) throws DroneApiException;
 
     /**
      * Gets a drones DroneDynamics

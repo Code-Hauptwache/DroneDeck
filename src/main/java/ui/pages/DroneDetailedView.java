@@ -3,7 +3,7 @@ package main.java.ui.pages;
 import main.java.ui.components.DroneStatus;
 import main.java.ui.components.DroneVisualBatteryStatus;
 import main.java.ui.components.InfoTooltip;
-import main.java.ui.dtos.DroneDashboardDto;
+import main.java.ui.dtos.DroneDto;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.swing.FontIcon;
 
@@ -21,10 +21,10 @@ public class DroneDetailedView extends JPanel {
     /**
      * Creates a new DroneDetailedView instance.
      *
-     * @param dto          the DroneDashboardDto containing the drone data
+     * @param dto          the DroneDto containing the drone data
      * @param overlayPanel the overlay panel to remove when going back
      */
-    public DroneDetailedView(DroneDashboardDto dto, JPanel overlayPanel) {
+    public DroneDetailedView(DroneDto dto, JPanel overlayPanel) {
         super(new BorderLayout());
 
         // Build and add the top bar
@@ -56,7 +56,7 @@ public class DroneDetailedView extends JPanel {
     //       Top Bar
     // =======================
 
-    private JPanel buildTopBar(DroneDashboardDto dto, JPanel overlayPanel) {
+    private JPanel buildTopBar(DroneDto dto, JPanel overlayPanel) {
         JPanel topBar = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
         topBar.add(buildBackButton(overlayPanel)); // Back button
@@ -100,7 +100,7 @@ public class DroneDetailedView extends JPanel {
     //      Center Panel
     // =======================
 
-    private JPanel buildCenterPanel(DroneDashboardDto dto) {
+    private JPanel buildCenterPanel(DroneDto dto) {
         JPanel wrapper = new JPanel(new BorderLayout());
         wrapper.add(buildStatusPanel(dto), BorderLayout.NORTH);
 
@@ -110,7 +110,7 @@ public class DroneDetailedView extends JPanel {
         // Populate columns with data
         addColumn(centerPanel, createColumnLabels(new String[]{"Speed", "Average Speed", "Location", "Traveled", "Carriage Weight", "Carriage Type", "Last Seen", "Serial Number"}), 0, gbc);
         addColumn(centerPanel, createColumnData(dto), 1, gbc);
-        addColumn(centerPanel, createColumnLabels(new String[]{"Weight", "Top Speed", "Battery Capacity", "Control Range", "Max Carriage"}), 2, gbc);
+        addColumn(centerPanel, createColumnLabels(new String[]{"Top Speed", "Weight", "Battery Capacity", "Control Range", "Max Carriage"}), 2, gbc);
         addColumn(centerPanel, createAdditionalData(dto), 3, gbc);
 
         wrapper.add(centerPanel, BorderLayout.CENTER);
@@ -132,24 +132,25 @@ public class DroneDetailedView extends JPanel {
                 .toArray(Component[]::new);
     }
 
-    private Component[] createColumnData(DroneDashboardDto dto) {
+
+    private Component[] createColumnData(DroneDto dto) {
         return new Component[]{
                 new JLabel((int) dto.getSpeed() + " km/h"),
                 new JLabel(dto.getAverageSpeed() != null ? (int) dto.getAverageSpeed() + " km/h" : "N/A"),
                 // new JLabel(dto.getLocation() != null ? dto.getLocation() + " km" : "N/A"),
                 new JLabel("N/A"), // Location is temporarily disabled
-                new JLabel(dto.getTravelDistance() != null ? dto.getTravelDistance() + " m" : "N/A"),
-                new JLabel(dto.getCarriageWeight() > 0 ? (int) dto.getCarriageWeight() + " g" : "N/A"),
+                new JLabel(dto.isTravelDistanceSet() ? (int) dto.getTravelDistance() + " km" : "N/A"),
+                new JLabel(dto.getCarriageWeight() >= 0 ? (int) dto.getCarriageWeight() + " g" : "N/A"),
                 new JLabel(dto.getCarriageType() != null ? dto.getCarriageType() : "N/A"),
                 new JLabel(dto.getLastSeen() != null ? dto.getLastSeen() : "N/A"),
                 new JLabel(dto.getSerialNumber())
         };
     }
 
-    private Component[] createAdditionalData(DroneDashboardDto dto) {
+    private Component[] createAdditionalData(DroneDto dto) {
         return new Component[]{
-                new JLabel((int) dto.getWeight() + " g"),
                 new JLabel((int) dto.getMaxSpeed() + " km/h"),
+                new JLabel((int) dto.getWeight() + " g"),
                 new JLabel((int) dto.getBatteryCapacity() + " mAh"),
                 new JLabel((int) dto.getControlRange() + " m"),
                 new JLabel((int) dto.getMaxCarriageWeight() + " g")
@@ -172,7 +173,7 @@ public class DroneDetailedView extends JPanel {
     //   Bottom Graph Panel
     // =======================
 
-    private JPanel buildGraphPanel(DroneDashboardDto dto) {
+    private JPanel buildGraphPanel(DroneDto dto) {
         JPanel graphPanel = new JPanel(new BorderLayout());
         graphPanel.setPreferredSize(new Dimension(0, 330));
         JLabel placeholder = new JLabel("Graphical Components (TODO)", SwingConstants.CENTER);
@@ -186,7 +187,7 @@ public class DroneDetailedView extends JPanel {
     //   Status Panel
     // =======================
 
-    private JPanel buildStatusPanel(DroneDashboardDto dto) {
+    private JPanel buildStatusPanel(DroneDto dto) {
         JPanel statusPanel = new JPanel();
         statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
 

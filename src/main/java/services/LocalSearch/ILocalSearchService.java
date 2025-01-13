@@ -1,6 +1,7 @@
 package main.java.services.LocalSearch;
 
 import main.java.entity.DroneEntity;
+import main.java.entity.DroneTypeEntity;
 
 import java.util.List;
 
@@ -22,10 +23,24 @@ public interface ILocalSearchService {
     List<DroneEntity> getAllDrones();
 
     /**
+     * Get All Drone Types from local cached drone type data
+     * @return All Drone Types
+     */
+    List<DroneTypeEntity> getAllDroneTypes();
+
+    /**
      * Find Drones that matches with keyword
      * Especially for drone's id, serial number and type name.
      * @param keyword that user wants to find with
      * @return Drones that matches with keyword
      */
     List<DroneEntity> findDronesByKeyword(String keyword);
+
+    /**
+     * Find Drone Types that matches with keyword
+     * Especially for drone type's name.
+     * @param keyword that user wants to find with
+     * @return Drone Types that matches with keyword
+     */
+    List<DroneTypeEntity> findDroneTypesByKeyword(String keyword);
 }

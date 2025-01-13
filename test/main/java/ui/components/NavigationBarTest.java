@@ -1,5 +1,12 @@
 package main.java.ui.components;
 
+import main.java.dao.ILocalDroneDao;
+import main.java.dao.ILocalDroneTypeDao;
+import main.java.dao.LocalDroneDao;
+import main.java.dao.LocalDroneTypeDao;
+import main.java.services.DroneApi.DroneApiService;
+import main.java.services.DroneApi.IDroneApiService;
+import main.java.services.LocalSearch.LocalSearchService;
 import main.java.ui.MainPanel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +28,20 @@ class NavigationBarTest {
 
     @BeforeEach
     void setUp() {
+        // Create simple implementations of the required parameters
+        ILocalDroneDao localDroneDao = new LocalDroneDao() {
+            // Implement required methods
+        };
+        ILocalDroneTypeDao localDroneTypeDao = new LocalDroneTypeDao() {
+            // Implement required methods
+        };
+        IDroneApiService droneApiService = new DroneApiService() {
+            // Implement required methods
+        };
+
+        // Ensure the LocalSearchService instance is created
+        LocalSearchService.createInstance(localDroneDao, localDroneTypeDao, droneApiService);
+
         mainPanel = new MainPanel();
         navigationBar = new NavigationBar(mainPanel);
     }

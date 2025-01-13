@@ -1,22 +1,88 @@
 package main.java.ui.components;
 
+import com.formdev.flatlaf.ui.FlatLineBorder;
+import main.java.ui.pages.DroneCatalog;
+import main.java.ui.pages.DroneDashboard;
+
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 /**
  * A search bar that allows the user to search for drones.
  * The search bar is used in the NorthPanel.
  */
 public class SearchBar extends JComponent {
+    private final JTextField textField;
+    private String searchText;
+
     public SearchBar() {
-        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        // Set layout for the component
+        setLayout(new BorderLayout());
 
-        // TODO: Implement the Search Bar
+        // Create the search field
+        textField = new JTextField();
+        textField.putClientProperty("JTextField.placeholderText", "Search"); // Placeholder for FlatLaf
+        // Set the background color transparent
+        textField.setBackground(new Color(0, 0, 0, 0));
 
-        // This is a placeholder in orange for the search bar
-        JLabel searchLabel = new JLabel("Search Bar (TODO)");
-        searchLabel.setForeground(Color.ORANGE);
-        add(searchLabel);
+        // Set the border for the text field
+        textField.setBorder(BorderFactory.createCompoundBorder(
+                new FlatLineBorder(
+                        new Insets(7, 7, 7, 7),
+                        UIManager.getColor("Component.borderColor"),
+                        1,
+                        18 // Rounded corner radius
+                ),
+                BorderFactory.createEmptyBorder(1, 1, 1, 1)
+        ));
 
+        // Add a DocumentListener to update searchText as the user types
+        textField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateSearchText();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateSearchText();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateSearchText();
+            }
+
+            private void updateSearchText() {
+                searchText = textField.getText();
+                System.out.println("Search Text: " + searchText);
+
+                DroneCatalog.getInstance().updateDroneTypes(searchText);
+                DroneDashboard.getInstance().updateDrones(searchText);
+            }
+        });
+
+        add(textField, BorderLayout.CENTER);
+    }
+
+    /**
+     * Returns the current text in the search bar.
+     *
+     * @return the search text
+     */
+    public String getSearchText() {
+        return searchText;
+    }
+
+    /**
+     * Sets an action listener for the search bar when Enter is pressed.
+     *
+     * @param listener the action listener
+     */
+    public void setSearchActionListener(ActionListener listener) {
+        textField.addActionListener(listener);
     }
 }

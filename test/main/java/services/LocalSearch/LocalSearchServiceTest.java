@@ -1,8 +1,11 @@
 package main.java.services.LocalSearch;
 
 import main.java.dao.ILocalDroneDao;
+import main.java.dao.ILocalDroneTypeDao;
 import main.java.dao.LocalDroneDao;
+import main.java.dao.LocalDroneTypeDao;
 import main.java.entity.DroneEntity;
+import main.java.entity.DroneTypeEntity;
 import main.java.services.DroneApi.DroneApiService;
 import main.java.services.DroneApi.IDroneApiService;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,17 +13,22 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 /**
  * Test Class for LocalSearchService
  */
 class LocalSearchServiceTest {
     ILocalSearchService localSearchService;
+    ILocalDroneTypeDao localDroneTypeDao;
 
     @BeforeEach
     void setUp() {
         ILocalDroneDao localDroneDao = new LocalDroneDao();
+        localDroneTypeDao = new LocalDroneTypeDao();
         IDroneApiService droneApiService = new DroneApiService(System.getenv("DRONE_API_KEY"));
-        localSearchService = new LocalSearchService(localDroneDao, droneApiService);
+        localSearchService = LocalSearchService.createInstance(localDroneDao, localDroneTypeDao, droneApiService);
 
         localSearchService.initLocalData();
     }
@@ -29,10 +37,12 @@ class LocalSearchServiceTest {
     void loadDrones() {
         List<DroneEntity> drones = localSearchService.getAllDrones();
 
+        // Print the count of drones
+        System.out.println("drones.size() = " + drones.size());
+
         for (DroneEntity drone : drones) {
             System.out.println("drone = " + drone);
         }
-
     }
 
     @Test
@@ -51,7 +61,36 @@ class LocalSearchServiceTest {
         }
         long end = System.currentTimeMillis();
         System.out.println(end - start + "ms");
-
     }
 
+    @Test
+    void searchDroneTypes() {
+        List<DroneTypeEntity> droneTypes = localSearchService.findDroneTypesByKeyword("evo");
+
+        assertNotNull(droneTypes, "The drone types list should not be null");
+        assertFalse(droneTypes.isEmpty(), "The drone types list should not be empty");
+
+        for (DroneTypeEntity droneType : droneTypes) {
+            System.out.println(droneType);
+        }
+
+        // Additional test case for a specific keyword
+        List<DroneTypeEntity> specificDroneTypes = localSearchService.findDroneTypesByKeyword("hub");
+        for (DroneTypeEntity droneType : specificDroneTypes) {
+            System.out.println(droneType);
+        }
+    }
+
+    @Test
+    void testDroneTypeData() {
+        List<DroneTypeEntity> droneTypes = localDroneTypeDao.loadDroneTypeData();
+
+        // Print the count of drone types
+        System.out.println("droneTypes.size() = " + droneTypes.size());
+
+        // Print the list of drone types
+        for (DroneTypeEntity droneType : droneTypes) {
+            System.out.println("droneType = " + droneType);
+        }
+    }
 }

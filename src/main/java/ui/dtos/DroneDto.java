@@ -1,7 +1,5 @@
 package main.java.ui.dtos;
 
-import main.java.services.ReverseGeocode.IReverseGeocodeService;
-import main.java.services.ReverseGeocode.ReverseGeocodeService;
 import main.java.ui.enums.CarriageType;
 
 import java.time.LocalDateTime;
@@ -14,8 +12,8 @@ import java.util.Locale;
  * DTO for drone-related information.
  * Contains basic fields and light data conversion (e.g. formatting date/time).
  */
-public class DroneDashboardDto {
-
+public class DroneDto {
+    private final int id;
     private final String typeName;
     private final String manufacturer;
     private final String status;
@@ -35,6 +33,8 @@ public class DroneDashboardDto {
     private final double controlRange;
     private double travelDistance;
     private String location;
+    private boolean isTravelDistanceSet = false;
+
 
     // Format for display purposes:
     private static final DateTimeFormatter DISPLAY_FORMAT =
@@ -43,7 +43,8 @@ public class DroneDashboardDto {
     /**
      * Main constructor. Note that we parse the ISO date/time strings up front.
      */
-    public DroneDashboardDto(
+    public DroneDto(
+            int id,
             String typeName,
             String manufacturer,
             String status,
@@ -62,6 +63,7 @@ public class DroneDashboardDto {
             double controlRange,
             String dataTimestamp           // ISO date/time string
     ) {
+        this.id = id;
         this.typeName = typeName;
         this.manufacturer = manufacturer;
         this.status = status;
@@ -85,7 +87,7 @@ public class DroneDashboardDto {
 
     // Helper method to parse ISO date/time
     private LocalDateTime parseIsoDateTime(String isoDateTime) {
-        if (isoDateTime == null) {
+        if (isoDateTime == null || "N/A".equals(isoDateTime)) {
             return null;
         }
 
@@ -107,6 +109,8 @@ public class DroneDashboardDto {
     // -------------------------
     // Getters (with formatting)
     // -------------------------
+
+    public int getId() { return id; }
 
     public String getTypeName() {
         return typeName;
@@ -171,8 +175,15 @@ public class DroneDashboardDto {
         return dataTimestampDateTime.format(DISPLAY_FORMAT);
     }
 
+    // Modify the setTravelDistance method
     public void setTravelDistance(double travelDistance) {
         this.travelDistance = travelDistance;
+        this.isTravelDistanceSet = true;
+    }
+
+    // Add a method to check if travel distance is set
+    public boolean isTravelDistanceSet() {
+        return isTravelDistanceSet;
     }
 
     public void setLocation(String location) {
@@ -200,7 +211,7 @@ public class DroneDashboardDto {
     /**
      * Placeholder method. Remove if unused or implement properly.
      */
-    public Object getTravelDistance() {
+    public double getTravelDistance() {
         return travelDistance;
     }
 

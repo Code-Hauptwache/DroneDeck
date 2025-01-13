@@ -15,10 +15,8 @@ import java.awt.event.ComponentEvent;
  * It uses a CardLayout to switch between different pages.
  */
 public class MainPanel extends JPanel {
-    private final int maxContentWidth = 1200;
     private final int minLeftRightPadding = 100;
     private final int topAndBottomMainPanelPadding = 10;
-    private final int northBottomPadding = 10;
 
     public enum Page {
         CATALOG, DASHBOARD
@@ -28,6 +26,8 @@ public class MainPanel extends JPanel {
     private final JPanel cardPanel;
     private final CardLayout cardLayout;
     private Page currentPage;
+    private final DroneCatalog droneCatalog;
+    private final DroneDashboard droneDashboard;
 
     /**
      * Creates a new MainPanel with a BorderLayout.
@@ -72,6 +72,8 @@ public class MainPanel extends JPanel {
         cardPanel = new JPanel(cardLayout);
 
         // Instantiate the pages
+        droneCatalog = DroneCatalog.getInstance();
+        droneDashboard = DroneDashboard.getInstance();
         JPanel droneCatalogPanel = createCatalogPanel();
         JPanel droneDashboardPanel = createDashboardPanel();
 
@@ -82,6 +84,7 @@ public class MainPanel extends JPanel {
 
         // 4) Create a north panel (header/navigation)
         JPanel northWrapper = new JPanel(new BorderLayout());
+        int northBottomPadding = 10;
         northWrapper.setBorder(BorderFactory.createEmptyBorder(0, 0, northBottomPadding, 0));
         northWrapper.add(new NorthPanel(this), BorderLayout.CENTER);
 
@@ -109,7 +112,7 @@ public class MainPanel extends JPanel {
      */
     private JPanel createCatalogPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-        panel.add(new DroneCatalog(), BorderLayout.CENTER);
+        panel.add(droneCatalog, BorderLayout.CENTER);
         return panel;
     }
 
@@ -118,7 +121,7 @@ public class MainPanel extends JPanel {
      */
     private JPanel createDashboardPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-        panel.add(new DroneDashboard(), BorderLayout.CENTER);
+        panel.add(droneDashboard, BorderLayout.CENTER);
         return panel;
     }
 
@@ -127,6 +130,7 @@ public class MainPanel extends JPanel {
      */
     private void adjustPadding() {
         int panelWidth = getWidth();
+        int maxContentWidth = 1200;
         int extraWidth = panelWidth - maxContentWidth;
 
         int horizontalPadding = (extraWidth > 0) ? extraWidth / 2 : minLeftRightPadding;

@@ -21,4 +21,10 @@ public interface ILocalDroneDao {
      * @return List of all drone data
      */
     List<DroneEntity> loadDroneData();
+
+    /**
+     * Get count of drone data
+     * @return count of drone data
+     */
+    int getDroneDataCount();
 }
