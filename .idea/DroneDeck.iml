@@ -17,5 +17,6 @@
     <orderEntry type="library" name="formdev.flatlaf.extras" level="project" />
     <orderEntry type="library" name="mockito.inline" level="project" />
     <orderEntry type="library" name="openani.jsystemthemedetector.jSystemThemeDetector" level="project" />
+    <orderEntry type="library" name="google.guava" level="project" />
   </component>
 </module>

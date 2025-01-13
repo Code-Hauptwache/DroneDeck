@@ -60,6 +60,7 @@ public class TravelDistanceService implements ITravelDistanceService {
     }
 
     private double getDistanceSum(int droneId, int offset) throws DroneApiException {
+        System.out.println("Requesting drone dynamics for drone ID: " + droneId + " with offset: " + offset);
         ArrayList<DroneDynamics> droneDynamics = droneApiService.getDroneDynamicsByDroneId(droneId, LIMIT, offset);
 
         List<Coordinate> coordinates = droneDynamics.stream()

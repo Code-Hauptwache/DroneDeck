@@ -110,7 +110,7 @@ public class DroneController implements IDroneController {
 
         DroneTypeEntity droneType = drone.getDronetype();
 
-        DroneDto droneDto = new DroneDto(
+        return new DroneDto(
                 drone.getId(),
                 droneType.typename,
                 droneType.manufacturer,
@@ -130,8 +130,5 @@ public class DroneController implements IDroneController {
                 droneType.control_range,
                 droneDynamic.timestamp.toString()
         );
-        droneDto.setLocation(reverseGeocodeService.getCityAndCountry(droneDynamic.latitude, droneDynamic.longitude));
-
-        return droneDto;
     }
 }

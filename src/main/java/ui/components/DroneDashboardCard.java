@@ -2,6 +2,8 @@ package main.java.ui.components;
 
 import main.java.services.DroneApi.DroneApiService;
 import main.java.services.DroneApi.IDroneApiService;
+import main.java.services.ReverseGeocode.IReverseGeocodeService;
+import main.java.services.ReverseGeocode.ReverseGeocodeService;
 import main.java.services.TravelDistance.ITravelDistanceService;
 import main.java.services.TravelDistance.TravelDistanceService;
 import main.java.ui.MainPanel;
@@ -23,6 +25,7 @@ public class DroneDashboardCard extends JComponent {
     private static final String API_KEY = System.getenv("DRONE_API_KEY");
     private final IDroneApiService droneApiService = new DroneApiService(API_KEY);
     private final ITravelDistanceService travelDistanceService = new TravelDistanceService(droneApiService);
+    private final IReverseGeocodeService reverseGeocodeService = new ReverseGeocodeService();
     private final DroneDto dto;
 
     /**
@@ -122,6 +125,7 @@ public class DroneDashboardCard extends JComponent {
         // Load the detailed view asynchronously
         SwingUtilities.invokeLater(() -> {
             ensureTravelDistanceSet();
+            ensureLocationSet();
 
             DroneDetailedView detailView = new DroneDetailedView(dto, overlayPanel);
 
@@ -135,6 +139,12 @@ public class DroneDashboardCard extends JComponent {
             overlayPanel.revalidate();
             overlayPanel.repaint();
         });
+    }
+
+    private void ensureLocationSet() {
+        if (!dto.isLocationSet()) {
+            dto.setLocation(reverseGeocodeService.getCityAndCountry(dto.getLatitude(), dto.getLongitude()));
+        }
     }
 
     private void ensureTravelDistanceSet() {
