@@ -35,6 +35,31 @@ public class ScrollPaneService {
         scrollPane.setWheelScrollingEnabled(true);
         vBar.setUnitIncrement(16);
         vBar.setBlockIncrement(50);
+        vBar.setPreferredSize(new Dimension(0, 0));
+
+        // Create a timer for hiding the scrollbar
+        Timer[] hideTimer = new Timer[1];
+
+        // Add AdjustmentListener for scroll events
+        vBar.addAdjustmentListener(e -> {
+            JScrollBar vBar1 = (JScrollBar) e.getAdjustable();
+            Dimension originalSize = new Dimension(10, vBar1.getHeight());
+
+            // Show the scrollbar with a smooth transition
+            smoothResize(vBar1, new Dimension(10, originalSize.height));
+
+            // Cancel the previous timer and restart
+            if (hideTimer[0] != null && hideTimer[0].isRunning()) {
+                hideTimer[0].stop();
+            }
+
+            // Set a timer to hide the scrollbar after a delay
+            hideTimer[0] = new Timer(1500, _ -> {
+                smoothResize(vBar1, new Dimension(0, originalSize.height)); // Transition to hidden width
+            });
+            hideTimer[0].setRepeats(false); // Execute only once
+            hideTimer[0].start();
+        });
 
         // Add middle-click auto-scrolling
         AutoScrollHandler autoScrollHandler = new AutoScrollHandler(scrollPane);
@@ -43,6 +68,33 @@ public class ScrollPaneService {
         return scrollPane;
     }
 
+    /**
+     * Smoothly resizes a JScrollBar to the target size over a specified duration.
+     *
+     * @param scrollBar  The JScrollBar to resize.
+     * @param targetSize The target size for the scrollbar.
+     */
+    private static void smoothResize(JScrollBar scrollBar, Dimension targetSize) {
+        new Thread(() -> {
+            Dimension currentSize = scrollBar.getPreferredSize();
+            int steps = 60; // Number of animation steps
+            int delay = 300 / steps; // Delay per step in milliseconds
+
+            for (int i = 1; i <= steps; i++) {
+                int width = currentSize.width + (targetSize.width - currentSize.width) * i / steps;
+                SwingUtilities.invokeLater(() -> {
+                    scrollBar.setPreferredSize(new Dimension(width, currentSize.height));
+                    scrollBar.revalidate();
+                    scrollBar.repaint();
+                });
+                try {
+                    Thread.sleep(delay);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        }).start();
+    }
 
     /**
      * Custom layout manager that places the scrollbar on top of
