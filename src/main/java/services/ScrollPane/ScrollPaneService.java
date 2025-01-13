@@ -43,18 +43,18 @@ public class ScrollPaneService {
         // Add AdjustmentListener for scroll events
         vBar.addAdjustmentListener(e -> {
             JScrollBar vBar1 = (JScrollBar) e.getAdjustable();
-            Dimension originalSize = new Dimension(12, vBar1.getHeight()); // Adjust width here as needed
+            Dimension originalSize = new Dimension(10, vBar1.getHeight());
 
             // Show the scrollbar with a smooth transition
-            smoothResize(vBar1, new Dimension(10, originalSize.height)); // Transition to visible width
+            smoothResize(vBar1, new Dimension(10, originalSize.height));
 
             // Cancel the previous timer and restart
             if (hideTimer[0] != null && hideTimer[0].isRunning()) {
                 hideTimer[0].stop();
             }
 
-            // Set a timer to hide the scrollbar after 2 seconds of inactivity
-            hideTimer[0] = new Timer(2000, _ -> {
+            // Set a timer to hide the scrollbar after a delay
+            hideTimer[0] = new Timer(1500, _ -> {
                 smoothResize(vBar1, new Dimension(0, originalSize.height)); // Transition to hidden width
             });
             hideTimer[0].setRepeats(false); // Execute only once
@@ -77,7 +77,7 @@ public class ScrollPaneService {
     private static void smoothResize(JScrollBar scrollBar, Dimension targetSize) {
         new Thread(() -> {
             Dimension currentSize = scrollBar.getPreferredSize();
-            int steps = 20; // Number of animation steps
+            int steps = 60; // Number of animation steps
             int delay = 300 / steps; // Delay per step in milliseconds
 
             for (int i = 1; i <= steps; i++) {
