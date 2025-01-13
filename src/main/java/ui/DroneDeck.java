@@ -9,6 +9,7 @@ import main.java.dao.LocalDroneTypeDao;
 import main.java.services.DroneApi.DroneApiService;
 import main.java.services.LocalSearch.LocalSearchService;
 import main.java.services.LocalSearch.ILocalSearchService;
+import main.java.ui.components.StartupLoadingScreen;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,6 +30,12 @@ public class DroneDeck {
         SwingUtilities.invokeLater(DroneDeck::createAndShowGUI);
     }
 
+    /**
+     * Creates and displays the GUI for the DroneDeck application.
+     * This includes setting up the theme, loading the font,
+     * initializing the services, and switching between
+     * the loading panel and the main panel.
+     */
     private static void createAndShowGUI() {
         // Set up ToolTipManager
         ToolTipManager.sharedInstance().setInitialDelay(0);
@@ -40,10 +47,10 @@ public class DroneDeck {
         final OsThemeDetector detector = OsThemeDetector.getDetector();
         final boolean isDarkThemeUsed = detector.isDark();
         if (isDarkThemeUsed) {
-            //The OS uses a dark theme
+            // The OS uses a dark theme
             FlatDarkLaf.setup();
         } else {
-            //The OS uses a light theme
+            // The OS uses a light theme
             FlatLightLaf.setup();
         }
 
@@ -51,22 +58,12 @@ public class DroneDeck {
         try (InputStream is = DroneDeck.class.getResourceAsStream("/Lato-Bold.ttf")) {
             Font font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(is)).deriveFont(16f);
             UIManager.put("defaultFont", font);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             // TODO: Handle exception properly
 
             //noinspection CallToPrintStackTrace
             e.printStackTrace();
         }
-
-        // Initialize LocalSearchService
-        LocalDroneDao localDroneDao = new LocalDroneDao();
-        LocalDroneTypeDao localDroneTypeDao = new LocalDroneTypeDao();
-        DroneApiService droneApiService = new DroneApiService(System.getenv("DRONE_API_KEY"));
-        ILocalSearchService localSearchService = LocalSearchService.createInstance(localDroneDao, localDroneTypeDao, droneApiService);
-
-        // Update local drone data
-        localSearchService.initLocalData();
 
         // Create the frame
         JFrame frame = new JFrame("DroneDeck");
@@ -77,9 +74,11 @@ public class DroneDeck {
         Image scaledLogo = logoIcon.getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
         frame.setIconImage(scaledLogo);
 
-        // Create and add the main panel
-        MainPanel mainPanel = new MainPanel();
-        frame.add(mainPanel, BorderLayout.CENTER);
+        // Create the loading panel
+        StartupLoadingScreen loadingPanel = new StartupLoadingScreen();
+
+        // Add the loading panel to the frame
+        frame.add(loadingPanel, BorderLayout.CENTER);
 
         // Call pack() so that components are laid out properly
         frame.pack();
@@ -90,6 +89,35 @@ public class DroneDeck {
         // Center the frame on the screen and make it visible
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-    }
 
+        // Load data and switch to the main panel asynchronously
+        new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() {
+                // Initialize LocalSearchService
+                LocalDroneDao localDroneDao = new LocalDroneDao();
+                LocalDroneTypeDao localDroneTypeDao = new LocalDroneTypeDao();
+                DroneApiService droneApiService = new DroneApiService(System.getenv("DRONE_API_KEY"));
+                ILocalSearchService localSearchService = LocalSearchService.createInstance(localDroneDao, localDroneTypeDao, droneApiService);
+
+                // Update local drone data
+                localSearchService.initLocalData();
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                // Remove the loading panel
+                frame.remove(loadingPanel);
+
+                // Create and add the main panel
+                MainPanel mainPanel = new MainPanel();
+                frame.add(mainPanel, BorderLayout.CENTER);
+
+                // Revalidate and repaint the frame to apply changes
+                frame.revalidate();
+                frame.repaint();
+            }
+        }.execute();
+    }
 }
