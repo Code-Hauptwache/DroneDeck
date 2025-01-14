@@ -63,7 +63,6 @@ class DroneDashboardCardTest {
         );
 
         // Create a DroneDashboardCard instance
-        DroneDashboardCard card = new DroneDashboardCard(dto);
-        return card;
+        return new DroneDashboardCard(dto);
     }
 }
