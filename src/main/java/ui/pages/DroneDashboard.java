@@ -8,6 +8,7 @@ import main.java.entity.DroneEntity;
 import main.java.services.LocalSearch.ILocalSearchService;
 import main.java.services.LocalSearch.LocalSearchService;
 import main.java.services.ScrollPane.ScrollPaneService;
+import main.java.ui.components.CardTemplate;
 import main.java.ui.components.DroneDashboardCard;
 import main.java.ui.dtos.DroneDto;
 
@@ -69,7 +70,7 @@ public class DroneDashboard extends JPanel {
                 if (isGridLayout) {
                     int panelWidth = cardPanel.getWidth();
 
-                    int cardTotalWidth = 250 + gridGap; // 250 for card + 10 for right gap
+                    int cardTotalWidth = CardTemplate.CARD_WIDTH + gridGap; // 250 for card + 10 for right gap
                     // Compute how many columns can fit
                     int columns = Math.max(1, panelWidth / cardTotalWidth);
 

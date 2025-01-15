@@ -16,6 +16,7 @@ public class CardTemplate extends JComponent {
     private static final List<CardTemplate> instances = new ArrayList<>();
     private final JLabel subtitleLabel;
     private final JSeparator separator;
+    public static int CARD_WIDTH = 250;
 
     /**
      * Constructs a CardTemplate with the specified title, subtitle, and content.
@@ -37,8 +38,7 @@ public class CardTemplate extends JComponent {
 
         // Set a fixed width/height for the card
         int cardHeight = 275;
-        int cardWidth = 225;
-        Dimension fixedSize = new Dimension(cardWidth, cardHeight);
+        Dimension fixedSize = new Dimension(CARD_WIDTH, cardHeight);
         setPreferredSize(fixedSize);
         setMinimumSize(fixedSize);
         setMaximumSize(fixedSize);
