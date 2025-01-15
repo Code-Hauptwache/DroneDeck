@@ -70,7 +70,8 @@ public class DroneDashboard extends JPanel {
                 if (isGridLayout) {
                     int panelWidth = cardPanel.getWidth();
 
-                    int cardTotalWidth = CardTemplate.CARD_WIDTH + gridGap; // 250 for card + 10 for right gap
+                    // Compute total width of a card (including gap)
+                    int cardTotalWidth = CardTemplate.CARD_WIDTH + gridGap;
                     // Compute how many columns can fit
                     int columns = Math.max(1, panelWidth / cardTotalWidth);
 
