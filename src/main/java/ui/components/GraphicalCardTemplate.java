@@ -1,4 +1,10 @@
 package main.java.ui.components;
 
-public class GraphicalCardTemplate {
+import javax.swing.*;
+import java.awt.*;
+
+public class GraphicalCardTemplate extends JComponent {
+    public GraphicalCardTemplate (String title, Component content) {
+
+    }
 }
