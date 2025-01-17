@@ -1,4 +1,4 @@
-package main.java.ui.enums;
+package main.java.enums;
 
 /**
  * Enum for carriage types.

@@ -1,6 +1,6 @@
 package main.java.ui.dtos;
 
-import main.java.ui.enums.CarriageType;
+import main.java.enums.CarriageType;
 
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
