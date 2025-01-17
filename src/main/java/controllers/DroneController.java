@@ -94,7 +94,7 @@ public class DroneController implements IDroneController {
         }
     }
 
-    private DroneDto getDroneDto(DroneEntity drone) {
+    public DroneDto getDroneDto(DroneEntity drone) {
         ArrayList<DroneDynamics> latestDroneDynamic;
         try {
             // get latest drone dynamic info
@@ -130,5 +130,9 @@ public class DroneController implements IDroneController {
                 droneType.control_range,
                 droneDynamic.timestamp.toString()
         );
+    }
+
+    public List<DroneEntity> getAllDrones() {
+        return localDroneDao.loadDroneData();
     }
 }

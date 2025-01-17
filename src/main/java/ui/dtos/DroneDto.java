@@ -16,7 +16,7 @@ public class DroneDto {
     private final int id;
     private final String typeName;
     private final String manufacturer;
-    private final String status;
+    private String status;
     private final double batteryStatus;
     private final double batteryCapacity;
     private final double speed;
@@ -179,7 +179,6 @@ public class DroneDto {
         }
         return dataTimestampDateTime.format(DISPLAY_FORMAT);
     }
-
 
     public void setLocation(String location) {
         this.location = location;
