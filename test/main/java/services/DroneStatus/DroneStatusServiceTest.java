@@ -36,13 +36,13 @@ class DroneStatusServiceTest {
         public DroneDto getDroneDto(DroneEntity drone) {
             switch (drone.getId()) {
                 case 1, 4, 7, 9 -> {
-                    return new DroneDto(1, "Type1", "Manufacturer1", "online", 100, 100, 50, 10.0, 20.0, "ON123", 10, "SEN", 50, "2023-10-10T00:00:00Z", 100, 200, 1000, "2023-10-10T00:00:00Z");
+                    return new DroneDto(1, "Type1", "Manufacturer1", "ON", 100, 100, 50, 10.0, 20.0, "ON123", 10, "SEN", 50, "2023-10-10T00:00:00Z", 100, 200, 1000, "2023-10-10T00:00:00Z");
                 }
                 case 2, 5 -> {
-                    return new DroneDto(2, "Type2", "Manufacturer2", "issue", 100, 100, 50, 10.0, 20.0, "IS456", 15, "ACT", 50, "2023-10-10T00:00:00Z", 100, 200, 1000, "2023-10-10T00:00:00Z");
+                    return new DroneDto(2, "Type2", "Manufacturer2", "IS", 100, 100, 50, 10.0, 20.0, "IS456", 15, "ACT", 50, "2023-10-10T00:00:00Z", 100, 200, 1000, "2023-10-10T00:00:00Z");
                 }
                 case 3, 6, 8 -> {
-                    return new DroneDto(3, "Type3", "Manufacturer3", "offline", 100, 100, 50, 10.0, 20.0, "OFF789", 20, "NONE", 50, "2023-10-10T00:00:00Z", 100, 200, 1000, "2023-10-10T00:00:00Z");
+                    return new DroneDto(3, "Type3", "Manufacturer3", "OF", 100, 100, 50, 10.0, 20.0, "OFF789", 20, "NONE", 50, "2023-10-10T00:00:00Z", 100, 200, 1000, "2023-10-10T00:00:00Z");
                 }
                 default -> throw new IllegalArgumentException("Unexpected drone ID: " + drone.getId());
             }
