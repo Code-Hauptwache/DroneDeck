@@ -1,9 +1,10 @@
-package main.java.ui.components;
+package main.java.examples;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.jthemedetecor.OsThemeDetector;
+import main.java.ui.components.PieChartPanel;
 
 import javax.swing.*;
 import java.awt.*;

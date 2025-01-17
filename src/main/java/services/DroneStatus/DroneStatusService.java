@@ -24,9 +24,9 @@ public class DroneStatusService {
             DroneDto droneDto = droneController.getDroneDto(drone);
             String status = droneDto.getStatus();
             switch (status) {
-                case "online" -> onlineCount++;
-                case "issue" -> issueCount++;
-                case "offline" -> offlineCount++;
+                case "ON" -> onlineCount++;
+                case "IS" -> issueCount++;
+                case "OF" -> offlineCount++;
             }
         }
     }

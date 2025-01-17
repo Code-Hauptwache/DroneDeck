@@ -1,16 +1,14 @@
 package main.java.ui.pages;
 
 import main.java.controllers.DroneController;
-import main.java.controllers.IDroneController;
 import main.java.dao.ILocalDroneDao;
 import main.java.dao.LocalDroneDao;
 import main.java.entity.DroneEntity;
+import main.java.services.DroneStatus.DroneStatusService;
 import main.java.services.LocalSearch.ILocalSearchService;
 import main.java.services.LocalSearch.LocalSearchService;
 import main.java.services.ScrollPane.ScrollPaneService;
-import main.java.ui.components.CardTemplate;
-import main.java.ui.components.DroneDashboardCard;
-import main.java.ui.components.GraphicalCardTemplate;
+import main.java.ui.components.*;
 import main.java.ui.dtos.DroneDto;
 
 import javax.swing.*;
@@ -28,7 +26,7 @@ public class DroneDashboard extends JPanel {
     private final ILocalSearchService localSearchService;
     private final List<DroneDto> fetchedDrones;
     public static int componentGap = 30;
-    private boolean isGridLayout = true; // Track the current layout type
+    private boolean isGridLayout = true;
 
     /**
      * The DroneDashboard method is the constructor for the DroneDashboard class.
@@ -36,27 +34,28 @@ public class DroneDashboard extends JPanel {
     private DroneDashboard() {
         super(new BorderLayout());
 
-        // Use GridLayout(1, 2) with some spacing
+        // Create a DroneController and DroneStatusService instance
+        DroneController droneController = new DroneController();
+        DroneStatusService droneStatusService = new DroneStatusService(droneController); // Add this line
+
+        // Create a JPanel to hold the graphical components
         JPanel graphPanel = new JPanel();
         graphPanel.setLayout(new BoxLayout(graphPanel, BoxLayout.X_AXIS));
 
-        // Sample label to show in each card
+        // Create a pie chart panel and a graphical card
+        AllDronesStatusPieChartPanel pieChartPanel = new AllDronesStatusPieChartPanel(droneStatusService);
+        GraphicalCardTemplate allDronesStatusPieChartCard = new GraphicalCardTemplate("Drone Status", pieChartPanel);
+
+        // Create a graphical card with a JLabel
         JLabel label = new JLabel("Graphical Components (TODO)", SwingConstants.CENTER);
         label.setForeground(Color.ORANGE);
         label.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.ORANGE));
-        JLabel label2 = new JLabel("Graphical Components (TODO)", SwingConstants.CENTER);
-        label2.setForeground(Color.ORANGE);
-        label2.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.ORANGE));
+        GraphicalCardTemplate graphicalCard = new GraphicalCardTemplate("Graphical Card #2", label, 2, componentGap);
 
-        // Create the two graph cards
-        GraphicalCardTemplate graphicalCard  = new GraphicalCardTemplate("Graphical Card #1", label);
-        GraphicalCardTemplate graphicalCard2 = new GraphicalCardTemplate("Graphical Card #2", label2, 2, componentGap);
-
-        // Or wrap each card in a Box panel with a fixed maximum size
         graphPanel.add(Box.createHorizontalGlue());
-        graphPanel.add(graphicalCard);
+        graphPanel.add(allDronesStatusPieChartCard);
         graphPanel.add(Box.createHorizontalStrut(componentGap));
-        graphPanel.add(graphicalCard2);
+        graphPanel.add(graphicalCard);
         graphPanel.add(Box.createHorizontalGlue());
 
 
@@ -70,7 +69,6 @@ public class DroneDashboard extends JPanel {
         cardPanel = new JPanel(new GridLayout(0, 1, componentGap, componentGap));
         localSearchService = LocalSearchService.getCurrentInstance();
         ILocalDroneDao localDroneDao = new LocalDroneDao();
-        IDroneController droneController = new DroneController();
         fetchedDrones = droneController.getDroneThreads(localDroneDao.getDroneDataCount(), 0);
 
         // Load initial drones
@@ -127,7 +125,7 @@ public class DroneDashboard extends JPanel {
      * @param keyword the keyword to search for
      */
     public void updateDrones(String keyword) {
-        cardPanel.removeAll(); // Remove all components from the cardPanel
+        cardPanel.removeAll();
 
         // Load drones from local file
         List<DroneEntity> drones = localSearchService.findDronesByKeyword(keyword);
