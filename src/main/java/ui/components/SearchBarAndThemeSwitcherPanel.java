@@ -2,6 +2,8 @@ package main.java.ui.components;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 /**
  * The SearchBarAndThemeSwitcherPanel class is a JPanel
@@ -36,11 +38,28 @@ public class SearchBarAndThemeSwitcherPanel extends JPanel {
         buttonPanel.add(buttonThemeSwitcher); // Add the square button
         buttonPanel.setPreferredSize(new Dimension(buttonThemeSwitcher.getPreferredSize().width, searchBar.getPreferredSize().height)); // Match height to SearchBar
 
+        // Create a panel for left-side padding with the same width as the theme button
+        JPanel leftPaddingPanel = new JPanel();
+        leftPaddingPanel.setPreferredSize(new Dimension(buttonThemeSwitcher.getPreferredSize().width, searchBar.getPreferredSize().height));
+
         // Add components to the main panel
+        add(leftPaddingPanel, BorderLayout.WEST);
         add(centerPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.EAST);
 
         // Set padding for the main panel
         setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
+
+        // Add a ComponentListener to adjust padding dynamically
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                int frameWidth = getWidth();
+                int padding = Math.max(150, frameWidth / 5);
+                centerPanel.setBorder(BorderFactory.createEmptyBorder(0, padding, 0, padding));
+                revalidate();
+                repaint();
+            }
+        });
     }
 }

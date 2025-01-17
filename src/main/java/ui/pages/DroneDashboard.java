@@ -8,7 +8,9 @@ import main.java.entity.DroneEntity;
 import main.java.services.LocalSearch.ILocalSearchService;
 import main.java.services.LocalSearch.LocalSearchService;
 import main.java.services.ScrollPane.ScrollPaneService;
+import main.java.ui.components.CardTemplate;
 import main.java.ui.components.DroneDashboardCard;
+import main.java.ui.components.GraphicalCardTemplate;
 import main.java.ui.dtos.DroneDto;
 
 import javax.swing.*;
@@ -25,7 +27,7 @@ public class DroneDashboard extends JPanel {
     private final JPanel cardPanel;
     private final ILocalSearchService localSearchService;
     private final List<DroneDto> fetchedDrones;
-    private final int gridGap = 30;
+    public static int componentGap = 30;
     private boolean isGridLayout = true; // Track the current layout type
 
     /**
@@ -34,21 +36,39 @@ public class DroneDashboard extends JPanel {
     private DroneDashboard() {
         super(new BorderLayout());
 
-        // Horizontal and vertical gaps for the GridLayout
+        // Use GridLayout(1, 2) with some spacing
+        JPanel graphPanel = new JPanel();
+        graphPanel.setLayout(new BoxLayout(graphPanel, BoxLayout.X_AXIS));
 
-        // This is a placeholder in orange for the graphical components of the drone dashboard
+        // Sample label to show in each card
         JLabel label = new JLabel("Graphical Components (TODO)", SwingConstants.CENTER);
         label.setForeground(Color.ORANGE);
-        label.setPreferredSize(new Dimension(0, 300 + gridGap));
         label.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.ORANGE));
-        add(label, BorderLayout.NORTH);
+        JLabel label2 = new JLabel("Graphical Components (TODO)", SwingConstants.CENTER);
+        label2.setForeground(Color.ORANGE);
+        label2.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.ORANGE));
 
-        // Add CardTemplate instances to the center panel using GridLayout
-        cardPanel = new JPanel(new GridLayout(0, 1, gridGap, gridGap));
+        // Create the two graph cards
+        GraphicalCardTemplate graphicalCard  = new GraphicalCardTemplate("Graphical Card #1", label);
+        GraphicalCardTemplate graphicalCard2 = new GraphicalCardTemplate("Graphical Card #2", label2, 2, componentGap);
 
-        // Initialize the local search service
+        // Or wrap each card in a Box panel with a fixed maximum size
+        graphPanel.add(Box.createHorizontalGlue());
+        graphPanel.add(graphicalCard);
+        graphPanel.add(Box.createHorizontalStrut(componentGap));
+        graphPanel.add(graphicalCard2);
+        graphPanel.add(Box.createHorizontalGlue());
+
+
+        // Add padding to the bottom of graphPanel
+        graphPanel.setBorder(BorderFactory.createEmptyBorder(componentGap, 0, componentGap, 0));
+
+        // Add the graphPanel to the DroneDashboard
+        add(graphPanel, BorderLayout.NORTH);
+
+        // The rest of your logic for the drone cards stays the same
+        cardPanel = new JPanel(new GridLayout(0, 1, componentGap, componentGap));
         localSearchService = LocalSearchService.getCurrentInstance();
-
         ILocalDroneDao localDroneDao = new LocalDroneDao();
         IDroneController droneController = new DroneController();
         fetchedDrones = droneController.getDroneThreads(localDroneDao.getDroneDataCount(), 0);
@@ -68,8 +88,8 @@ public class DroneDashboard extends JPanel {
                 // Check if the layout is currently GridLayout
                 if (isGridLayout) {
                     int panelWidth = cardPanel.getWidth();
+                    int cardTotalWidth = CardTemplate.cardWidth + componentGap;
 
-                    int cardTotalWidth = 250 + gridGap; // 250 for card + 10 for right gap
                     // Compute how many columns can fit
                     int columns = Math.max(1, panelWidth / cardTotalWidth);
 
@@ -86,7 +106,6 @@ public class DroneDashboard extends JPanel {
 
         // Make it scrollable (vertical only)
         JScrollPane scrollPane = ScrollPaneService.createScrollPane(cardPanel);
-
         add(scrollPane, BorderLayout.CENTER);
     }
 
@@ -121,7 +140,7 @@ public class DroneDashboard extends JPanel {
             isGridLayout = false; // Mark that the layout is now BorderLayout
         } else {
             // Reset layout to GridLayout for displaying drone cards
-            cardPanel.setLayout(new GridLayout(0, 1, gridGap, gridGap));
+            cardPanel.setLayout(new GridLayout(0, 1, componentGap, componentGap));
             isGridLayout = true; // Mark that the layout is now GridLayout
 
             // Filter fetchedDrones based on the IDs of the drones in the drones list
