@@ -14,8 +14,8 @@ public class PieChartExample {
         // Set up FlatLaf look and feel
         FlatLaf.registerCustomDefaultsSource("main.java.ui.themes");
 
-        final OsThemeDetector detector = OsThemeDetector.getDetector();
-        final boolean isDarkThemeUsed = detector.isDark();
+        OsThemeDetector detector = OsThemeDetector.getDetector();
+        boolean isDarkThemeUsed = detector.isDark();
         if (isDarkThemeUsed) {
             FlatDarkLaf.setup();
         } else {
@@ -24,15 +24,18 @@ public class PieChartExample {
 
         JFrame frame = new JFrame("Pie Chart Example");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 400);
+        frame.setSize(300, 300);
 
-        PieChartPanel.Slice slice1 = new PieChartPanel.Slice(30, Color.GREEN, "Online");
-        PieChartPanel.Slice slice2 = new PieChartPanel.Slice(20, Color.ORANGE, "Issue");
-        PieChartPanel.Slice slice3 = new PieChartPanel.Slice(50, Color.RED, "Offline");
+        // Create slices with colors and labels
+        PieChartPanel.Slice slice1 = new PieChartPanel.Slice(22, Color.GREEN,  "Online");
+        PieChartPanel.Slice slice2 = new PieChartPanel.Slice(5, Color.ORANGE, "Issue");
+        PieChartPanel.Slice slice3 = new PieChartPanel.Slice(13, Color.RED,    "Offline");
 
+        // Add them to the PieChartPanel
         PieChartPanel pieChartPanel = new PieChartPanel(Arrays.asList(slice1, slice2, slice3));
         frame.add(pieChartPanel);
 
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 }
