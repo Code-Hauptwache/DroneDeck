@@ -5,7 +5,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 
+/**
+ * The AllDronesStatusPieChartPanel class is a JPanel that displays a pie chart of all drones' statuses.
+ */
 public class AllDronesStatusPieChartPanel extends JPanel {
+    /**
+     * Constructor for AllDronesStatusPieChartPanel.
+     *
+     * @param droneStatusService the drone status service
+     */
     public AllDronesStatusPieChartPanel(DroneStatusService droneStatusService) {
         super(new BorderLayout()); // Set a layout manager
 

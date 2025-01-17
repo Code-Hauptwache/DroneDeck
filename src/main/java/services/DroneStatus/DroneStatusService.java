@@ -6,13 +6,20 @@ import main.java.ui.dtos.DroneDto;
 
 import java.util.List;
 
+/**
+ * Service to get the status of all drones.
+ */
 public class DroneStatusService {
-
     private final DroneController droneController;
     private int onlineCount;
     private int issueCount;
     private int offlineCount;
 
+    /**
+     * Constructor for DroneStatusService.
+     *
+     * @param droneController the drone controller
+     */
     public DroneStatusService(DroneController droneController) {
         this.droneController = droneController;
         checkDroneStatuses();

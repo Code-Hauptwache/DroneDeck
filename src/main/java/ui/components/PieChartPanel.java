@@ -8,9 +8,17 @@ import java.awt.geom.Arc2D;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A JPanel that displays a pie chart.
+ */
 public class PieChartPanel extends JComponent {
     private final List<Slice> slices;
 
+    /**
+     * Constructor for PieChartPanel.
+     *
+     * @param slices the slices to display in the pie chart
+     */
     public PieChartPanel(List<Slice> slices) {
         this.slices = slices;
     }

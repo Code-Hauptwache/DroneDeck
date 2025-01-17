@@ -10,7 +10,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 
+/**
+ * Example of a pie chart using PieChartPanel.
+ */
 public class PieChartExample {
+    /**
+     * Main method to run the example.
+     */
     public static void main(String[] args) {
         // Set up FlatLaf look and feel
         FlatLaf.registerCustomDefaultsSource("main.java.ui.themes");
