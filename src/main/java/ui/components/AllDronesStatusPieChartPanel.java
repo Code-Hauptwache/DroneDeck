@@ -26,8 +26,6 @@ public class AllDronesStatusPieChartPanel extends JPanel {
 
         PieChartPanel pieChartPanel = new PieChartPanel(Arrays.asList(slice1, slice2, slice3));
 
-        GraphicalCardTemplate allDronesStatusPieChartCard = new GraphicalCardTemplate("Drone Status", pieChartPanel);
-
-        add(allDronesStatusPieChartCard, BorderLayout.CENTER); // Add to the center of the card
+        add(pieChartPanel, BorderLayout.CENTER); // Add to the center of the card
     }
 }
