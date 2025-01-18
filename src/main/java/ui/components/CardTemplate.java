@@ -33,10 +33,6 @@ public class CardTemplate extends JComponent {
         // Use BorderLayout for main arrangement
         setLayout(new BorderLayout(0, 10));
 
-        // Ensure we paint the background
-//        setOpaque(true);
-//        setBackground(UIManager.getColor("Panel.background"));
-
         // Set a fixed width/height for the card
         Dimension fixedSize = new Dimension(cardWidth, cardHeight);
         setPreferredSize(fixedSize);

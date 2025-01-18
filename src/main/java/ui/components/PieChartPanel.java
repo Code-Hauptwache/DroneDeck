@@ -42,7 +42,7 @@ public class PieChartPanel extends JComponent {
             LegendLayout layout = measureLegend(g2d, width);
             int neededLegendHeight = layout.totalHeight;
 
-            // The chart gets whatever space remains
+            // Calculate the height available for the chart
             int chartHeight  = height - neededLegendHeight;
             int minDimension = Math.min(width, chartHeight);
 
@@ -94,17 +94,17 @@ public class PieChartPanel extends JComponent {
         // Split items into rows
         List<List<LegendItem>> rows = getLists(panelWidth, items, itemSpacing);
 
-        // Compute total legend height by summing the tallest item in each row
+        // Calculate the total height of the legend
         int totalHeight = 0;
         for (List<LegendItem> row : rows) {
             int rowMaxHeight = row.stream()
                     .mapToInt(li -> li.itemHeight)
                     .max()
                     .orElse(fm.getHeight());
-            totalHeight += rowMaxHeight + 5; // +5 for a small gap after each row
+            totalHeight += rowMaxHeight + 5;
         }
-        // Add a bit of top padding, say 10px
-        totalHeight += 10;
+        // Add some bottom padding
+        totalHeight += 5;
 
         LegendLayout layout = new LegendLayout();
         layout.rows = rows;
@@ -134,11 +134,10 @@ public class PieChartPanel extends JComponent {
     }
 
     private void drawPieChart(Graphics2D g2d, int minDimension) {
-        // Grab the panel’s current width & height
+        // Get the panel width
         int width  = getWidth();
 
-        // Where do we place the chart?
-        // Here, we place it horizontally centered and at the top:
+        // Calculate the top-left corner of the chart
         int chartX = (width - minDimension) / 2;
         int chartY = 0; // top
 
@@ -147,14 +146,13 @@ public class PieChartPanel extends JComponent {
                 .mapToDouble(Slice::value)
                 .sum();
 
-        // We'll keep track of the "startAngle" for each slice
+        // Keep track of the current starting angle
         double currentValue = 0.0;
 
-        // Some padding around the chart to avoid drawing to the very edge
+        // Add some padding around the chart
         int chartPadding = 5;
 
-        // Decide how thick your "gap" stroke should be
-        // (e.g. 3px wide stroke, which also provides a rounded boundary)
+        // Stroke width for the gap between slices
         float gapStrokeWidth = 3f;
 
         // Draw each slice of the pie
@@ -178,8 +176,7 @@ public class PieChartPanel extends JComponent {
             g2d.setColor(slice.color());
             g2d.fill(arc);
 
-            // Immediately draw a thick stroke in the background color
-            // to create a gap between adjacent slices
+            // Draw a border around the slice
             g2d.setColor(getBackground());
             g2d.setStroke(
                     new BasicStroke(
@@ -196,7 +193,7 @@ public class PieChartPanel extends JComponent {
     }
 
     private void drawLegendWithWrapping(Graphics2D g2d, LegendLayout layout, int panelWidth, int legendTop) {
-        // We already know how to measure each row, so we just paint them:
+        // Basic sizes
         int squareSize   = 10;
         int itemSpacing  = 20;
         int labelPadding = 5;
@@ -206,7 +203,7 @@ public class PieChartPanel extends JComponent {
 
         int y = legendTop + 10; // some top padding
         for (List<LegendItem> row : layout.rows) {
-            // Calculate this row's width so we can center it
+            // Calculate the total width of this row
             int rowWidth = 0;
             for (int i = 0; i < row.size(); i++) {
                 if (i > 0) {
