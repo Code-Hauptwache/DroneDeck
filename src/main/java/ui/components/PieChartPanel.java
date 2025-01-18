@@ -201,7 +201,7 @@ public class PieChartPanel extends JComponent {
 
         FontMetrics fm = g2d.getFontMetrics();
 
-        int y = legendTop + 10; // some top padding
+        int y = legendTop + 5; // some top padding
         for (List<LegendItem> row : layout.rows) {
             // Calculate the total width of this row
             int rowWidth = 0;

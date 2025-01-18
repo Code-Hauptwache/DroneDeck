@@ -60,7 +60,7 @@ public class DroneDashboard extends JPanel {
 
 
         // Add padding to the bottom of graphPanel
-        graphPanel.setBorder(BorderFactory.createEmptyBorder(componentGap, 0, componentGap, 0));
+        graphPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, componentGap, 0));
 
         // Add the graphPanel to the DroneDashboard
         add(graphPanel, BorderLayout.NORTH);
