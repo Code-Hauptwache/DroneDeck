@@ -3,6 +3,7 @@ package main.java.ui.pages;
 import main.java.entity.DroneTypeEntity;
 import main.java.services.LocalSearch.LocalSearchService;
 import main.java.services.LocalSearch.ILocalSearchService;
+import main.java.ui.components.CardTemplate;
 import main.java.ui.components.DroneCatalogCard;
 import main.java.ui.dtos.DroneDto;
 import main.java.services.ScrollPane.ScrollPaneService;
@@ -29,7 +30,7 @@ public class DroneCatalog extends JPanel {
         super(new BorderLayout());
 
         // Horizontal and vertical gaps for the GridLayout
-        int gap = 30;
+        int gap = DroneDashboard.componentGap;
 
         // Add CardTemplate instances to the center panel using GridLayout
         cardPanel = new JPanel(new GridLayout(0, 1, gap, gap));
@@ -47,8 +48,7 @@ public class DroneCatalog extends JPanel {
                 int panelWidth = cardPanel.getWidth();
 
                 // Each CardTemplate is ~250 wide, plus we have a 10px gap (GridLayout hGap)
-                // We'll assume some extra spacing; adjust as needed
-                int cardTotalWidth = 250 + gap; // 250 for card + 10 for right gap
+                int cardTotalWidth = CardTemplate.cardWidth + gap;
                 // Compute how many columns can fit
                 int columns = Math.max(1, panelWidth / cardTotalWidth);
 

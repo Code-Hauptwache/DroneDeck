@@ -17,7 +17,7 @@ public class CardTemplate extends JComponent {
     private final JLabel subtitleLabel;
     private final JSeparator separator;
     public static int cardHeight = 300;
-    public static int cardWidth = 275;
+    public static int cardWidth = 250;
 
     /**
      * Constructs a CardTemplate with the specified title, subtitle, and content.
