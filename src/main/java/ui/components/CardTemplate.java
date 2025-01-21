@@ -17,7 +17,7 @@ public class CardTemplate extends JComponent {
     private final JLabel subtitleLabel;
     private final JSeparator separator;
     public static int cardHeight = 300;
-    public static int cardWidth = 275;
+    public static int cardWidth = 250;
 
     /**
      * Constructs a CardTemplate with the specified title, subtitle, and content.
@@ -32,10 +32,6 @@ public class CardTemplate extends JComponent {
 
         // Use BorderLayout for main arrangement
         setLayout(new BorderLayout(0, 10));
-
-        // Ensure we paint the background
-//        setOpaque(true);
-//        setBackground(UIManager.getColor("Panel.background"));
 
         // Set a fixed width/height for the card
         Dimension fixedSize = new Dimension(cardWidth, cardHeight);
