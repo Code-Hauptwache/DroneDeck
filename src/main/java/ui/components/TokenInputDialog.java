@@ -1,4 +1,4 @@
-package main.java.ui.TokenDialogs;
+package main.java.ui.components;
 
 import main.java.services.ApiToken.ApiTokenStoreService;
 

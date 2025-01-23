@@ -1,7 +1,7 @@
 package main.java.services.ApiToken;
 
-import main.java.ui.TokenDialogs.PasswordInputDialog;
-import main.java.ui.TokenDialogs.TokenInputDialog;
+import main.java.ui.components.PasswordInputDialog;
+import main.java.ui.components.TokenInputDialog;
 
 import javax.swing.*;
 
