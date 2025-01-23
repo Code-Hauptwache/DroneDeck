@@ -7,11 +7,15 @@ import java.awt.*;
 
 /**
  * Dialog to get the password for the token.
- *
  * This dialog will automatically load the token from the file and check if the token is valid.
  */
 public class PasswordInputDialog extends JDialog {
 
+
+    /**
+     * Constructor for the PasswordInputDialog
+     * @param parent The parent JFrame
+     */
     public PasswordInputDialog(JFrame parent) {
         super(parent, "Enter Token", ModalityType.APPLICATION_MODAL);
         setResizable(false);

@@ -7,11 +7,14 @@ import java.awt.*;
 
 /**
  * Dialog to prompt the user to enter the password to decrypt the token.
- *
  * This dialog will automatically save the token if the user wants to.
  */
 public class TokenInputDialog extends JDialog {
 
+    /**
+     * Constructor for the TokenInputDialog
+     * @param parent The parent JFrame
+     */
     public TokenInputDialog(JFrame parent) {
         super(parent, "Enter Token", ModalityType.APPLICATION_MODAL);
         setResizable(false);
