@@ -10,16 +10,11 @@ import main.java.services.DroneApi.DroneApiService;
 import main.java.services.LocalSearch.LocalSearchService;
 import main.java.services.LocalSearch.ILocalSearchService;
 import main.java.ui.components.StartupLoadingScreen;
-import main.java.exceptions.DroneApiException;
 import main.java.services.ApiToken.ApiTokenService;
-import main.java.services.DroneApi.DroneApiService;
-import main.java.services.DroneApi.dtos.Drone;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.Console;
 import java.io.InputStream;
-import java.util.List;
 import java.util.Objects;
 
 /**
