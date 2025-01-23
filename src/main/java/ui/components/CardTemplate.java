@@ -14,11 +14,10 @@ import java.util.List;
  */
 public class CardTemplate extends JComponent {
     private static final List<CardTemplate> instances = new ArrayList<>();
-    private final int cardHeight = 275;
-    private final int cardWidth = 225;
-    private final JLabel titleLabel;
     private final JLabel subtitleLabel;
     private final JSeparator separator;
+    public static int cardHeight = 300;
+    public static int cardWidth = 250;
 
     /**
      * Constructs a CardTemplate with the specified title, subtitle, and content.
@@ -34,11 +33,7 @@ public class CardTemplate extends JComponent {
         // Use BorderLayout for main arrangement
         setLayout(new BorderLayout(0, 10));
 
-        // Ensure we paint the background
-        setOpaque(true);
-        setBackground(UIManager.getColor("Panel.background"));
-
-        // Set a fixed width/height here (adjust to your needs)
+        // Set a fixed width/height for the card
         Dimension fixedSize = new Dimension(cardWidth, cardHeight);
         setPreferredSize(fixedSize);
         setMinimumSize(fixedSize);
@@ -55,11 +50,9 @@ public class CardTemplate extends JComponent {
         // --- Header Panel (Title + Subtitle) ---
         JPanel headerPanel = new JPanel();
         headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
-        // We want it to blend with the parent
-        headerPanel.setOpaque(false);
 
         // Create and style the title label
-        titleLabel = new JLabel(title);
+        JLabel titleLabel = new JLabel(title);
         titleLabel.putClientProperty("FlatLaf.styleClass", "h3");
 
         // Create and style the subtitle label
@@ -75,7 +68,6 @@ public class CardTemplate extends JComponent {
 
         // --- Center Panel (Separator + Content) ---
         JPanel centerPanel = new JPanel(new BorderLayout(0, 10));
-        centerPanel.setOpaque(false);
 
         // Add a separator below the header
         separator = new JSeparator(SwingConstants.HORIZONTAL);
@@ -83,7 +75,6 @@ public class CardTemplate extends JComponent {
 
         // Create a panel for the content and add the provided content component
         JPanel contentPanel = new JPanel(new BorderLayout());
-        contentPanel.setOpaque(false);
         contentPanel.add(content, BorderLayout.CENTER);
 
         // Add the content panel to the center panel

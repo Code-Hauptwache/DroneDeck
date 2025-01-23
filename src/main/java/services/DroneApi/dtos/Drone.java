@@ -37,14 +37,14 @@ public class Drone {
      * This then can be used to get the DroneType from the DroneApiService
      * @return the DroneType Id
      */
-    public int getDronetypeId() {
+    public int getDroneTypeId() {
         try {
-            return Integer.parseInt(dronetype.substring(dronetype.length() - 3, dronetype.length() - 1));
+            // Extract the numeric part from the drone type string
+            return Integer.parseInt(dronetype.replaceAll("\\D+", ""));
         } catch (Exception ex) {
-            //TODO Logging
+            // TODO: Add proper logging
             return 0;
         }
-
     }
 
     /**
@@ -56,7 +56,7 @@ public class Drone {
     public String toString() {
         return "Drone{" +
                 "id=" + id +
-                ", dronetypeId=" + getDronetypeId() +
+                ", dronetypeId=" + getDroneTypeId() +
                 ", dronetype='" + dronetype + '\'' +
                 ", created=" + created +
                 ", serialnumber='" + serialnumber + '\'' +
@@ -71,5 +71,9 @@ public class Drone {
      */
     public DroneEntity toEntity() {
         return new DroneEntity(id, created, serialnumber, carriage_weight, carriage_type);
+    }
+
+    public String getId() {
+        return String.valueOf(id);
     }
 }

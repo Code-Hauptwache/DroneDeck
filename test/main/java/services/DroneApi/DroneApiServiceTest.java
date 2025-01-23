@@ -44,7 +44,7 @@ class DroneApiServiceTest {
             System.out.println("Drone by id: " + drones.getFirst().id);
             System.out.println(droneApiInterface.getDronesById(drones.getFirst().id));
             System.out.println("DroneType: ");
-            System.out.println(droneApiInterface.getDroneTypeById(drones.getFirst().getDronetypeId()));
+            System.out.println(droneApiInterface.getDroneTypeById(drones.getFirst().getDroneTypeId()));
             System.out.println("DroneDynamicsByDrone (only the first): ");
             System.out.println(droneApiInterface.getDroneDynamicsByDroneId(drones.getFirst().id).getFirst());
 
@@ -53,5 +53,4 @@ class DroneApiServiceTest {
             fail("Exception occurred during test execution: " + ex.getMessage());
         }
     }
-
 }

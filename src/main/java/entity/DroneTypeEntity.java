@@ -1,11 +1,17 @@
 package main.java.entity;
 
+import java.io.Serial;
 import java.io.Serializable;
+import java.util.regex.Pattern;
 
 /**
  * DroneType Entity
  */
 public class DroneTypeEntity implements Serializable {
+
+    // To fix the serialVersionUID
+    @Serial
+    private static final long serialVersionUID = 1879467100886065125L;
 
     /// The Id of the DroneType
     public int id = 0;
@@ -40,6 +46,23 @@ public class DroneTypeEntity implements Serializable {
         this.battery_capacity = battery_capacity;
         this.control_range = control_range;
         this.max_carriage = max_carriage;
+    }
+
+    /**
+     * check if this drone type entity matches with keyword
+     * Especially for drone type's manufacturer and typename.
+     * @param keyword for searching
+     * @return boolean value that this drone type matches with condition
+     */
+    public boolean checkIfKeywordMatches(String keyword) {
+        if (keyword == null || keyword.isEmpty()) {
+            return true; // If empty value comes in, all the drone types return.
+        }
+
+        Pattern pattern = Pattern.compile(Pattern.quote(keyword), Pattern.CASE_INSENSITIVE);
+
+        return (typename != null && pattern.matcher(this.typename).find())
+                || (manufacturer != null && pattern.matcher(this.manufacturer).find());
     }
 
     /**

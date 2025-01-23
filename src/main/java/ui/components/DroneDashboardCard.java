@@ -1,7 +1,13 @@
 package main.java.ui.components;
 
+import main.java.services.DroneApi.DroneApiService;
+import main.java.services.DroneApi.IDroneApiService;
+import main.java.services.ReverseGeocode.IReverseGeocodeService;
+import main.java.services.ReverseGeocode.ReverseGeocodeService;
+import main.java.services.TravelDistance.ITravelDistanceService;
+import main.java.services.TravelDistance.TravelDistanceService;
 import main.java.ui.MainPanel;
-import main.java.ui.dtos.DroneDashboardCardDto;
+import main.java.ui.dtos.DroneDto;
 import main.java.ui.pages.DroneDetailedView;
 
 import javax.swing.*;
@@ -16,16 +22,20 @@ import java.awt.event.MouseEvent;
  * information about a drone.
  */
 public class DroneDashboardCard extends JComponent {
-    private final DroneDashboardCardDto dto;
+    private static final String API_KEY = System.getenv("DRONE_API_KEY");
+    private final IDroneApiService droneApiService = new DroneApiService(API_KEY);
+    private final ITravelDistanceService travelDistanceService = new TravelDistanceService(droneApiService);
+    private final IReverseGeocodeService reverseGeocodeService = new ReverseGeocodeService();
+    private final DroneDto dto;
 
     /**
      * Creates a new DroneDashboardCard with the given DTO.
      *
      * @param dto The DTO containing the information to display.
      */
-    public DroneDashboardCard(DroneDashboardCardDto dto) {
-        this.dto = dto;
+    public DroneDashboardCard(DroneDto dto) {
         setLayout(new BorderLayout());
+        this.dto = dto;
 
         // Main content container with GridLayout
         JPanel contentContainer = new JPanel(new GridLayout(5, 2, 0, 4));
@@ -34,16 +44,17 @@ public class DroneDashboardCard extends JComponent {
         Component[] leftContent = {
                 new DroneStatus(dto),
                 new JLabel("Speed"),
-                new JLabel("Location"),
-                new JLabel("Traveled"),
+                new JLabel("Top Speed"),
+                new JLabel("Carriage Type"),
                 new JLabel("Serial")
         };
 
         Component[] rightContent = {
                 new DroneVisualBatteryStatus(dto),
                 new JLabel((int) dto.getSpeed() + " km/h"),
-                new JLabel(dto.getLocation() != null ? dto.getLocation() + " km" : "N/A"),
-                new JLabel(getTravelDistanceString(dto)),
+                new JLabel((int) dto.getMaxSpeed() + " km/h"),
+                // new JLabel(dto.getLocation() != null ? dto.getLocation() + " km" : "N/A"),
+                new JLabel(dto.getCarriageType()),
                 new JLabel(dto.getSerialNumber())
         };
 
@@ -54,11 +65,18 @@ public class DroneDashboardCard extends JComponent {
 
         // Create card with the content
         CardTemplate card = new CardTemplate(
-                dto.getTypename(),
-                dto.getManufacture(),
+                dto.getTypeName(),
+                dto.getManufacturer(),
                 contentContainer
         );
         card.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)); // Set cursor to pointer when hovering
+
+        // Set the preferred, minimum, and maximum sizes to match the CardTemplate
+        Dimension cardSize = card.getPreferredSize();
+        setPreferredSize(cardSize);
+        setMinimumSize(cardSize);
+        setMaximumSize(cardSize);
+
         add(card, BorderLayout.CENTER);
 
         // Add a mouse listener that shows the overlay on click
@@ -70,36 +88,68 @@ public class DroneDashboardCard extends JComponent {
         });
     }
 
+    private JPanel createLoadingPanel() {
+        JPanel loadingPanel = new JPanel();
+        loadingPanel.setLayout(new BorderLayout());
+        JLabel loadingLabel = new JLabel("Loading...", SwingConstants.CENTER);
+        loadingPanel.add(loadingLabel, BorderLayout.CENTER);
+        return loadingPanel;
+    }
+
     private void showDetailOverlay() {
-        // Find the MainPanel and the JLayeredPane
         MainPanel mainPanel = (MainPanel) SwingUtilities.getAncestorOfClass(MainPanel.class, this);
         if (mainPanel == null) {
             return;
         }
 
-        // Add the overlay panel to the JLayeredPane
         JLayeredPane layeredPane = mainPanel.getMainLayeredPane();
 
         // Create the overlay panel
-        JPanel overlayPanel = getOverlayPanel();
+        JPanel overlayPanel = new JPanel(new BorderLayout());
+
+        // Create and add the loading panel to the overlay
+        JPanel loadingPanel = createLoadingPanel();
+        overlayPanel.add(loadingPanel, BorderLayout.CENTER);
 
         // Add the overlay panel to the layered pane
         layeredPane.add(overlayPanel, JLayeredPane.MODAL_LAYER);
+
+        // Activate a glass pane to block events during loading
+        Component glassPane = mainPanel.getRootPane().getGlassPane();
+        glassPane.setVisible(true);
+
+        // Repaint and revalidate to ensure it displays properly
         layeredPane.revalidate();
         layeredPane.repaint();
+
+        // Load the detailed view asynchronously
+        SwingUtilities.invokeLater(() -> {
+            ensureTravelDistanceSet();
+            ensureLocationSet();
+
+            DroneDetailedView detailView = new DroneDetailedView(dto, overlayPanel);
+
+            // Remove loading panel and add detailed view
+            overlayPanel.remove(loadingPanel);
+            overlayPanel.add(detailView, BorderLayout.CENTER);
+
+            // Deactivate the glass pane
+            glassPane.setVisible(false);
+
+            overlayPanel.revalidate();
+            overlayPanel.repaint();
+        });
     }
 
-    private JPanel getOverlayPanel() {
-        JPanel overlayPanel = new JPanel(new BorderLayout());
-        overlayPanel.setBackground(new Color(0, 0, 0, 100)); // slight transparency
-        DroneDetailedView detailView = new DroneDetailedView(dto, overlayPanel);
-        overlayPanel.add(detailView, BorderLayout.CENTER);
-        return overlayPanel;
+    private void ensureLocationSet() {
+        if (!dto.isLocationSet()) {
+            dto.setLocation(reverseGeocodeService.getCityAndCountry(dto.getLatitude(), dto.getLongitude()));
+        }
     }
 
-    private String getTravelDistanceString(DroneDashboardCardDto dto) {
-        return (dto.getTravelDistance() != null && !dto.getTravelDistance().toString().isEmpty())
-                ? dto.getTravelDistance().toString()
-                : "N/A";
+    private void ensureTravelDistanceSet() {
+        if (!dto.isTravelDistanceSet()) {
+            dto.setTravelDistance((int) travelDistanceService.getTravelDistance(dto.getId()));
+        }
     }
 }
