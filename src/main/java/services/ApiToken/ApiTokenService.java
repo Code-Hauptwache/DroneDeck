@@ -61,14 +61,14 @@ public class ApiTokenService {
             }
 
             if (ApiTokenStoreService.IsSavedTokenAvailable()) {
-                PasswordInputDialog dialog = new PasswordInputDialog(Parent);
+                new PasswordInputDialog(Parent);
 
                 if (ApiTokenStoreService.IsTokenAvailable()) {
                     return ApiTokenStoreService.getApiToken();
                 }
             }
 
-            TokenInputDialog dialog = new TokenInputDialog(Parent);
+            new TokenInputDialog(Parent);
 
             if (ApiTokenStoreService.IsTokenAvailable()) {
                 return ApiTokenStoreService.getApiToken();
