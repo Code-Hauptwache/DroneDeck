@@ -3,11 +3,15 @@ package main.java.services.DroneApi.dtos;
 import main.java.entity.DroneEntity;
 
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Drone Data Transfer Object
  */
 public class Drone {
+
+    private static final Logger logger = Logger.getLogger(Drone.class.getName());
 
     /**
      * The Id of the Drone
@@ -42,7 +46,7 @@ public class Drone {
             // Extract the numeric part from the drone type string
             return Integer.parseInt(dronetype.replaceAll("\\D+", ""));
         } catch (Exception ex) {
-            // TODO: Add proper logging
+            logger.log(Level.WARNING, "Failed to parse DroneType Id", ex);
             return 0;
         }
     }

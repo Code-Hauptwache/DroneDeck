@@ -7,12 +7,16 @@ import main.java.services.DroneApi.dtos.DroneDynamics;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
  * A service that provides travel distance of drone
  */
 public class TravelDistanceService implements ITravelDistanceService {
+
+    private static final Logger logger = Logger.getLogger(TravelDistanceService.class.getName());
 
     private final IDroneApiService droneApiService;
     private static final int DATA_NUM = 500;
@@ -44,8 +48,7 @@ public class TravelDistanceService implements ITravelDistanceService {
                 try {
                     return getDistanceSum(droneId, taskId * LIMIT);
                 } catch (DroneApiException e) {
-                    e.printStackTrace();
-                    // TODO: Handle exception
+                    logger.log(Level.SEVERE, "Failed to get drone dynamics.", e);
                     return 0.0;
                 }
             }, executorService));
@@ -60,7 +63,7 @@ public class TravelDistanceService implements ITravelDistanceService {
     }
 
     private double getDistanceSum(int droneId, int offset) throws DroneApiException {
-        System.out.println("Requesting drone dynamics for drone ID: " + droneId + " with offset: " + offset);
+        logger.log(Level.INFO, "Requesting drone dynamics for drone ID: " + droneId + " with offset: " + offset);
         ArrayList<DroneDynamics> droneDynamics = droneApiService.getDroneDynamicsByDroneId(droneId, LIMIT, offset);
 
         List<Coordinate> coordinates = droneDynamics.stream()

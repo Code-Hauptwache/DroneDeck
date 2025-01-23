@@ -22,11 +22,15 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A controller that provides List of DroneDashboardCardDto
  */
 public class DroneController implements IDroneController {
+
+    private static final Logger logger = Logger.getLogger(DroneController.class.getName());
 
     private static final String API_KEY = ApiTokenService.getApiToken();
     private final IDroneApiService droneApiService = new DroneApiService(API_KEY);
@@ -103,7 +107,7 @@ public class DroneController implements IDroneController {
 
             latestDroneDynamic = droneApiService.getDroneDynamicsByDroneId(drone.getId(), 1, droneDynamicsResponse.getCount() - 1);
         } catch (DroneApiException e) {
-            // TODO : Exception needs detail
+            logger.log(Level.SEVERE, "Failed to get drone dynamics for drone with ID: " + drone.getId(), e);
             throw new RuntimeException(e);
         }
 

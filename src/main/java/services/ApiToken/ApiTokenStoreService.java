@@ -17,12 +17,16 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.Base64;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Service for storing and retrieving API tokens securely.
  * This Service SHOULD NOT be used directly.
  */
 public class ApiTokenStoreService {
+
+    private static final Logger logger = Logger.getLogger(ApiTokenStoreService.class.getName());
 
     private static final String API_TOKEN_FILE = "api_token.bin";
 
@@ -64,6 +68,7 @@ public class ApiTokenStoreService {
 
             return drones != null && !drones.isEmpty();
         } catch (Exception ex) {
+            logger.log(Level.SEVERE, "Failed to validate API token", ex);
             return false;
         }
     }
@@ -90,9 +95,11 @@ public class ApiTokenStoreService {
 
         } catch (IOException | ClassNotFoundException ex) {
             // Rethrow specific exceptions for better clarity
+            logger.log(Level.SEVERE, "Failed to retrieve API token", ex);
             throw ex;
         } catch (Exception ex) {
             // Wrap and rethrow generic exceptions with context
+            logger.log(Level.SEVERE, "Failed to retrieve API token", ex);
             throw new RuntimeException("Failed to retrieve API token", ex);
         }
     }
@@ -122,6 +129,7 @@ public class ApiTokenStoreService {
 
         } catch (Exception ex) {
             // Catch all relevant exceptions and wrap them in a RuntimeException with context
+            logger.log(Level.SEVERE, "Failed to save API token", ex);
             throw new RuntimeException("Failed to save API token", ex);
         }
     }

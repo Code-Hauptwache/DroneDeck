@@ -4,6 +4,8 @@ import main.java.services.ApiToken.ApiTokenStoreService;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Dialog to prompt the user to enter the password to decrypt the token.
@@ -11,6 +13,8 @@ import java.awt.*;
  * This dialog will automatically save the token if the user wants to.
  */
 public class TokenInputDialog extends JDialog {
+
+    private static final Logger logger = Logger.getLogger(TokenInputDialog.class.getName());
 
     public TokenInputDialog(JFrame parent) {
         super(parent, "Enter Token", ModalityType.APPLICATION_MODAL);
@@ -60,7 +64,7 @@ public class TokenInputDialog extends JDialog {
                 try {
                     ApiTokenStoreService.saveApiToken(password);
                 } catch (Exception ex) {
-                    //TODO: Handle exception properly
+                    logger.log(Level.SEVERE, "Failed to save the token", ex);
                 }
             }
 

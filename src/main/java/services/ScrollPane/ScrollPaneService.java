@@ -1,13 +1,20 @@
 package main.java.services.ScrollPane;
 
+import org.slf4j.LoggerFactory;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Service class that creates a JScrollPane with an overlay scrollbar and
  * provides middle-click auto-scrolling functionality.
  */
 public class ScrollPaneService {
+
+    private static final Logger logger = Logger.getLogger(ScrollPaneService.class.getName());
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(ScrollPaneService.class);
 
     /**
      * Creates a scroll pane for the provided panel with an overlay
@@ -90,6 +97,7 @@ public class ScrollPaneService {
                 try {
                     Thread.sleep(delay);
                 } catch (InterruptedException e) {
+                    logger.log(Level.WARNING, "Thread interrupted while resizing scrollbar.", e);
                     Thread.currentThread().interrupt();
                 }
             }

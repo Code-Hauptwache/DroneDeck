@@ -1,6 +1,7 @@
 package main.java.services.DroneApi.dtos;
 
 import java.util.Date;
+import java.util.logging.Logger;
 
 /**
  * DroneDynamic Data Transfer Object
@@ -8,6 +9,8 @@ import java.util.Date;
  * display the "current" information about the Drone.
  */
 public class DroneDynamics {
+
+    private static final Logger logger = Logger.getLogger(DroneDynamics.class.getName());
 
     /**
      * Url pointing to the drone this DroneDynamic is owned by
@@ -47,9 +50,9 @@ public class DroneDynamics {
      */
     public int getId() {
         try {
-            return Integer.parseInt(drone.substring(drone.length() - 3, drone.length() - 1));
+            return Integer.parseInt(drone.replaceAll("\\D+", ""));
         } catch (Exception e) {
-            //TODO Log Exception to Debugging logger
+            logger.warning("Failed to parse DroneDynamic Id");
             return 0;
         }
     }

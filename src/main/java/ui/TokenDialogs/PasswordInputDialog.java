@@ -4,6 +4,8 @@ import main.java.services.ApiToken.ApiTokenStoreService;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Dialog to get the password for the token.
@@ -11,6 +13,8 @@ import java.awt.*;
  * This dialog will automatically load the token from the file and check if the token is valid.
  */
 public class PasswordInputDialog extends JDialog {
+
+    private static final Logger logger = Logger.getLogger(PasswordInputDialog.class.getName());
 
     public PasswordInputDialog(JFrame parent) {
         super(parent, "Enter Token", ModalityType.APPLICATION_MODAL);
@@ -40,8 +44,8 @@ public class PasswordInputDialog extends JDialog {
             try {
                 ApiTokenStoreService.loadApiToken(password);
             } catch (Exception ex) {
-                //TODO: Handle exception properly
                 //This exception is thrown when the token file is not found
+                logger.log(Level.INFO, "Failed to load the token", ex);
             }
 
             //Check if the token is valid

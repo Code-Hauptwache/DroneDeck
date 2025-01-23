@@ -65,7 +65,7 @@ class DroneApiServiceTest {
             System.out.println(droneApiInterface.getDroneDynamicsByDroneId(drones.getFirst().id).getFirst());
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            //No Logging because this is a Test
             fail("Exception occurred during test execution: " + ex.getMessage());
         }
     }

@@ -9,12 +9,17 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A search bar that allows the user to search for drones.
  * The search bar is used in the NorthPanel.
  */
 public class SearchBar extends JComponent {
+
+    private static final Logger logger = Logger.getLogger(SearchBar.class.getName());
+
     private final JTextField textField;
     private String searchText;
 
@@ -58,7 +63,8 @@ public class SearchBar extends JComponent {
 
             private void updateSearchText() {
                 searchText = textField.getText();
-                System.out.println("Search Text: " + searchText);
+
+                logger.log(Level.INFO, "Search Text: " + searchText);
 
                 DroneCatalog.getInstance().updateDroneTypes(searchText);
                 DroneDashboard.getInstance().updateDrones(searchText);
