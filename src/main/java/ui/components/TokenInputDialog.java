@@ -38,7 +38,13 @@ public class TokenInputDialog extends JDialog {
 
         add(contentPanel, BorderLayout.CENTER);
 
-        // Buttons
+        add(getButtonPanel(tokenField, saveCheckbox, passwordField), BorderLayout.SOUTH);
+
+        setLocationRelativeTo(parent); // Center the dialog relative to the parent
+        setVisible(true); // Show the dialog
+    }
+
+    private JPanel getButtonPanel(JTextField tokenField, JCheckBox saveCheckbox, JPasswordField passwordField) {
         JPanel buttonPanel = new JPanel();
         JButton okButton = new JButton("OK");
         JButton cancelButton = new JButton("Cancel");
@@ -74,10 +80,7 @@ public class TokenInputDialog extends JDialog {
 
         buttonPanel.add(okButton);
         buttonPanel.add(cancelButton);
-        add(buttonPanel, BorderLayout.SOUTH);
 
-        setLocationRelativeTo(parent); // Center the dialog relative to the parent
-        setVisible(true); // Show the dialog
+        return buttonPanel;
     }
-
 }

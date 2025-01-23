@@ -1,7 +1,6 @@
 package main.java.ui.components;
 
 import main.java.services.ApiToken.ApiTokenStoreService;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -32,7 +31,13 @@ public class PasswordInputDialog extends JDialog {
 
         add(contentPanel, BorderLayout.CENTER);
 
-        // Buttons
+        add(getButtonPanel(passwordField), BorderLayout.SOUTH);
+
+        setLocationRelativeTo(parent); // Center the dialog relative to the parent
+        setVisible(true); // Show the dialog
+    }
+
+    private JPanel getButtonPanel(JPasswordField passwordField) {
         JPanel buttonPanel = new JPanel();
         JButton okButton = new JButton("OK");
         JButton cancelButton = new JButton("Cancel");
@@ -62,10 +67,6 @@ public class PasswordInputDialog extends JDialog {
 
         buttonPanel.add(okButton);
         buttonPanel.add(cancelButton);
-        add(buttonPanel, BorderLayout.SOUTH);
-
-        setLocationRelativeTo(parent); // Center the dialog relative to the parent
-        setVisible(true); // Show the dialog
+        return buttonPanel;
     }
-
 }
