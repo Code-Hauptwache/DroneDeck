@@ -1,10 +1,15 @@
 package main.java.services.DroneApi;
 
+import main.java.services.ApiToken.ApiTokenService;
+import main.java.services.ApiToken.ApiTokenStoreService;
 import main.java.services.DroneApi.dtos.Drone;
 import main.java.services.DroneApi.dtos.DroneDynamics;
 import main.java.services.DroneApi.dtos.DroneType;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,9 +18,20 @@ import static org.junit.jupiter.api.Assertions.*;
  * Test Class for DroneApiService
  */
 class DroneApiServiceTest {
+
+    @BeforeAll
+    static void setup() {
+        //Initialize the parent frame for the dialog
+        JFrame frame = new JFrame();
+        ApiTokenService.setParent(frame);
+    }
+
     @Test
     void testDroneApiInterface() {
-        IDroneApiService droneApiInterface = new DroneApiService(System.getenv("DRONE_API_KEY"));
+
+        String apiToken = ApiTokenService.getApiToken();
+
+        IDroneApiService droneApiInterface = new DroneApiService(apiToken);
 
         ArrayList<DroneDynamics> dynamics;
         ArrayList<Drone> drones;

@@ -1,5 +1,6 @@
 package main.java.ui.components;
 
+import main.java.services.ApiToken.ApiTokenService;
 import main.java.services.DroneApi.DroneApiService;
 import main.java.services.DroneApi.IDroneApiService;
 import main.java.services.ReverseGeocode.IReverseGeocodeService;
@@ -22,7 +23,7 @@ import java.awt.event.MouseEvent;
  * information about a drone.
  */
 public class DroneDashboardCard extends JComponent {
-    private static final String API_KEY = System.getenv("DRONE_API_KEY");
+    private static final String API_KEY = ApiTokenService.getApiToken();
     private final IDroneApiService droneApiService = new DroneApiService(API_KEY);
     private final ITravelDistanceService travelDistanceService = new TravelDistanceService(droneApiService);
     private final IReverseGeocodeService reverseGeocodeService = new ReverseGeocodeService();

@@ -1,4 +1,8 @@
-package main.java.services.ApiTokenStore;
+package main.java.services.ApiToken;
+
+import main.java.services.DroneApi.DroneApiService;
+import main.java.services.DroneApi.IDroneApiService;
+import main.java.services.DroneApi.dtos.Drone;
 
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
@@ -12,13 +16,30 @@ import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.Base64;
+import java.util.List;
 
 /**
  * Service for storing and retrieving API tokens securely.
+ * This Service SHOULD NOT be used directly.
  */
 public class ApiTokenStoreService {
 
     private static final String API_TOKEN_FILE = "api_token.bin";
+
+    private static String ApiToken = "";
+
+    /**
+     * Checks if a saved API Token is available.
+     * This DOES NOT check the validity of the Token.
+     * This DOES NOT load the Token. The Token must be loaded separately.
+     *
+     * @return True if a saved Token is available
+     */
+    public static Boolean IsSavedTokenAvailable() {
+        //Check if API_TOKEN_FILE Exists
+        File file = new File(API_TOKEN_FILE);
+        return file.exists();
+    }
 
     /**
      * Checks if an API Token is available.
@@ -27,20 +48,34 @@ public class ApiTokenStoreService {
      * @return True if Token is available
      */
     public static Boolean IsTokenAvailable() {
-        //Check if API_TOKEN_FILE Exists
-        File file = new File(API_TOKEN_FILE);
-        return file.exists();
+        return !ApiToken.isEmpty();
+    }
+
+    /**
+     * Checks if the current API Token is valid.
+     *
+     * @return True if the Token is valid
+     */
+    public static Boolean IsTokenValid() {
+        IDroneApiService droneApiService = new DroneApiService(ApiToken);
+
+        try {
+            List<Drone> drones = droneApiService.getDrones();
+
+            return drones != null && !drones.isEmpty();
+        } catch (Exception ex) {
+            return false;
+        }
     }
 
     /**
      * Retrieves the API token from the storage file.
      *
      * @param password The password used to decrypt the token
-     * @return The decrypted API token
      * @throws IOException If an I/O error occurs
      * @throws ClassNotFoundException If the stored object is not found
      */
-    public static String getApiToken(String password) throws IOException, ClassNotFoundException {
+    public static void loadApiToken(String password) throws IOException, ClassNotFoundException {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(API_TOKEN_FILE))) {
 
             // Read and validate the object
@@ -51,7 +86,7 @@ public class ApiTokenStoreService {
 
             // Process the token
             SecretKey key = getKeyFromPassword(password, apiTokenStoreDto.Salt);
-            return decrypt(apiTokenStoreDto.Token, key, new IvParameterSpec(apiTokenStoreDto.IV));
+            ApiToken = decrypt(apiTokenStoreDto.Token, key, new IvParameterSpec(apiTokenStoreDto.IV));
 
         } catch (IOException | ClassNotFoundException ex) {
             // Rethrow specific exceptions for better clarity
@@ -65,11 +100,10 @@ public class ApiTokenStoreService {
     /**
      * Saves the API token to the storage file.
      *
-     * @param token The API token to be saved
      * @param password The password used to encrypt the token
      * @throws IOException If an I/O error occurs
      */
-    public static void saveApiToken(String token, String password) throws IOException {
+    public static void saveApiToken(String password) throws IOException {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(API_TOKEN_FILE))) {
 
             // Generate necessary cryptographic components
@@ -79,7 +113,7 @@ public class ApiTokenStoreService {
 
             // Prepare DTO for serialization
             ApiTokenStoreDto apiTokenStoreDto = new ApiTokenStoreDto();
-            apiTokenStoreDto.Token = encrypt(token, key, iv);
+            apiTokenStoreDto.Token = encrypt(ApiToken, key, iv);
             apiTokenStoreDto.IV = iv.getIV();
             apiTokenStoreDto.Salt = salt;
 
@@ -186,5 +220,13 @@ public class ApiTokenStoreService {
         byte[] salt = new byte[16];
         secureRandom.nextBytes(salt); // Generate random bytes
         return Base64.getEncoder().encodeToString(salt); // Return the salt as a Base64-encoded string
+    }
+
+    public static String getApiToken() {
+        return ApiToken;
+    }
+
+    public static void setApiToken(String apiToken) {
+        ApiToken = apiToken;
     }
 }

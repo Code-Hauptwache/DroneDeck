@@ -5,6 +5,7 @@ import main.java.dao.LocalDroneDao;
 import main.java.entity.DroneEntity;
 import main.java.entity.DroneTypeEntity;
 import main.java.exceptions.DroneApiException;
+import main.java.services.ApiToken.ApiTokenService;
 import main.java.services.DroneApi.DroneApiService;
 import main.java.services.DroneApi.IDroneApiService;
 import main.java.services.DroneApi.dtos.Drone;
@@ -27,7 +28,7 @@ import java.util.concurrent.Executors;
  */
 public class DroneController implements IDroneController {
 
-    private static final String API_KEY = System.getenv("DRONE_API_KEY");
+    private static final String API_KEY = ApiTokenService.getApiToken();
     private final IDroneApiService droneApiService = new DroneApiService(API_KEY);
     private final ILocalDroneDao localDroneDao = new LocalDroneDao();
     private final IReverseGeocodeService reverseGeocodeService = new ReverseGeocodeService();
