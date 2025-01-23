@@ -6,11 +6,14 @@ import main.java.dao.LocalDroneDao;
 import main.java.dao.LocalDroneTypeDao;
 import main.java.entity.DroneEntity;
 import main.java.entity.DroneTypeEntity;
+import main.java.services.ApiToken.ApiTokenService;
 import main.java.services.DroneApi.DroneApiService;
 import main.java.services.DroneApi.IDroneApiService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.swing.*;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -23,11 +26,21 @@ class LocalSearchServiceTest {
     ILocalSearchService localSearchService;
     ILocalDroneTypeDao localDroneTypeDao;
 
+    @BeforeAll
+    static void initialSetup() {
+        //Initialize the parent frame for the dialog
+        JFrame frame = new JFrame();
+        ApiTokenService.setParent(frame);
+    }
+
     @BeforeEach
     void setUp() {
         ILocalDroneDao localDroneDao = new LocalDroneDao();
         localDroneTypeDao = new LocalDroneTypeDao();
-        IDroneApiService droneApiService = new DroneApiService(System.getenv("DRONE_API_KEY"));
+
+        String apiToken = ApiTokenService.getApiToken();
+
+        IDroneApiService droneApiService = new DroneApiService(apiToken);
         localSearchService = LocalSearchService.createInstance(localDroneDao, localDroneTypeDao, droneApiService);
 
         localSearchService.initLocalData();

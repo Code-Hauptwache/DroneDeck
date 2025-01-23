@@ -7,6 +7,7 @@ import com.jthemedetecor.OsThemeDetector;
 import main.java.dao.LocalDroneDao;
 import main.java.dao.LocalDroneTypeDao;
 import main.java.services.DroneApi.DroneApiService;
+import main.java.services.DroneApi.IDroneApiService;
 import main.java.services.LocalSearch.LocalSearchService;
 import main.java.services.LocalSearch.ILocalSearchService;
 import main.java.ui.components.StartupLoadingScreen;
@@ -106,7 +107,10 @@ public class DroneDeck {
                     // Initialize LocalSearchService
                     LocalDroneDao localDroneDao = new LocalDroneDao();
                     LocalDroneTypeDao localDroneTypeDao = new LocalDroneTypeDao();
-                    DroneApiService droneApiService = new DroneApiService(System.getenv("DRONE_API_KEY"));
+
+                    String apiToken = ApiTokenService.getApiToken();
+
+                    IDroneApiService droneApiService = new DroneApiService(apiToken);
                     ILocalSearchService localSearchService = LocalSearchService.createInstance(localDroneDao, localDroneTypeDao, droneApiService);
 
                     // Update local drone data

@@ -4,10 +4,12 @@ import main.java.dao.ILocalDroneDao;
 import main.java.dao.ILocalDroneTypeDao;
 import main.java.dao.LocalDroneDao;
 import main.java.dao.LocalDroneTypeDao;
+import main.java.services.ApiToken.ApiTokenService;
 import main.java.services.DroneApi.DroneApiService;
 import main.java.services.DroneApi.IDroneApiService;
 import main.java.services.LocalSearch.LocalSearchService;
 import main.java.ui.MainPanel;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,6 +27,13 @@ class NavigationBarTest {
 
     private MainPanel mainPanel;
     private NavigationBar navigationBar;
+
+    @BeforeAll
+    static void setup() {
+        //Initialize the parent frame for the dialog
+        JFrame frame = new JFrame();
+        ApiTokenService.setParent(frame);
+    }
 
     @BeforeEach
     void setUp() {

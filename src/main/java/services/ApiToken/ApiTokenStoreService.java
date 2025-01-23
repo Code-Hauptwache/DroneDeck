@@ -1,6 +1,7 @@
 package main.java.services.ApiToken;
 
 import main.java.services.DroneApi.DroneApiService;
+import main.java.services.DroneApi.IDroneApiService;
 import main.java.services.DroneApi.dtos.Drone;
 
 import javax.crypto.*;
@@ -19,7 +20,6 @@ import java.util.List;
 
 /**
  * Service for storing and retrieving API tokens securely.
- *
  * This Service SHOULD NOT be used directly.
  */
 public class ApiTokenStoreService {
@@ -57,7 +57,7 @@ public class ApiTokenStoreService {
      * @return True if the Token is valid
      */
     public static Boolean IsTokenValid() {
-        DroneApiService droneApiService = new DroneApiService(ApiToken);
+        IDroneApiService droneApiService = new DroneApiService(ApiToken);
 
         try {
             List<Drone> drones = droneApiService.getDrones();
