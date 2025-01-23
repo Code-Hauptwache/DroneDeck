@@ -45,6 +45,19 @@ public class DroneDeck {
         ToolTipManager.sharedInstance().setInitialDelay(0);
         ToolTipManager.sharedInstance().setReshowDelay(0);
 
+        // Load Google Font
+        try (InputStream is = DroneDeck.class.getResourceAsStream("/Lato-Bold.ttf")) {
+            Font font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(is)).deriveFont(16f);
+            UIManager.put("defaultFont", font);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Failed to load the font. The application will use the default font.", "Font Load Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        setupFlatLaf();
+        setupMainPanel();
+    }
+
+    private static void setupFlatLaf() {
         // Set up FlatLaf look and feel
         FlatLaf.registerCustomDefaultsSource("main.java.ui.themes");
 
@@ -54,14 +67,6 @@ public class DroneDeck {
             FlatDarkLaf.setup();
         } else {
             FlatLightLaf.setup();
-        }
-
-        // Load Google Font
-        try (InputStream is = DroneDeck.class.getResourceAsStream("/Lato-Bold.ttf")) {
-            Font font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(is)).deriveFont(16f);
-            UIManager.put("defaultFont", font);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Failed to load the font. The application will use the default font.", "Font Load Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
