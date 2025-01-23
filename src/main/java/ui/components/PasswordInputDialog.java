@@ -37,7 +37,7 @@ public class PasswordInputDialog extends JDialog {
         JButton okButton = new JButton("OK");
         JButton cancelButton = new JButton("Cancel");
 
-        okButton.addActionListener(event -> {
+        okButton.addActionListener(_ -> {
             String password = new String(passwordField.getPassword());
 
             //Save the token to the ApiTokenStoreService
@@ -58,7 +58,7 @@ public class PasswordInputDialog extends JDialog {
             dispose(); // Close the dialog
         });
 
-        cancelButton.addActionListener(event -> dispose());
+        cancelButton.addActionListener(_ -> dispose());
 
         buttonPanel.add(okButton);
         buttonPanel.add(cancelButton);
