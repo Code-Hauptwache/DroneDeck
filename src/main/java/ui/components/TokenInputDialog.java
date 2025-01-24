@@ -49,32 +49,8 @@ public class TokenInputDialog extends JDialog {
         JButton okButton = new JButton("OK");
         JButton cancelButton = new JButton("Cancel");
 
-        okButton.addActionListener(_ -> {
-            String token = tokenField.getText();
-            String password = new String(passwordField.getPassword());
-            boolean saveToken = saveCheckbox.isSelected();
-
-            //Save the token to the ApiTokenStoreService
-            ApiTokenStoreService.setApiToken(token);
-
-            //Check if the token is valid
-            if(!ApiTokenStoreService.IsTokenValid()) {
-                ApiTokenStoreService.setApiToken(""); // Clear the token
-                JOptionPane.showMessageDialog(this, "Invalid Token", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            //Save the Token if the user wants to
-            if (saveToken) {
-                try {
-                    ApiTokenStoreService.saveApiToken(password);
-                } catch (Exception ex) {
-                    //TODO: Handle exception properly
-                }
-            }
-
-            dispose(); // Close the dialog
-        });
+        okButton.addActionListener(_ -> handleOkButton(tokenField, passwordField, saveCheckbox));
+        passwordField.addActionListener(_ -> handleOkButton(tokenField, passwordField, saveCheckbox));
 
         cancelButton.addActionListener(_ -> dispose());
 
@@ -82,5 +58,32 @@ public class TokenInputDialog extends JDialog {
         buttonPanel.add(cancelButton);
 
         return buttonPanel;
+    }
+
+    private void handleOkButton(JTextField tokenField, JPasswordField passwordField, JCheckBox saveCheckbox) {
+        String token = tokenField.getText();
+        String password = new String(passwordField.getPassword());
+        boolean saveToken = saveCheckbox.isSelected();
+
+        // Save the token to the ApiTokenStoreService
+        ApiTokenStoreService.setApiToken(token);
+
+        // Check if the token is valid
+        if (!ApiTokenStoreService.IsTokenValid()) {
+            ApiTokenStoreService.setApiToken(""); // Clear the token
+            JOptionPane.showMessageDialog(this, "Invalid Token", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Save the Token if the user wants to
+        if (saveToken) {
+            try {
+                ApiTokenStoreService.saveApiToken(password);
+            } catch (Exception ex) {
+                // TODO: Handle exception properly
+            }
+        }
+
+        dispose(); // Close the dialog
     }
 }

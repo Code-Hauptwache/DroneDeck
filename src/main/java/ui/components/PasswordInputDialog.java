@@ -42,31 +42,34 @@ public class PasswordInputDialog extends JDialog {
         JButton okButton = new JButton("OK");
         JButton cancelButton = new JButton("Cancel");
 
-        okButton.addActionListener(_ -> {
-            String password = new String(passwordField.getPassword());
-
-            //Save the token to the ApiTokenStoreService
-            try {
-                ApiTokenStoreService.loadApiToken(password);
-            } catch (Exception ex) {
-                //TODO: Handle exception properly
-                //This exception is thrown when the token file is not found
-            }
-
-            //Check if the token is valid
-            if(!ApiTokenStoreService.IsTokenValid()) {
-                ApiTokenStoreService.setApiToken(""); // Clear the token
-                JOptionPane.showMessageDialog(this, "Invalid Password", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            dispose(); // Close the dialog
-        });
+        okButton.addActionListener(_ -> handleOkButton(passwordField));
+        passwordField.addActionListener(_ -> handleOkButton(passwordField));
 
         cancelButton.addActionListener(_ -> dispose());
 
         buttonPanel.add(okButton);
         buttonPanel.add(cancelButton);
         return buttonPanel;
+    }
+
+    private void handleOkButton(JPasswordField passwordField) {
+        String password = new String(passwordField.getPassword());
+
+        // Save the token to the ApiTokenStoreService
+        try {
+            ApiTokenStoreService.loadApiToken(password);
+        } catch (Exception ex) {
+            // TODO: Handle exception properly
+            // This exception is thrown when the token file is not found
+        }
+
+        // Check if the token is valid
+        if (!ApiTokenStoreService.IsTokenValid()) {
+            ApiTokenStoreService.setApiToken(""); // Clear the token
+            JOptionPane.showMessageDialog(this, "Invalid Password", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        dispose(); // Close the dialog
     }
 }
