@@ -17,7 +17,6 @@ public class LocalDroneDao implements ILocalDroneDao {
     private static final Logger logger = Logger.getLogger(LocalDroneDao.class.getName());
 
     private static final String DRONE_FILE_NAME = "drone_data.bin";
-    private static final org.slf4j.Logger log = LoggerFactory.getLogger(LocalDroneDao.class);
     private static List<DroneEntity> singletonList = new ArrayList<>();
 
     /**

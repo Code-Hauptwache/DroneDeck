@@ -14,7 +14,6 @@ import java.util.logging.Logger;
 public class LocalDroneTypeDao implements ILocalDroneTypeDao {
 
     private static final Logger logger = Logger.getLogger(LocalDroneTypeDao.class.getName());
-
     private static final String DRONE_TYPE_FILE_NAME = "Drone_type_data.bin";
     private static List<DroneTypeEntity> singletonList = new ArrayList<>();
 

@@ -73,9 +73,6 @@ public class DroneDeck {
 
         // Remove the default console handler
         rootLogger.setUseParentHandlers(false);
-
-        // Example log message
-        logger.info("Application started");
     }
 
     private static void setupFlatLaf() {

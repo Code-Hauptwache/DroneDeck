@@ -35,7 +35,6 @@ public class DroneController implements IDroneController {
     private static final String API_KEY = ApiTokenService.getApiToken();
     private final IDroneApiService droneApiService = new DroneApiService(API_KEY);
     private final ILocalDroneDao localDroneDao = new LocalDroneDao();
-    private final IReverseGeocodeService reverseGeocodeService = new ReverseGeocodeService();
 
     /**
      * Retrieves a paginated list of drones and generates a corresponding list of DroneDashboardCardDto objects.

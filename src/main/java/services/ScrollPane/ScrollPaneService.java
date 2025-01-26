@@ -14,7 +14,6 @@ import java.util.logging.Logger;
 public class ScrollPaneService {
 
     private static final Logger logger = Logger.getLogger(ScrollPaneService.class.getName());
-    private static final org.slf4j.Logger log = LoggerFactory.getLogger(ScrollPaneService.class);
 
     /**
      * Creates a scroll pane for the provided panel with an overlay
