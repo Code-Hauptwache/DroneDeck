@@ -19,6 +19,7 @@ class ApiTokenStoreServiceTest {
         try {
             file.createNewFile();
         } catch (IOException e) {
+            //No Logging because this is a Test
             throw new RuntimeException(e);
         }
 
@@ -72,6 +73,7 @@ class ApiTokenStoreServiceTest {
         try {
             ApiTokenStoreService.saveApiToken(password);
         } catch (IOException e) {
+            //No logging because this is a test
             throw new RuntimeException(e);
         }
 

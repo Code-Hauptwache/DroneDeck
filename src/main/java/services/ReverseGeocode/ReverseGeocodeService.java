@@ -10,11 +10,16 @@ import java.net.URL;
 import java.util.Base64;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A service that provides reverse geocoding functionality.
  */
 public class ReverseGeocodeService implements IReverseGeocodeService {
+
+    private static final Logger logger = Logger.getLogger(ReverseGeocodeService.class.getName());
+
     // Primary API
     private static final String API_URL = "https://api-bdc.net/data/reverse-geocode";
     private static final String I_4_MJ_UX = "YmRjX2ExOTg3ZmQ4MDFlZjQ3YmQ4Mzc2YzE4NDc1NzI4MjUx";
@@ -37,20 +42,20 @@ public class ReverseGeocodeService implements IReverseGeocodeService {
     @Override
     public String getCityAndCountry(double latitude, double longitude) {
         // 1) Try the primary API (BDC)
-        System.out.println("Attempting to get city and country from BDC API...");
+        logger.log(Level.INFO, "Attempting to get city and country from BDC API...");
         String cityCountry = getCityAndCountryFromBDC(latitude, longitude);
         if (cityCountry != null && !cityCountry.isEmpty()) {
-            System.out.println("Successfully retrieved city and country from BDC API.");
+            logger.log(Level.INFO, "Successfully retrieved city and country from BDC API.");
             return cityCountry;
         }
 
         // 2) Fallback to LocationIQ if primary fails or has incomplete data
-        System.out.println("BDC API failed or returned incomplete data. Attempting to get city and country from LocationIQ API...");
+        logger.log(Level.INFO, "BDC API failed or returned incomplete data. Attempting to get city and country from LocationIQ API...");
         cityCountry = getCityAndCountryFromLocationIQ(latitude, longitude);
         if (cityCountry != null && !cityCountry.isEmpty()) {
-            System.out.println("Successfully retrieved city and country from LocationIQ API.");
+            logger.log(Level.INFO, "Successfully retrieved city and country from LocationIQ API.");
         } else {
-            System.out.println("Failed to retrieve city and country from both BDC and LocationIQ APIs.");
+            logger.log(Level.INFO, "Failed to retrieve city and country from both BDC and LocationIQ APIs.");
         }
         return cityCountry; // can be null if fallback also fails
     }
@@ -78,8 +83,7 @@ public class ReverseGeocodeService implements IReverseGeocodeService {
                 return null;
             }
         } catch (IOException e) {
-            // TODO: Log the exception as needed
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Failed to get city and country from BDC API.", e);
             return null;
         }
     }
@@ -103,8 +107,7 @@ public class ReverseGeocodeService implements IReverseGeocodeService {
 
             return parseLocationIQResponse(json.getAsJsonObject("address"));
         } catch (IOException e) {
-            // TODO: Log the exception as needed
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Failed to get city and country from LocationIQ API.", e);
             return null;
         }
     }

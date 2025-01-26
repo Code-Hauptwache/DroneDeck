@@ -7,12 +7,17 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * DTO for drone-related information.
  * Contains basic fields and light data conversion (e.g. formatting date/time).
  */
 public class DroneDto {
+
+    private static final Logger logger = Logger.getLogger(DroneDto.class.getName());
+
     private final int id;
     private final String typeName;
     private final String manufacturer;
@@ -95,6 +100,7 @@ public class DroneDto {
         try {
             return LocalDateTime.parse(isoDateTime, DateTimeFormatter.ISO_DATE_TIME);
         } catch (DateTimeParseException _) {
+            logger.log(Level.INFO, "Failed to parse ISO date/time: " + isoDateTime);
         }
 
         try {
@@ -102,6 +108,7 @@ public class DroneDto {
             ZonedDateTime zonedDateTime = ZonedDateTime.parse(isoDateTime, customFormatter);
             return zonedDateTime.toLocalDateTime();
         } catch (DateTimeParseException _) {
+            logger.log(Level.INFO, "Failed to parse custom date/time: " + isoDateTime);
         }
 
         throw new IllegalArgumentException("Invalid date time format: " + isoDateTime);

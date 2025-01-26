@@ -5,12 +5,15 @@ import main.java.entity.DroneTypeEntity;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Implemented Local DroneType Saver/Loader Dao
  */
 public class LocalDroneTypeDao implements ILocalDroneTypeDao {
 
+    private static final Logger logger = Logger.getLogger(LocalDroneTypeDao.class.getName());
     private static final String DRONE_TYPE_FILE_NAME = "Drone_type_data.bin";
     private static List<DroneTypeEntity> singletonList = new ArrayList<>();
 
@@ -27,7 +30,7 @@ public class LocalDroneTypeDao implements ILocalDroneTypeDao {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(DRONE_TYPE_FILE_NAME))) {
             oos.writeObject(droneTypes);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Failed to save drone type data.", e);
         }
     }
 
@@ -54,7 +57,7 @@ public class LocalDroneTypeDao implements ILocalDroneTypeDao {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(DRONE_TYPE_FILE_NAME))) {
             return (List<DroneTypeEntity>) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Failed to load drone type data.", e);
             return new ArrayList<>();
         }
     }

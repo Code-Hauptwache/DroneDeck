@@ -12,12 +12,16 @@ import main.java.entity.DroneTypeEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
  * Implemented Service for Searching in Cached Data
  */
 public class LocalSearchService implements ILocalSearchService {
+
+    private static final Logger logger = Logger.getLogger(LocalSearchService.class.getName());
 
     private static LocalSearchService instance;
 
@@ -71,11 +75,12 @@ public class LocalSearchService implements ILocalSearchService {
             drones = droneApiService.getDrones();
             droneTypes = droneApiService.getDroneTypes();
         } catch (DroneApiException e) {
+            logger.log(Level.SEVERE, "Failed to fetch drone data from API", e);
             throw new RuntimeException(e);
         }
 
-        System.out.println("Number of drones fetched: " + drones.size());
-        System.out.println("Number of drone types fetched: " + droneTypes.size());
+        logger.log(Level.INFO, "Number of drones fetched: " + drones.size());
+        logger.log(Level.INFO, "Number of drone types fetched: " + droneTypes.size());
 
         List<DroneEntity> droneEntityList = new ArrayList<>();
         List<DroneTypeEntity> droneTypeEntityList = droneTypes.stream()
@@ -84,7 +89,7 @@ public class LocalSearchService implements ILocalSearchService {
 
         DroneController.mapDronesToEntities(droneEntityList, drones, droneTypes);
 
-        System.out.println("Number of drone entities mapped: " + droneEntityList.size());
+        logger.log(Level.INFO, "Number of drone entities mapped: " + droneEntityList.size());
 
         localDroneDao.updateDroneData(droneEntityList);
         if (localDroneTypeDao != null) {
