@@ -9,8 +9,12 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DroneApiService implements IDroneApiService {
+
+    private static final Logger logger = Logger.getLogger(DroneApiService.class.getName());
 
     private String ApiKey;
     private final HttpClient HttpClient; // HttpClient instance, shouldn't be changed after construction
@@ -273,7 +277,8 @@ public class DroneApiService implements IDroneApiService {
             Gson gson = new Gson();
             return gson.fromJson(response.body(), DroneDynamicsResponse.class).results;
         } catch (Exception e) {
-            throw new DroneApiException("Error getting drone dynamics: " + e.getMessage());
+            logger.log(Level.SEVERE, "Failed to get drone dynamics", e);
+            throw new DroneApiException("Error getting drone dynamics");
         }
     }
 
@@ -289,7 +294,8 @@ public class DroneApiService implements IDroneApiService {
             Gson gson = new Gson();
             return gson.fromJson(response.body(), DroneDynamicsResponse.class);
         } catch (Exception e) {
-            throw new DroneApiException("Error getting drone dynamics: " + e.getMessage());
+            logger.log(Level.SEVERE, "Failed to get drone dynamics", e);
+            throw new DroneApiException("Error getting drone dynamics");
         }
     }
 
@@ -305,7 +311,8 @@ public class DroneApiService implements IDroneApiService {
             Gson gson = new Gson();
             return gson.fromJson(response.body(), DroneDynamics.class);
         } catch (Exception e) {
-            throw new DroneApiException("Error getting drone dynamics: " + e.getMessage());
+            logger.log(Level.SEVERE, "Failed to get drone dynamics", e);
+            throw new DroneApiException("Error getting drone dynamics");
         }
     }
 
@@ -321,7 +328,8 @@ public class DroneApiService implements IDroneApiService {
             Gson gson = new Gson();
             return gson.fromJson(response.body(), DronesResponse.class).results;
         } catch (Exception e) {
-            throw new DroneApiException("Error getting drones: " + e.getMessage());
+            logger.log(Level.SEVERE, "Failed to get drones", e);
+            throw new DroneApiException("Error getting drones");
         }
     }
 
@@ -337,7 +345,8 @@ public class DroneApiService implements IDroneApiService {
             Gson gson = new Gson();
             return gson.fromJson(response.body(), Drone.class);
         } catch (Exception e) {
-            throw new DroneApiException("Error getting drones: " + e.getMessage());
+            logger.log(Level.SEVERE, "Failed to get drones", e);
+            throw new DroneApiException("Error getting drones");
         }
     }
 
@@ -353,7 +362,8 @@ public class DroneApiService implements IDroneApiService {
             Gson gson = new Gson();
             return gson.fromJson(response.body(), DroneTypesResponse.class).results;
         } catch (Exception e) {
-            throw new DroneApiException("Error getting drone types: " + e.getMessage());
+            logger.log(Level.SEVERE, "Failed to get drone types", e);
+            throw new DroneApiException("Error getting drone types");
         }
     }
 
@@ -369,7 +379,8 @@ public class DroneApiService implements IDroneApiService {
             Gson gson = new Gson();
             return gson.fromJson(response.body(), DroneType.class);
         } catch (Exception e) {
-            throw new DroneApiException("Error getting drone types: " + e.getMessage());
+            logger.log(Level.SEVERE, "Failed to get drone types", e);
+            throw new DroneApiException("Error getting drone types");
         }
     }
 }

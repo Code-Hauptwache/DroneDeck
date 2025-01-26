@@ -17,6 +17,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.InputStream;
 import java.util.Objects;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 /**
  * The DroneDeck class is the main
@@ -24,12 +28,15 @@ import java.util.Objects;
  */
 public class DroneDeck {
 
+    private static final Logger logger = Logger.getLogger(DroneDeck.class.getName());
+
     /**
      * The main entry point of the application.
      *
      * @param args the command line arguments (not used in this application)
      */
     public static void main(String[] args) {
+        configureLogging();
         SwingUtilities.invokeLater(DroneDeck::createAndShowGUI);
     }
 
@@ -46,11 +53,26 @@ public class DroneDeck {
             Font font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(is)).deriveFont(16f);
             UIManager.put("defaultFont", font);
         } catch (Exception e) {
+            logger.log(Level.SEVERE, "Failed to load the font.", e);
             JOptionPane.showMessageDialog(null, "Failed to load the font. The application will use the default font.", "Font Load Error", JOptionPane.ERROR_MESSAGE);
         }
 
         setupFlatLaf();
         setupMainPanel();
+    }
+
+    private static void configureLogging() {
+        Logger rootLogger = Logger.getLogger("");
+        rootLogger.setLevel(Level.INFO);
+
+        // Configure the console handler
+        ConsoleHandler consoleHandler = new ConsoleHandler();
+        consoleHandler.setLevel(Level.INFO);
+        consoleHandler.setFormatter(new SimpleFormatter());
+        rootLogger.addHandler(consoleHandler);
+
+        // Remove the default console handler
+        rootLogger.setUseParentHandlers(false);
     }
 
     private static void setupFlatLaf() {
@@ -80,6 +102,7 @@ public class DroneDeck {
             Image scaledLogo = logoIcon.getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
             frame.setIconImage(scaledLogo);
         } catch (Exception e) {
+            logger.log(Level.SEVERE, "Failed to load the logo image.", e);
             JOptionPane.showMessageDialog(null, "Failed to load the logo image.", "Logo Load Error", JOptionPane.ERROR_MESSAGE);
         }
 
@@ -116,7 +139,8 @@ public class DroneDeck {
                     // Update local drone data
                     localSearchService.initLocalData();
                 } catch (Exception e) {
-                    SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(frame, "Failed to initialize data: " + e.getMessage(), "Initialization Error", JOptionPane.ERROR_MESSAGE));
+                    logger.log(Level.SEVERE, "Failed to initialize data.", e);
+                    SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(frame, "Failed to initialize data", "Initialization Error", JOptionPane.ERROR_MESSAGE));
                 }
                 return null;
             }
@@ -135,7 +159,8 @@ public class DroneDeck {
                     frame.revalidate();
                     frame.repaint();
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(frame, "Failed to switch to the main panel: " + e.getMessage(), "Panel Error", JOptionPane.ERROR_MESSAGE);
+                    logger.log(Level.SEVERE, "Failed to switch to the main panel.", e);
+                    JOptionPane.showMessageDialog(frame, "Failed to switch to the main panel", "Panel Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         }.execute();
