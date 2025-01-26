@@ -1,7 +1,7 @@
 package main.java.services.ApiToken;
 
-import main.java.ui.TokenDialogs.PasswordInputDialog;
-import main.java.ui.TokenDialogs.TokenInputDialog;
+import main.java.ui.components.PasswordInputDialog;
+import main.java.ui.components.TokenInputDialog;
 
 import javax.swing.*;
 
@@ -61,14 +61,14 @@ public class ApiTokenService {
             }
 
             if (ApiTokenStoreService.IsSavedTokenAvailable()) {
-                PasswordInputDialog dialog = new PasswordInputDialog(Parent);
+                new PasswordInputDialog(Parent);
 
                 if (ApiTokenStoreService.IsTokenAvailable()) {
                     return ApiTokenStoreService.getApiToken();
                 }
             }
 
-            TokenInputDialog dialog = new TokenInputDialog(Parent);
+            new TokenInputDialog(Parent);
 
             if (ApiTokenStoreService.IsTokenAvailable()) {
                 return ApiTokenStoreService.getApiToken();
