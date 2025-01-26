@@ -3,6 +3,8 @@ package main.java.ui.components;
 import main.java.services.ApiToken.ApiTokenStoreService;
 import javax.swing.*;
 import java.awt.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Dialog to get the password for the token.
@@ -10,6 +12,7 @@ import java.awt.*;
  */
 public class PasswordInputDialog extends JDialog {
 
+    private static final Logger logger = Logger.getLogger(PasswordInputDialog.class.getName());
 
     /**
      * Constructor for the PasswordInputDialog
@@ -59,8 +62,13 @@ public class PasswordInputDialog extends JDialog {
         try {
             ApiTokenStoreService.loadApiToken(password);
         } catch (Exception ex) {
-            // TODO: Handle exception properly
+            logger.log(Level.SEVERE, "Error loading token", ex);
             // This exception is thrown when the token file is not found
+            // When this happens we will just ignore it and continue
+            // by closing the dialog. The user will then be prompted to
+            // enter the token again.
+            dispose();
+            return;
         }
 
         // Check if the token is valid
