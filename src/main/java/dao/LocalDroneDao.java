@@ -1,8 +1,6 @@
 package main.java.dao;
 
 import main.java.entity.DroneEntity;
-import org.slf4j.LoggerFactory;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;

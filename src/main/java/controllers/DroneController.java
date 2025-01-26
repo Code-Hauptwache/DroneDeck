@@ -12,8 +12,6 @@ import main.java.services.DroneApi.dtos.Drone;
 import main.java.services.DroneApi.dtos.DroneDynamics;
 import main.java.services.DroneApi.dtos.DroneDynamicsResponse;
 import main.java.services.DroneApi.dtos.DroneType;
-import main.java.services.ReverseGeocode.IReverseGeocodeService;
-import main.java.services.ReverseGeocode.ReverseGeocodeService;
 import main.java.ui.dtos.DroneDto;
 
 import java.util.ArrayList;

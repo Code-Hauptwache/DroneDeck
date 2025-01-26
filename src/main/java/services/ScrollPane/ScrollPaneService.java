@@ -1,7 +1,5 @@
 package main.java.services.ScrollPane;
 
-import org.slf4j.LoggerFactory;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.logging.Level;
