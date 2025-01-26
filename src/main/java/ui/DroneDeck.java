@@ -7,9 +7,11 @@ import com.jthemedetecor.OsThemeDetector;
 import main.java.dao.LocalDroneDao;
 import main.java.dao.LocalDroneTypeDao;
 import main.java.services.DroneApi.DroneApiService;
+import main.java.services.DroneApi.IDroneApiService;
 import main.java.services.LocalSearch.LocalSearchService;
 import main.java.services.LocalSearch.ILocalSearchService;
 import main.java.ui.components.StartupLoadingScreen;
+import main.java.services.ApiToken.ApiTokenService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,6 +41,19 @@ public class DroneDeck {
         ToolTipManager.sharedInstance().setInitialDelay(0);
         ToolTipManager.sharedInstance().setReshowDelay(0);
 
+        // Load Google Font
+        try (InputStream is = DroneDeck.class.getResourceAsStream("/Lato-Bold.ttf")) {
+            Font font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(is)).deriveFont(16f);
+            UIManager.put("defaultFont", font);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Failed to load the font. The application will use the default font.", "Font Load Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        setupFlatLaf();
+        setupMainPanel();
+    }
+
+    private static void setupFlatLaf() {
         // Set up FlatLaf look and feel
         FlatLaf.registerCustomDefaultsSource("main.java.ui.themes");
 
@@ -49,17 +64,14 @@ public class DroneDeck {
         } else {
             FlatLightLaf.setup();
         }
+    }
 
-        // Load Google Font
-        try (InputStream is = DroneDeck.class.getResourceAsStream("/Lato-Bold.ttf")) {
-            Font font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(is)).deriveFont(16f);
-            UIManager.put("defaultFont", font);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Failed to load the font. The application will use the default font.", "Font Load Error", JOptionPane.ERROR_MESSAGE);
-        }
-
+    private static void setupMainPanel() {
         // Create the frame
         JFrame frame = new JFrame("DroneDeck");
+
+        ApiTokenService.setParent(frame); //Initialize the ApiTokenService with the parent frame
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Load the logo image
@@ -95,7 +107,10 @@ public class DroneDeck {
                     // Initialize LocalSearchService
                     LocalDroneDao localDroneDao = new LocalDroneDao();
                     LocalDroneTypeDao localDroneTypeDao = new LocalDroneTypeDao();
-                    DroneApiService droneApiService = new DroneApiService(System.getenv("DRONE_API_KEY"));
+
+                    String apiToken = ApiTokenService.getApiToken();
+
+                    IDroneApiService droneApiService = new DroneApiService(apiToken);
                     ILocalSearchService localSearchService = LocalSearchService.createInstance(localDroneDao, localDroneTypeDao, droneApiService);
 
                     // Update local drone data
