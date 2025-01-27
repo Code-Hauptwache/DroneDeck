@@ -5,7 +5,18 @@ import main.java.ui.dtos.DroneDto;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * The DroneCatalogCard class is a custom
+ * JComponent that represents a card with information about a drone.
+ * It is used in the catalog to display information about a drone.
+ */
 public class DroneCatalogCard extends JComponent {
+
+    /**
+     * Creates a new DroneCatalogCard with the given DTO.
+     *
+     * @param dto The DTO containing the information to display.
+     */
     public DroneCatalogCard(DroneDto dto) {
         setLayout(new BorderLayout());
 
