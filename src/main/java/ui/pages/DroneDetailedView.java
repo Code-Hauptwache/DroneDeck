@@ -34,7 +34,7 @@ public class DroneDetailedView extends JPanel {
         JPanel wrapper = new JPanel(new BorderLayout());
         wrapper.add(buildCenterPanel(dto), BorderLayout.NORTH);
         JPanel graphWrapper = new JPanel(new BorderLayout());
-        graphWrapper.add(buildGraphPanel(dto), BorderLayout.NORTH);
+        graphWrapper.add(buildGraphPanel(), BorderLayout.NORTH);
         wrapper.add(buildCenterPanel(dto), BorderLayout.NORTH);
         wrapper.add(graphWrapper, BorderLayout.CENTER);
 
@@ -172,7 +172,7 @@ public class DroneDetailedView extends JPanel {
     //   Bottom Graph Panel
     // =======================
 
-    private JPanel buildGraphPanel(DroneDto dto) {
+    private JPanel buildGraphPanel() {
         JPanel graphPanel = new JPanel(new BorderLayout());
         graphPanel.setPreferredSize(new Dimension(0, 330));
         JLabel placeholder = new JLabel("Graphical Components (TODO)", SwingConstants.CENTER);
