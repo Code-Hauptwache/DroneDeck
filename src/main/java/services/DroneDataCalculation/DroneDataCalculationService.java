@@ -22,8 +22,7 @@ public class DroneDataCalculationService implements IDroneDataCalculationService
     private static final int DATA_NUM = 500;
     private static final int LIMIT = 100;
     private static final int THREAD_NUM = DATA_NUM / LIMIT;
-    // 1 hour = 3600000 milliseconds
-    private static final double MILLISECONDS_TO_HOURS = 3600000.0;
+    private static final double MILLISECONDS_TO_HOURS = 3600000.0; // 1 hour = 3600000 milliseconds
 
     /**
      * Constructor for DroneDataCalculationService
@@ -121,7 +120,7 @@ public class DroneDataCalculationService implements IDroneDataCalculationService
     }
 
     private double calculateTravelDistance(ArrayList<DroneDynamics> droneDynamics) {
-        //Only map/stream the data that we need eg. from offset to offset + LIMIT
+        //Only map/stream the data that we need e.g. from offset to offset + LIMIT
         List<Coordinate> coordinates = droneDynamics.stream()
                 .map(d -> new Coordinate(d.longitude, d.latitude))
                 .toList();
