@@ -1,4 +1,4 @@
-package main.java.services.TravelDistance;
+package main.java.services.DroneDataCalculation;
 
 /**
  * Coordinate data with longitude and latitude
