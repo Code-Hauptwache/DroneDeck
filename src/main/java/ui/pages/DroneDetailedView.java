@@ -2,6 +2,7 @@ package main.java.ui.pages;
 
 import main.java.ui.components.DroneStatus;
 import main.java.ui.components.DroneVisualBatteryStatus;
+import main.java.ui.components.EntryTimestampSelector;
 import main.java.ui.components.InfoTooltip;
 import main.java.ui.dtos.DroneDto;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
@@ -192,6 +193,7 @@ public class DroneDetailedView extends JPanel {
 
         JComponent droneStatus = new DroneStatus(dto);
         JComponent batteryStatus = new DroneVisualBatteryStatus(dto);
+        JComponent entryTimestampSelector = new EntryTimestampSelector(10);
         JComponent infoTooltip = new InfoTooltip("Data Timestamp: " + dto.getDataTimestamp());
 
         Arrays.asList(droneStatus, batteryStatus, infoTooltip).forEach(component -> {
@@ -202,6 +204,8 @@ public class DroneDetailedView extends JPanel {
         statusPanel.add(droneStatus);
         statusPanel.add(Box.createHorizontalStrut(10));
         statusPanel.add(batteryStatus);
+        statusPanel.add(Box.createHorizontalStrut(10));
+        statusPanel.add(entryTimestampSelector);
         statusPanel.add(Box.createHorizontalStrut(95));
         statusPanel.add(infoTooltip);
 
