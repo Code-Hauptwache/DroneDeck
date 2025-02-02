@@ -4,14 +4,25 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.jthemedetecor.OsThemeDetector;
+import main.java.ui.DroneDeck;
 import main.java.ui.components.EntryTimestampSelector;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.InputStream;
+import java.util.Objects;
 
 public class EntryTimestampSelectorExample {
 
     public static void main(String[] args) {
+        // Load Google Font
+        try (InputStream is = DroneDeck.class.getResourceAsStream("/Lato-Bold.ttf")) {
+            Font font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(is)).deriveFont(16f);
+            UIManager.put("defaultFont", font);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Failed to load the font. The application will use the default font.", "Font Load Error", JOptionPane.ERROR_MESSAGE);
+        }
+
         // Set up FlatLaf look and feel
         FlatLaf.registerCustomDefaultsSource("main.java.ui.themes");
 
@@ -29,11 +40,15 @@ public class EntryTimestampSelectorExample {
             JFrame frame = new JFrame("EntryTimestampSelector Example");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+            // Add a wrapper panel
+            JPanel wrapper = new JPanel();
+
             // Create an EntryTimestampSelector with 10 entries
-            EntryTimestampSelector selector = new EntryTimestampSelector(100);
+            EntryTimestampSelector selector = new EntryTimestampSelector(99999);
 
             // Add the component to the frame
-            frame.getContentPane().add(selector, BorderLayout.CENTER);
+            wrapper.add(selector);
+            frame.add(wrapper);
 
             // Set up frame size and location
             frame.setSize(400, 100);
