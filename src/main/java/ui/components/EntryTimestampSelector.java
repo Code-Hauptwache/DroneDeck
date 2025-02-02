@@ -1,6 +1,8 @@
 package main.java.ui.components;
 
 import com.formdev.flatlaf.ui.FlatLineBorder;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.swing.FontIcon;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,8 +20,10 @@ public class EntryTimestampSelector extends JComponent {
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
         // Left skip buttons
-        skipLeft1 = new JButton("<<");
-        skipLeft2 = new JButton("<");
+        FontIcon chevronLeft = FontIcon.of(FontAwesomeSolid.CHEVRON_LEFT, 15, UIManager.getColor("Label.foreground"));
+        skipLeft1 = new JButton();
+        skipLeft1.setIcon(new DoubleIcon(chevronLeft, -2));
+        skipLeft2 = new JButton(chevronLeft);
         skipLeft1.addActionListener(createSkipListener("skipLeft1"));
         skipLeft2.addActionListener(createSkipListener("skipLeft2"));
 
@@ -32,10 +36,19 @@ public class EntryTimestampSelector extends JComponent {
         }
 
         // Right skip buttons
-        skipRight1 = new JButton(">");
-        skipRight2 = new JButton(">>");
+        FontIcon chevronRight =  FontIcon.of(FontAwesomeSolid.CHEVRON_RIGHT, 15, UIManager.getColor("Label.foreground"));
+        skipRight1 = new JButton(chevronRight);
+        skipRight2 = new JButton();
+        skipRight2.setIcon(new DoubleIcon(chevronRight, -2));
         skipRight1.addActionListener(createSkipListener("skipRight1"));
         skipRight2.addActionListener(createSkipListener("skipRight2"));
+
+        setBorder(new FlatLineBorder(
+                new Insets(15, 15, 15, 15),
+                UIManager.getColor("Component.borderColor"),
+                1,
+                40 // corner radius
+        ));
 
         // Add components in horizontal order
         add(skipLeft1);
