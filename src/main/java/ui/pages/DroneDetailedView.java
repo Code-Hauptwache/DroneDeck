@@ -193,7 +193,7 @@ public class DroneDetailedView extends JPanel {
 
         JComponent droneStatus = new DroneStatus(dto);
         JComponent batteryStatus = new DroneVisualBatteryStatus(dto);
-        JComponent entryTimestampSelector = new EntryTimestampSelector(100000);
+        JComponent entryTimestampSelector = new EntryTimestampSelector(76_382);
         JComponent infoTooltip = new InfoTooltip("Data Timestamp: " + dto.getDataTimestamp());
 
         Arrays.asList(droneStatus, batteryStatus, infoTooltip).forEach(component -> {
@@ -201,13 +201,15 @@ public class DroneDetailedView extends JPanel {
             component.setMaximumSize(component.getPreferredSize());
         });
 
+        // Wrap the entryTimestampSelector in a panel and apply a negative left border
         JPanel entryTimestampSelectorWrapper = new JPanel();
+        // Use an empty border with negative left inset to pull the component left
+        entryTimestampSelectorWrapper.setBorder(BorderFactory.createEmptyBorder(0, -65, 0, 0));
         entryTimestampSelectorWrapper.add(entryTimestampSelector);
 
         statusPanel.add(droneStatus);
         statusPanel.add(Box.createHorizontalStrut(10));
         statusPanel.add(batteryStatus);
-        statusPanel.add(Box.createHorizontalStrut(-65));
         statusPanel.add(entryTimestampSelectorWrapper);
         statusPanel.add(Box.createHorizontalGlue());
         statusPanel.add(infoTooltip);
