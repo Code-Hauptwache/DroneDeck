@@ -137,7 +137,7 @@ public class DroneDetailedView extends JPanel {
     private Component[] createColumnData(DroneDto dto) {
         return new Component[]{
                 new JLabel((int) dto.getSpeed() + " km/h"),
-                new JLabel(dto.getAverageSpeed() != null ? (int) dto.getAverageSpeed() + " km/h" : "N/A"),
+                new JLabel(dto.isAverageSpeedSet() ? (int) dto.getAverageSpeed() + " km/h" : "N/A"),
                 new JLabel(dto.getLocation() != null ? dto.getLocation() : "N/A"),
                 new JLabel(dto.isTravelDistanceSet() ? (int) dto.getTravelDistance() + " km" : "N/A"),
                 new JLabel(dto.getCarriageWeight() >= 0 ? (int) dto.getCarriageWeight() + " g" : "N/A"),

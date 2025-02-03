@@ -3,10 +3,10 @@ package main.java.ui.components;
 import main.java.services.ApiToken.ApiTokenService;
 import main.java.services.DroneApi.DroneApiService;
 import main.java.services.DroneApi.IDroneApiService;
+import main.java.services.DroneDataCalculation.IDroneDataCalculationService;
 import main.java.services.ReverseGeocode.IReverseGeocodeService;
 import main.java.services.ReverseGeocode.ReverseGeocodeService;
-import main.java.services.TravelDistance.ITravelDistanceService;
-import main.java.services.TravelDistance.TravelDistanceService;
+import main.java.services.DroneDataCalculation.DroneDataCalculationService;
 import main.java.ui.MainPanel;
 import main.java.ui.dtos.DroneDto;
 import main.java.ui.pages.DroneDetailedView;
@@ -25,7 +25,7 @@ import java.awt.event.MouseEvent;
 public class DroneDashboardCard extends JComponent {
     private static final String API_KEY = ApiTokenService.getApiToken();
     private final IDroneApiService droneApiService = new DroneApiService(API_KEY);
-    private final ITravelDistanceService travelDistanceService = new TravelDistanceService(droneApiService);
+    private final IDroneDataCalculationService droneDataCalculationService = new DroneDataCalculationService(droneApiService);
     private final IReverseGeocodeService reverseGeocodeService = new ReverseGeocodeService();
     private final DroneDto dto;
 
@@ -126,6 +126,7 @@ public class DroneDashboardCard extends JComponent {
         // Load the detailed view asynchronously
         SwingUtilities.invokeLater(() -> {
             ensureTravelDistanceSet();
+            ensureAverageSpeedSet();
             ensureLocationSet();
 
             DroneDetailedView detailView = new DroneDetailedView(dto, overlayPanel);
@@ -150,7 +151,13 @@ public class DroneDashboardCard extends JComponent {
 
     private void ensureTravelDistanceSet() {
         if (!dto.isTravelDistanceSet()) {
-            dto.setTravelDistance((int) travelDistanceService.getTravelDistance(dto.getId()));
+            dto.setTravelDistance((int) droneDataCalculationService.getTravelDistance(dto.getId()));
+        }
+    }
+
+    private void ensureAverageSpeedSet() {
+        if (!dto.isAverageSpeedSet()) {
+            dto.setAverageSpeed((int) droneDataCalculationService.getAverageSpeed(dto.getId()));
         }
     }
 }
