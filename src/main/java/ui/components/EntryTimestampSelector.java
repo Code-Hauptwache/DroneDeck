@@ -153,7 +153,7 @@ public class EntryTimestampSelector extends JComponent {
         ));
 
         // Add listener to update button states
-        timestampComboBox.addActionListener(e -> updateButtonStates());
+        timestampComboBox.addActionListener(_ -> updateButtonStates());
         updateButtonStates();
     }
 
@@ -189,7 +189,7 @@ public class EntryTimestampSelector extends JComponent {
     }
 
     private ActionListener createSkipListener(String whichSkip) {
-        return e -> {
+        return _ -> {
             int currentIndex = timestampComboBox.getSelectedIndex();
             int itemCount = timestampComboBox.getItemCount();
 
