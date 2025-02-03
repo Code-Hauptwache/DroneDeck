@@ -8,13 +8,26 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
+/**
+ * A custom component for selecting an entry timestamp.
+ * This component consists of a pair of skip buttons, a combo box, and another pair of skip buttons.
+ * The combo box displays a list of numbers from the total number of entries down to 1.
+ * The skip buttons allow the user to quickly navigate to the first or last entry.
+ * The selected entry index can be retrieved using the getSelectedEntryIndex() method.
+ */
 public class EntryTimestampSelector extends JComponent {
-    private final JButton skipLeft1;
-    private final JButton skipLeft2;
+    private final JButton skipToOldestDroneData;
+    private final JButton skipToOneOlderDroneData;
     private final JComboBox<String> timestampComboBox;
-    private final JButton skipRight1;
-    private final JButton skipRight2;
+    private final JButton skipToOneLaterDroneData;
+    private final JButton skipToLatestDroneData;
 
+    /**
+     * Creates a new EntryTimestampSelector with the given number of entries.
+     * If the number of entries is too large (greater than 99999), an error message will be displayed.
+     *
+     * @param entryCount the number of entries to display
+     */
     public EntryTimestampSelector(int entryCount) {
         // Determine if there is an error condition (entryCount too large)
         boolean error = (entryCount > 99999);
@@ -24,18 +37,20 @@ public class EntryTimestampSelector extends JComponent {
 
         // Left skip buttons
         FontIcon chevronLeft = FontIcon.of(FontAwesomeSolid.CHEVRON_LEFT, 15, UIManager.getColor("Label.foreground"));
-        skipLeft1 = new JButton();
-        skipLeft1.setIcon(new DoubleIcon(chevronLeft, -2));
-        skipLeft1.setContentAreaFilled(false);
-        skipLeft1.setBorderPainted(false);
-        skipLeft1.setFocusPainted(false);
-        skipLeft1.addActionListener(createSkipListener("skipLeft1"));
+        skipToOldestDroneData = new JButton();
+        skipToOldestDroneData.setIcon(new DoubleIcon(chevronLeft, -2));
+        skipToOldestDroneData.setContentAreaFilled(false);
+        skipToOldestDroneData.setBorderPainted(false);
+        skipToOldestDroneData.setFocusPainted(false);
+        skipToOldestDroneData.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        skipToOldestDroneData.addActionListener(createSkipListener("skipLeft1"));
 
-        skipLeft2 = new JButton(chevronLeft);
-        skipLeft2.setContentAreaFilled(false);
-        skipLeft2.setBorderPainted(false);
-        skipLeft2.setFocusPainted(false);
-        skipLeft2.addActionListener(createSkipListener("skipLeft2"));
+        skipToOneOlderDroneData = new JButton(chevronLeft);
+        skipToOneOlderDroneData.setContentAreaFilled(false);
+        skipToOneOlderDroneData.setBorderPainted(false);
+        skipToOneOlderDroneData.setFocusPainted(false);
+        skipToOneOlderDroneData.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        skipToOneOlderDroneData.addActionListener(createSkipListener("skipLeft2"));
 
         // Create a label for "Entry"
         JLabel entryLabel = new JLabel("Entry");
@@ -101,31 +116,33 @@ public class EntryTimestampSelector extends JComponent {
 
         // Right skip buttons
         FontIcon chevronRight = FontIcon.of(FontAwesomeSolid.CHEVRON_RIGHT, 15, UIManager.getColor("Label.foreground"));
-        skipRight1 = new JButton(chevronRight);
-        skipRight1.setContentAreaFilled(false);
-        skipRight1.setBorderPainted(false);
-        skipRight1.setFocusPainted(false);
-        skipRight1.addActionListener(createSkipListener("skipRight1"));
+        skipToOneLaterDroneData = new JButton(chevronRight);
+        skipToOneLaterDroneData.setContentAreaFilled(false);
+        skipToOneLaterDroneData.setBorderPainted(false);
+        skipToOneLaterDroneData.setFocusPainted(false);
+        skipToOneLaterDroneData.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        skipToOneLaterDroneData.addActionListener(createSkipListener("skipRight1"));
 
-        skipRight2 = new JButton();
-        skipRight2.setIcon(new DoubleIcon(chevronRight, -2));
-        skipRight2.setContentAreaFilled(false);
-        skipRight2.setBorderPainted(false);
-        skipRight2.setFocusPainted(false);
-        skipRight2.addActionListener(createSkipListener("skipRight2"));
+        skipToLatestDroneData = new JButton();
+        skipToLatestDroneData.setIcon(new DoubleIcon(chevronRight, -2));
+        skipToLatestDroneData.setContentAreaFilled(false);
+        skipToLatestDroneData.setBorderPainted(false);
+        skipToLatestDroneData.setFocusPainted(false);
+        skipToLatestDroneData.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        skipToLatestDroneData.addActionListener(createSkipListener("skipRight2"));
 
         // Add components in horizontal order:
-        add(skipLeft1);
+        add(skipToOldestDroneData);
         add(Box.createHorizontalStrut(5));
-        add(skipLeft2);
+        add(skipToOneOlderDroneData);
         add(Box.createHorizontalGlue());
         add(entryLabel);
         add(timestampComboBox);
         add(ofLabel);
         add(Box.createHorizontalGlue());
-        add(skipRight1);
+        add(skipToOneLaterDroneData);
         add(Box.createHorizontalStrut(5));
-        add(skipRight2);
+        add(skipToLatestDroneData);
 
         // Set a border (optional, adjust as needed)
         setBorder(new FlatLineBorder(
@@ -134,31 +151,97 @@ public class EntryTimestampSelector extends JComponent {
                 1,
                 10 // corner radius
         ));
+
+        // Add listener to update button states
+        timestampComboBox.addActionListener(e -> updateButtonStates());
+        updateButtonStates();
     }
 
+    /**
+     * Adds an ActionListener to the combo box.
+     *
+     * @param listener the ActionListener to add
+     */
     public void addTimestampChangeListener(ActionListener listener) {
         timestampComboBox.addActionListener(listener);
     }
 
+    /**
+     * Returns the index of the selected entry.
+     * The index is 0-based, with 0 being the last entry.
+     *
+     * @return the index of the selected entry
+     */
     public int getSelectedEntryIndex() {
         int selectedIndex = timestampComboBox.getSelectedIndex();
         return timestampComboBox.getItemCount() - selectedIndex - 1;
     }
 
-    /**
-     * Utility method to create an ActionListener that calls
-     * your skip methods. Replace with your actual skip logic.
-     */
+    private void updateButtonStates() {
+        int selectedIndex = getSelectedEntryIndex();
+        boolean atStart = selectedIndex == 0;
+        boolean atEnd = selectedIndex == timestampComboBox.getItemCount() - 1;
+
+        skipToOldestDroneData.setEnabled(!atStart);
+        skipToOneOlderDroneData.setEnabled(!atStart);
+        skipToOneLaterDroneData.setEnabled(!atEnd);
+        skipToLatestDroneData.setEnabled(!atEnd);
+    }
+
     private ActionListener createSkipListener(String whichSkip) {
         return e -> {
-            System.out.println("Clicked: " + whichSkip);
-            // TODO: Replace with your actual skip method calls
+            int currentIndex = timestampComboBox.getSelectedIndex();
+            int itemCount = timestampComboBox.getItemCount();
+
+            switch (whichSkip) {
+                case "skipLeft1":
+                    if (currentIndex < itemCount - 1) {
+                        // skip to the last index
+                        timestampComboBox.setSelectedIndex(itemCount - 1);
+                    }
+                    break;
+                case "skipLeft2":
+                    if (currentIndex < itemCount - 1) {
+                        timestampComboBox.setSelectedIndex(currentIndex + 1);
+                    }
+                    break;
+                case "skipRight1":
+                    if (currentIndex > 0) {
+                        timestampComboBox.setSelectedIndex(currentIndex - 1);
+                    }
+                    break;
+                case "skipRight2":
+                    if (currentIndex > 1) {
+                        // skip to the first index
+                        timestampComboBox.setSelectedIndex(0);
+                    }
+                    break;
+            }
         };
     }
 
     @Override
     public Dimension getPreferredSize() {
-        // Provide a preferred size for the entire component (optional)
         return new Dimension(310, 30);
+    }
+
+    public JButton getSkipToOldestDroneData() {
+        return skipToOldestDroneData;
+    }
+
+    public JButton getSkipToOneOlderDroneData() {
+        return skipToOneOlderDroneData;
+    }
+
+    public JButton getSkipToOneLaterDroneData() {
+        return skipToOneLaterDroneData;
+    }
+
+    public JButton getSkipToLatestDroneData() {
+        return skipToLatestDroneData;
+    }
+
+    public JComboBox<String> getTimestampComboBox() {
+        return timestampComboBox;
     }
 }
