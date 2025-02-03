@@ -21,7 +21,7 @@ public class DroneDto {
     private final int id;
     private final String typeName;
     private final String manufacturer;
-    private String status;
+    private final String status;
     private final double batteryStatus;
     private final double batteryCapacity;
     private final double speed;
@@ -37,8 +37,10 @@ public class DroneDto {
     private final double maxSpeed;
     private final double controlRange;
     private double travelDistance;
+    private double averageSpeed;
     private String location;
     private boolean isTravelDistanceSet = false;
+    private boolean isAverageSpeedSet = false;
     private boolean isLocationSet = false;
 
 
@@ -211,7 +213,7 @@ public class DroneDto {
             return 0;
         }
         // Ensure we don't exceed 100% in case batteryStatus > batteryCapacity
-        return Math.min(100.0, (double) batteryStatus / batteryCapacity * 100);
+        return Math.min(100.0, batteryStatus / batteryCapacity * 100);
     }
 
     /**
@@ -235,8 +237,17 @@ public class DroneDto {
     /**
      * Placeholder method. Remove if unused or implement properly.
      */
-    public Object getAverageSpeed() {
+    public double getAverageSpeed() {
         // TODO: Implement or remove
-        return null;
+        return averageSpeed;
+    }
+
+    public void setAverageSpeed(double averageSpeed) {
+        this.averageSpeed = averageSpeed;
+        this.isAverageSpeedSet = true;
+    }
+
+    public boolean isAverageSpeedSet() {
+        return isAverageSpeedSet;
     }
 }
