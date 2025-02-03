@@ -1,5 +1,13 @@
 package main.java.ui.pages;
 
+import main.java.exceptions.DroneApiException;
+import main.java.services.ApiToken.ApiTokenService;
+import main.java.services.DroneApi.DroneApiService;
+import main.java.services.DroneApi.IDroneApiService;
+import main.java.services.DroneApi.dtos.DroneDynamics;
+import main.java.services.DroneApi.dtos.DroneDynamicsResponse;
+import main.java.services.ReverseGeocode.IReverseGeocodeService;
+import main.java.services.ReverseGeocode.ReverseGeocodeService;
 import main.java.ui.components.DroneStatus;
 import main.java.ui.components.DroneVisualBatteryStatus;
 import main.java.ui.components.EntryTimestampSelector;
@@ -13,11 +21,24 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The DroneDetailedView class is a JPanel that displays detailed information about a drone.
  */
 public class DroneDetailedView extends JPanel {
+
+    private static final Logger logger = Logger.getLogger(DroneDetailedView.class.getName());
+
+    private static final String API_KEY = ApiTokenService.getApiToken();
+    private final IDroneApiService droneApiService = new DroneApiService(API_KEY);
+    private final IReverseGeocodeService reverseGeocodeService = new ReverseGeocodeService();
+    private final JLabel speedLabel = new JLabel();
+    private final JLabel locationLabel = new JLabel();
+    private final JLabel batteryStatusLabel = new JLabel();
+    private final JLabel lastSeenLabel = new JLabel();
+    private final JLabel statusLabel = new JLabel();
 
     /**
      * Creates a new DroneDetailedView instance.
@@ -135,14 +156,20 @@ public class DroneDetailedView extends JPanel {
 
 
     private Component[] createColumnData(DroneDto dto) {
+        speedLabel.setText((int) dto.getSpeed() + " km/h");
+        locationLabel.setText(dto.getLocation() != null ? dto.getLocation() : "N/A");
+        batteryStatusLabel.setText(dto.getBatteryPercentage() + "%");
+        lastSeenLabel.setText(dto.getLastSeen() != null ? dto.getLastSeen() : "N/A");
+        statusLabel.setText(dto.getStatus());
+
         return new Component[]{
-                new JLabel((int) dto.getSpeed() + " km/h"),
+                speedLabel,
                 new JLabel(dto.isAverageSpeedSet() ? (int) dto.getAverageSpeed() + " km/h" : "N/A"),
-                new JLabel(dto.getLocation() != null ? dto.getLocation() : "N/A"),
+                locationLabel,
                 new JLabel(dto.isTravelDistanceSet() ? (int) dto.getTravelDistance() + " km" : "N/A"),
                 new JLabel(dto.getCarriageWeight() >= 0 ? (int) dto.getCarriageWeight() + " g" : "N/A"),
                 new JLabel(dto.getCarriageType() != null ? dto.getCarriageType() : "N/A"),
-                new JLabel(dto.getLastSeen() != null ? dto.getLastSeen() : "N/A"),
+                lastSeenLabel,
                 new JLabel(dto.getSerialNumber())
         };
     }
@@ -187,34 +214,68 @@ public class DroneDetailedView extends JPanel {
     //   Status Panel
     // =======================
 
-    private JPanel buildStatusPanel(DroneDto dto) {
-        JPanel statusPanel = new JPanel();
-        statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
+     private JPanel buildStatusPanel(DroneDto dto) {
+         JPanel statusPanel = new JPanel();
+         statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
 
-        JComponent droneStatus = new DroneStatus(dto);
-        JComponent batteryStatus = new DroneVisualBatteryStatus(dto);
-        JComponent entryTimestampSelector = new EntryTimestampSelector(76_382);
-        JComponent infoTooltip = new InfoTooltip("Data Timestamp: " + dto.getDataTimestamp());
+         try {
+             DroneDynamicsResponse droneDynamicsResponse = droneApiService.getDroneDynamicsResponseByDroneId(dto.getId(), 1, 0);
+             int droneDynamicsEntryCount = droneDynamicsResponse.getCount();
 
-        Arrays.asList(droneStatus, batteryStatus, infoTooltip).forEach(component -> {
-            component.setAlignmentY(Component.CENTER_ALIGNMENT);
-            component.setMaximumSize(component.getPreferredSize());
-        });
+             JComponent droneStatus = new DroneStatus(dto);
+             JComponent batteryStatus = new DroneVisualBatteryStatus(dto);
+             EntryTimestampSelector entryTimestampSelector = new EntryTimestampSelector(droneDynamicsEntryCount);
+             JComponent infoTooltip = new InfoTooltip("Data Timestamp: " + dto.getDataTimestamp());
 
-        // Wrap the entryTimestampSelector in a panel and apply a negative left border
-        JPanel entryTimestampSelectorWrapper = new JPanel();
-        // Use an empty border with negative left inset to pull the component left
-        entryTimestampSelectorWrapper.setBorder(BorderFactory.createEmptyBorder(0, -65, 0, 0));
-        entryTimestampSelectorWrapper.add(entryTimestampSelector);
+             Arrays.asList(droneStatus, batteryStatus, infoTooltip).forEach(component -> {
+                 component.setAlignmentY(Component.CENTER_ALIGNMENT);
+                 component.setMaximumSize(component.getPreferredSize());
+             });
 
-        statusPanel.add(droneStatus);
-        statusPanel.add(Box.createHorizontalStrut(10));
-        statusPanel.add(batteryStatus);
-        statusPanel.add(entryTimestampSelectorWrapper);
-        statusPanel.add(Box.createHorizontalGlue());
-        statusPanel.add(infoTooltip);
+             // Wrap the entryTimestampSelector in a panel and apply a negative left border
+             JPanel entryTimestampSelectorWrapper = new JPanel();
+             // Use an empty border with negative left inset to pull the component left
+             entryTimestampSelectorWrapper.setBorder(BorderFactory.createEmptyBorder(0, -65, 0, 0));
+             entryTimestampSelectorWrapper.add(entryTimestampSelector);
 
-        return statusPanel;
+             statusPanel.add(droneStatus);
+             statusPanel.add(Box.createHorizontalStrut(10));
+             statusPanel.add(batteryStatus);
+             statusPanel.add(entryTimestampSelectorWrapper);
+             statusPanel.add(Box.createHorizontalGlue());
+             statusPanel.add(infoTooltip);
+
+             // Add ActionListener to update the UI when a new entry is selected
+             entryTimestampSelector.addTimestampChangeListener(e -> {
+                 int selectedIndex = entryTimestampSelector.getSelectedEntryIndex();
+                 updateDroneDetails(dto, selectedIndex);
+             });
+         } catch (DroneApiException e) {
+             logger.log(Level.SEVERE, "Failed to get drone dynamics for drone with ID: " + dto.getId(), e);
+             // Handle the exception, e.g., show an error message or return an empty panel
+             statusPanel.add(new JLabel("Failed to load drone dynamics."));
+         }
+
+         return statusPanel;
+     }
+
+    private void updateDroneDetails(DroneDto dto, int entryIndex) {
+        try {
+            DroneDynamics dynamics = droneApiService.getDroneDynamicsByEntryIndex(dto.getId(), entryIndex);
+            // Update UI components with new data
+            updateUIComponents(dynamics);
+        } catch (DroneApiException e) {
+            logger.log(Level.SEVERE, "Failed to update drone details for entry index: " + entryIndex, e);
+        }
+    }
+
+    private void updateUIComponents(DroneDynamics dynamics) {
+        // Update the UI components with the new data from dynamics
+        speedLabel.setText(dynamics.speed + " km/h");
+        locationLabel.setText(reverseGeocodeService.getCityAndCountry(dynamics.latitude, dynamics.longitude));
+        batteryStatusLabel.setText(dynamics.battery_status + "%");
+        lastSeenLabel.setText(dynamics.last_seen.toString());
+        statusLabel.setText(dynamics.status);
     }
 
     // =======================

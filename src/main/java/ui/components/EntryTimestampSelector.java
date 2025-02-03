@@ -136,6 +136,15 @@ public class EntryTimestampSelector extends JComponent {
         ));
     }
 
+    public void addTimestampChangeListener(ActionListener listener) {
+        timestampComboBox.addActionListener(listener);
+    }
+
+    public int getSelectedEntryIndex() {
+        int selectedIndex = timestampComboBox.getSelectedIndex();
+        return timestampComboBox.getItemCount() - selectedIndex - 1;
+    }
+
     /**
      * Utility method to create an ActionListener that calls
      * your skip methods. Replace with your actual skip logic.
