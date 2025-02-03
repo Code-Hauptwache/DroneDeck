@@ -38,7 +38,9 @@ public class DroneDetailedView extends JPanel {
     private final JLabel locationLabel = new JLabel();
     private final JLabel batteryStatusLabel = new JLabel();
     private final JLabel lastSeenLabel = new JLabel();
-    private final JLabel statusLabel = new JLabel();
+    private JComponent droneStatus;
+    private JComponent batteryStatus;
+    private JComponent infoTooltip;
 
     /**
      * Creates a new DroneDetailedView instance.
@@ -160,7 +162,6 @@ public class DroneDetailedView extends JPanel {
         locationLabel.setText(dto.getLocation() != null ? dto.getLocation() : "N/A");
         batteryStatusLabel.setText(dto.getBatteryPercentage() + "%");
         lastSeenLabel.setText(dto.getLastSeen() != null ? dto.getLastSeen() : "N/A");
-        statusLabel.setText(dto.getStatus());
 
         return new Component[]{
                 speedLabel,
@@ -222,11 +223,10 @@ public class DroneDetailedView extends JPanel {
              DroneDynamicsResponse droneDynamicsResponse = droneApiService.getDroneDynamicsResponseByDroneId(dto.getId(), 1, 0);
              int droneDynamicsEntryCount = droneDynamicsResponse.getCount();
 
-             JComponent droneStatus = new DroneStatus(dto);
-             JComponent batteryStatus = new DroneVisualBatteryStatus(dto);
+             droneStatus = new DroneStatus(dto);
+             batteryStatus = new DroneVisualBatteryStatus(dto);
              EntryTimestampSelector entryTimestampSelector = new EntryTimestampSelector(droneDynamicsEntryCount);
-             JComponent infoTooltip = new InfoTooltip("Data Timestamp: " + dto.getDataTimestamp());
-
+             infoTooltip = new InfoTooltip("Data Timestamp: " + dto.getDataTimestamp());
              Arrays.asList(droneStatus, batteryStatus, infoTooltip).forEach(component -> {
                  component.setAlignmentY(Component.CENTER_ALIGNMENT);
                  component.setMaximumSize(component.getPreferredSize());
@@ -246,7 +246,7 @@ public class DroneDetailedView extends JPanel {
              statusPanel.add(infoTooltip);
 
              // Add ActionListener to update the UI when a new entry is selected
-             entryTimestampSelector.addTimestampChangeListener(e -> {
+             entryTimestampSelector.addTimestampChangeListener(_ -> {
                  int selectedIndex = entryTimestampSelector.getSelectedEntryIndex();
                  updateDroneDetails(dto, selectedIndex);
              });
@@ -263,19 +263,21 @@ public class DroneDetailedView extends JPanel {
         try {
             DroneDynamics dynamics = droneApiService.getDroneDynamicsByEntryIndex(dto.getId(), entryIndex);
             // Update UI components with new data
-            updateUIComponents(dynamics);
+            updateUIComponents(dynamics, dto);
         } catch (DroneApiException e) {
             logger.log(Level.SEVERE, "Failed to update drone details for entry index: " + entryIndex, e);
         }
     }
 
-    private void updateUIComponents(DroneDynamics dynamics) {
+    private void updateUIComponents(DroneDynamics dynamics, DroneDto dto) {
         // Update the UI components with the new data from dynamics
         speedLabel.setText(dynamics.speed + " km/h");
         locationLabel.setText(reverseGeocodeService.getCityAndCountry(dynamics.latitude, dynamics.longitude));
         batteryStatusLabel.setText(dynamics.battery_status + "%");
-        lastSeenLabel.setText(dynamics.last_seen.toString());
-        statusLabel.setText(dynamics.status);
+        lastSeenLabel.setText(dynamics.getLastSeen());
+        ((DroneStatus) droneStatus).updateStatus(dynamics.status);
+        ((DroneVisualBatteryStatus) batteryStatus).setBatteryPercentage(dynamics.battery_status, dto.getBatteryCapacity());
+        ((InfoTooltip) infoTooltip).setTooltipLabelText("Data Timestamp: " + dynamics.getDataTimestamp());
     }
 
     // =======================

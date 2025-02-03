@@ -11,8 +11,9 @@ import java.awt.*;
  * JComponent that represents the battery status of a drone.
  */
 public class DroneVisualBatteryStatus extends JPanel {
-    private final int batteryPercentage;
+    private int batteryPercentage;
     private final JLabel iconLabel;
+    private final JLabel batteryPercentageLabel;
     private final boolean isPercentageAvailable;
 
     /**
@@ -41,7 +42,7 @@ public class DroneVisualBatteryStatus extends JPanel {
         batteryPercentage = isPercentageAvailable ? (int) dto.getBatteryPercentage() : 0;
 
         // Create a JLabel to display the percentage
-        JLabel batteryPercentageLabel = new JLabel(
+        batteryPercentageLabel = new JLabel(
                 isPercentageAvailable ? batteryPercentage + "%" : "N/A"
         );
 
@@ -112,5 +113,12 @@ public class DroneVisualBatteryStatus extends JPanel {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setColor(fillColor);
         g2d.fillRoundRect(x, y, filledWidth, height, 4, 4); // 4 is the arc width and height for rounded corners
+    }
+
+    public void setBatteryPercentage(int batteryStatus, double batteryCapacity) {
+        // Update the battery percentage and repaint the component
+        this.batteryPercentage = (int) Math.min(100.0, batteryStatus / batteryCapacity * 100);
+        batteryPercentageLabel.setText(batteryPercentage + "%");
+        repaint();
     }
 }
