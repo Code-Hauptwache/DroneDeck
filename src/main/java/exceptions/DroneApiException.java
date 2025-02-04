@@ -1,12 +1,15 @@
 package main.java.exceptions;
 
 /**
- * The one and only custom Exception ... with no further benefit ... as of now
+ * Custom exception for DroneApi
  */
 public class DroneApiException extends Exception {
 
+    /**
+     * Constructor
+     * @param message the message to be displayed
+     */
     public DroneApiException(String message) {
         super(message);
     }
-
 }
