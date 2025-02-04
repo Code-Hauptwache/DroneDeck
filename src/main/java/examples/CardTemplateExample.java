@@ -9,8 +9,14 @@ import main.java.ui.components.CardTemplate;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Example class that demonstrates how to create a JFrame with a CardTemplate.
+ */
 public class CardTemplateExample {
 
+    /**
+     * Main method to run the example.
+     */
     public static void main(String[] args) {
         // Set up FlatLaf look and feel
         FlatLaf.registerCustomDefaultsSource("main.java.ui.themes");

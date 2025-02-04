@@ -14,6 +14,7 @@ import java.util.Arrays;
  * Example of a pie chart using PieChartPanel.
  */
 public class PieChartExample {
+    
     /**
      * Main method to run the example.
      */

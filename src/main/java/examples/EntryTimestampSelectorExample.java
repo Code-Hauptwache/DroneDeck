@@ -12,8 +12,14 @@ import java.awt.*;
 import java.io.InputStream;
 import java.util.Objects;
 
+/**
+ * Example class that demonstrates how to create a JFrame with an EntryTimestampSelector.
+ */
 public class EntryTimestampSelectorExample {
 
+    /**
+     * Main method to run the example.
+     */
     public static void main(String[] args) {
         // Load Google Font
         try (InputStream is = DroneDeck.class.getResourceAsStream("/Lato-Bold.ttf")) {
