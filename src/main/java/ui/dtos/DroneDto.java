@@ -238,7 +238,6 @@ public class DroneDto {
      * Placeholder method. Remove if unused or implement properly.
      */
     public double getAverageSpeed() {
-        // TODO: Implement or remove
         return averageSpeed;
     }
 
