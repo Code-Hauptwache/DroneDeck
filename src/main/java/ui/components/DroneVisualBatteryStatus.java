@@ -73,7 +73,7 @@ public class DroneVisualBatteryStatus extends JPanel {
      * Updates the battery percentage of the drone.
      *
      * @param g The Graphics object to paint the component.
-     *          This method is called by Swing to draw the component.
+     *          Swing calls this method to draw the component.
      */
     @Override
     protected void paintComponent(Graphics g) {
@@ -115,6 +115,12 @@ public class DroneVisualBatteryStatus extends JPanel {
         g2d.fillRoundRect(x, y, filledWidth, height, 4, 4); // 4 is the arc width and height for rounded corners
     }
 
+    /**
+     * Sets the battery percentage of the drone.
+     *
+     * @param batteryStatus The current battery status of the drone.
+     * @param batteryCapacity The maximum battery capacity of the drone.
+     */
     public void setBatteryPercentage(int batteryStatus, double batteryCapacity) {
         // Update the battery percentage and repaint the component
         this.batteryPercentage = (int) Math.min(100.0, batteryStatus / batteryCapacity * 100);

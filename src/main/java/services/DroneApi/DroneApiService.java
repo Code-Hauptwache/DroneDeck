@@ -266,9 +266,10 @@ public class DroneApiService implements IDroneApiService {
     }
 
     /**
-     * Gets a drone's DroneDynamics
-     * @param droneId the id of the drone of which to retrieve the DroneDynamics
-     * @return the DroneDynamics of said Drone
+     * Get a DroneDynamics by entry index
+     * @param droneId the id of the drone
+     * @param entryIndex the index of the entry
+     * @return the DroneDynamics
      * @throws DroneApiException if an error occurs while fetching the data
      */
     public DroneDynamics getDroneDynamicsByEntryIndex(int droneId, int entryIndex) throws DroneApiException {

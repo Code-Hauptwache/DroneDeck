@@ -88,6 +88,10 @@ public class DroneDynamics {
         throw new IllegalArgumentException("Invalid date time format: " + date);
     }
 
+    /**
+     * Get the Last Seen Date in a human-readable format
+     * @return the Last Seen Date
+     */
     public String getLastSeen() {
         LocalDateTime lastSeenDateTime = parseIsoDateTime(last_seen);
         if (lastSeenDateTime == null) {
@@ -96,6 +100,10 @@ public class DroneDynamics {
         return lastSeenDateTime.format(DISPLAY_FORMAT);
     }
 
+    /**
+     * Get the Data Timestamp in a human-readable format
+     * @return the Data Timestamp
+     */
     public String getDataTimestamp() {
         LocalDateTime dataTimestampDateTime = parseIsoDateTime(timestamp);
         if (dataTimestampDateTime == null) {
