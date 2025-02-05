@@ -10,6 +10,7 @@ import main.java.services.DroneApi.DroneApiService;
 import main.java.services.DroneApi.IDroneApiService;
 import main.java.services.LocalSearch.LocalSearchService;
 import main.java.services.LocalSearch.ILocalSearchService;
+import main.java.services.DataRefresh.DataRefreshService;
 import main.java.ui.components.StartupLoadingScreen;
 import main.java.services.ApiToken.ApiTokenService;
 
@@ -154,6 +155,17 @@ public class DroneDeck {
                     // Create and add the main panel
                     MainPanel mainPanel = new MainPanel();
                     frame.add(mainPanel, BorderLayout.CENTER);
+
+                    // Initialize the DataRefreshService
+                    DataRefreshService.getInstance();
+
+                    // Add window listener to shutdown the refresh service
+                    frame.addWindowListener(new java.awt.event.WindowAdapter() {
+                        @Override
+                        public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                            DataRefreshService.getInstance().shutdown();
+                        }
+                    });
 
                     // Revalidate and repaint the frame to apply changes
                     frame.revalidate();

@@ -31,9 +31,8 @@ public class DroneDetailedView extends JPanel {
 
     private static final Logger logger = Logger.getLogger(DroneDetailedView.class.getName());
 
-    private static final String API_KEY = ApiTokenService.getApiToken();
-    private final IDroneApiService droneApiService = new DroneApiService(API_KEY);
-    private final IReverseGeocodeService reverseGeocodeService = new ReverseGeocodeService();
+    private final IDroneApiService droneApiService;
+    private final IReverseGeocodeService reverseGeocodeService;
     private final JLabel speedLabel = new JLabel();
     private final JLabel locationLabel = new JLabel();
     private final JLabel batteryStatusLabel = new JLabel();
@@ -50,6 +49,8 @@ public class DroneDetailedView extends JPanel {
      */
     public DroneDetailedView(DroneDto dto, JPanel overlayPanel) {
         super(new BorderLayout());
+        this.droneApiService = main.java.services.DataRefresh.DataRefreshService.getInstance().getDroneApiService();
+        this.reverseGeocodeService = new ReverseGeocodeService();
 
         // Build and add the top bar
         add(buildTopBar(dto, overlayPanel), BorderLayout.NORTH);

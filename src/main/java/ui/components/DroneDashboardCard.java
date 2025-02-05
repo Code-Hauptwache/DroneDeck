@@ -23,10 +23,9 @@ import java.awt.event.MouseEvent;
  * information about a drone.
  */
 public class DroneDashboardCard extends JComponent {
-    private static final String API_KEY = ApiTokenService.getApiToken();
-    private final IDroneApiService droneApiService = new DroneApiService(API_KEY);
-    private final IDroneDataCalculationService droneDataCalculationService = new DroneDataCalculationService(droneApiService);
-    private final IReverseGeocodeService reverseGeocodeService = new ReverseGeocodeService();
+    private final IDroneApiService droneApiService;
+    private final IDroneDataCalculationService droneDataCalculationService;
+    private final IReverseGeocodeService reverseGeocodeService;
     private final DroneDto dto;
 
     /**
@@ -35,6 +34,9 @@ public class DroneDashboardCard extends JComponent {
      * @param dto The DTO containing the information to display.
      */
     public DroneDashboardCard(DroneDto dto) {
+        this.droneApiService = main.java.services.DataRefresh.DataRefreshService.getInstance().getDroneApiService();
+        this.droneDataCalculationService = new DroneDataCalculationService(droneApiService);
+        this.reverseGeocodeService = new ReverseGeocodeService();
         setLayout(new BorderLayout());
         this.dto = dto;
 
