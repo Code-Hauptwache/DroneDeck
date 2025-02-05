@@ -126,7 +126,7 @@ public class DroneDeck {
             @Override
             protected void process(java.util.List<Object[]> chunks) {
                 if (!chunks.isEmpty()) {
-                    Object[] latest = chunks.get(chunks.size() - 1);
+                    Object[] latest = chunks.getLast();
                     int progress = (Integer) latest[0];
                     String status = (String) latest[1];
                     loadingPanel.updateProgress(progress, status);
