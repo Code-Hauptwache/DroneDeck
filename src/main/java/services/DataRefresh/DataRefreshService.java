@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  */
 public class DataRefreshService {
     private static final Logger logger = Logger.getLogger(DataRefreshService.class.getName());
-    private static final int REFRESH_INTERVAL_SECONDS = 60;
+    private static final int REFRESH_INTERVAL_SECONDS = 300;
     
     private static DataRefreshService instance;
     private final DroneController droneController;
@@ -92,6 +92,10 @@ public class DataRefreshService {
             logger.log(Level.SEVERE, "Error during data refresh", e);
             throw e; // Let the scheduler handle retry
         }
+    }
+
+    public void triggerRefreshData() {
+        refreshData();
     }
 
     public IDroneApiService getDroneApiService() {
