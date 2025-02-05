@@ -30,7 +30,7 @@ public class CardTemplate extends JComponent {
         // Register this instance
         instances.add(this);
 
-        // Use BorderLayout for main arrangement
+        // Use BorderLayout for the main arrangement
         setLayout(new BorderLayout(0, 10));
 
         // Set a fixed width/height for the card
