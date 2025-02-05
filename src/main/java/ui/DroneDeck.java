@@ -10,6 +10,7 @@ import main.java.services.DroneApi.DroneApiService;
 import main.java.services.DroneApi.IDroneApiService;
 import main.java.services.LocalSearch.LocalSearchService;
 import main.java.services.LocalSearch.ILocalSearchService;
+import main.java.services.DataRefresh.DataRefreshService;
 import main.java.ui.components.StartupLoadingScreen;
 import main.java.services.ApiToken.ApiTokenService;
 
@@ -17,10 +18,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.InputStream;
 import java.util.Objects;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
+import java.util.logging.*;
 
 /**
  * The DroneDeck class is the main
@@ -62,17 +60,26 @@ public class DroneDeck {
     }
 
     private static void configureLogging() {
-        Logger rootLogger = Logger.getLogger("");
-        rootLogger.setLevel(Level.INFO);
-
-        // Configure the console handler
-        ConsoleHandler consoleHandler = new ConsoleHandler();
-        consoleHandler.setLevel(Level.INFO);
-        consoleHandler.setFormatter(new SimpleFormatter());
-        rootLogger.addHandler(consoleHandler);
-
-        // Remove the default console handler
-        rootLogger.setUseParentHandlers(false);
+        try {
+            // Load logging configuration from resources
+            InputStream configFile = DroneDeck.class.getResourceAsStream("/logging.properties");
+            if (configFile != null) {
+                LogManager.getLogManager().readConfiguration(configFile);
+                logger.info("Logging configuration loaded successfully");
+            } else {
+                logger.warning("Could not find logging.properties, using default configuration");
+                // Fallback to basic configuration
+                Logger rootLogger = Logger.getLogger("");
+                rootLogger.setLevel(Level.INFO);
+                ConsoleHandler consoleHandler = new ConsoleHandler();
+                consoleHandler.setLevel(Level.INFO);
+                consoleHandler.setFormatter(new SimpleFormatter());
+                rootLogger.addHandler(consoleHandler);
+                rootLogger.setUseParentHandlers(false);
+            }
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Could not load logging configuration", e);
+        }
     }
 
     private static void setupFlatLaf() {
@@ -106,38 +113,65 @@ public class DroneDeck {
             JOptionPane.showMessageDialog(null, "Failed to load the logo image.", "Logo Load Error", JOptionPane.ERROR_MESSAGE);
         }
 
-        // Create the loading panel
+        // Create the loading panel with progress updates
         StartupLoadingScreen loadingPanel = new StartupLoadingScreen();
-
-        // Add the loading panel to the frame
         frame.add(loadingPanel, BorderLayout.CENTER);
-
-        // Call pack() so that components are laid out properly
         frame.pack();
-
-        // Enforce the minimum size (the user cannot shrink the window below this)
         frame.setMinimumSize(new Dimension(1135, 850));
-
-        // Center the frame on the screen and make it visible
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
         // Load data and switch to the main panel asynchronously
-        new SwingWorker<Void, Void>() {
+        new SwingWorker<Void, Object[]>() {
+            @Override
+            protected void process(java.util.List<Object[]> chunks) {
+                if (!chunks.isEmpty()) {
+                    Object[] latest = chunks.get(chunks.size() - 1);
+                    int progress = (Integer) latest[0];
+                    String status = (String) latest[1];
+                    loadingPanel.updateProgress(progress, status);
+                }
+            }
             @Override
             protected Void doInBackground() {
                 try {
-                    // Initialize LocalSearchService
+                    publish(new Object[]{0, "🚀 Starting application initialization..."});
+                    logger.info("🚀 Starting application initialization...");
+                    Thread.sleep(500); // Brief pause for UI update
+
+                    publish(new Object[]{10, "📦 Initializing data services..."});
+                    logger.info("📦 Initializing data services...");
                     LocalDroneDao localDroneDao = new LocalDroneDao();
                     LocalDroneTypeDao localDroneTypeDao = new LocalDroneTypeDao();
+                    Thread.sleep(500);
 
+                    publish(new Object[]{20, "🔑 Retrieving API token..."});
+                    logger.info("🔑 Retrieving API token...");
                     String apiToken = ApiTokenService.getApiToken();
+                    Thread.sleep(500);
 
+                    publish(new Object[]{30, "🔌 Setting up API service..."});
+                    logger.info("🔌 Setting up API service...");
                     IDroneApiService droneApiService = new DroneApiService(apiToken);
                     ILocalSearchService localSearchService = LocalSearchService.createInstance(localDroneDao, localDroneTypeDao, droneApiService);
+                    Thread.sleep(500);
 
-                    // Update local drone data
+                    // Set up progress listener for LocalSearchService
+                    localSearchService.setProgressListener((progress, status) -> {
+                        // Map LocalSearchService's progress (0-100) to our overall progress (40-90)
+                        int mappedProgress = 40 + (int)(progress * 0.5); // 0-100 -> 40-90
+                        publish(new Object[]{mappedProgress, status});
+                        logger.info(status);
+                    });
+
+                    // Start data initialization
                     localSearchService.initLocalData();
+
+                    // Clean up listener
+                    localSearchService.setProgressListener(null);
+
+                    publish(new Object[]{100, "✅ Application initialization complete"});
+                    logger.info("✅ Application initialization complete");
                 } catch (Exception e) {
                     logger.log(Level.SEVERE, "Failed to initialize data.", e);
                     SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(frame, "Failed to initialize data", "Initialization Error", JOptionPane.ERROR_MESSAGE));
@@ -147,13 +181,25 @@ public class DroneDeck {
 
             @Override
             protected void done() {
+                loadingPanel.cleanup(); // Stop the pulse animation
                 try {
                     // Remove the loading panel
                     frame.remove(loadingPanel);
 
                     // Create and add the main panel
-                    MainPanel mainPanel = new MainPanel();
+                    main.java.ui.MainPanel mainPanel = new main.java.ui.MainPanel();
                     frame.add(mainPanel, BorderLayout.CENTER);
+
+                    // Initialize the DataRefreshService
+                    DataRefreshService.getInstance();
+
+                    // Add window listener to shut down the refresh service
+                    frame.addWindowListener(new java.awt.event.WindowAdapter() {
+                        @Override
+                        public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                            DataRefreshService.getInstance().shutdown();
+                        }
+                    });
 
                     // Revalidate and repaint the frame to apply changes
                     frame.revalidate();

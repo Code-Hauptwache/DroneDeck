@@ -35,6 +35,16 @@ public class DroneController implements IDroneController {
     private final ILocalDroneDao localDroneDao = new LocalDroneDao();
 
     /**
+     * Gets the DroneApiService instance used by this controller.
+     * This is used by the DataRefreshService to centralize API calls.
+     *
+     * @return The DroneApiService instance
+     */
+    public IDroneApiService getDroneApiService() {
+        return droneApiService;
+    }
+
+    /**
      * Retrieves a paginated list of drones and generates a corresponding list of DroneDashboardCardDto objects.
      * This method processes the drone data asynchronously using a thread pool to enhance performance
      * when generating the dashboard card DTOs.
@@ -46,27 +56,44 @@ public class DroneController implements IDroneController {
      */
     @Override
     public List<DroneDto> getDroneThreads(int limit, int offset) {
-        List<DroneEntity> drones = localDroneDao.loadDroneData().subList(offset, offset + limit);
+        try {
+            // First update the local data from the API
+            List<Drone> drones = droneApiService.getDrones(limit, offset);
+            List<DroneType> droneTypes = droneApiService.getDroneTypes();
+            
+            // Update local storage
+            List<DroneEntity> droneEntityList = new ArrayList<>();
+            mapDronesToEntities(droneEntityList, drones, droneTypes);
+            localDroneDao.updateDroneData(droneEntityList);
 
-        ExecutorService executorService = Executors.newFixedThreadPool(limit);
+            // Now process the updated data
+            List<DroneEntity> updatedDrones = localDroneDao.loadDroneData().subList(offset, offset + limit);
+            ExecutorService executorService = Executors.newFixedThreadPool(limit);
+            List<CompletableFuture<DroneDto>> futures = new ArrayList<>();
 
-        List<CompletableFuture<DroneDto>> futures = new ArrayList<>();
+            updatedDrones.parallelStream()
+                    .map(d -> CompletableFuture.supplyAsync(() -> getDroneDto(d), executorService))
+                    .forEach(futures::add);
 
-        drones.parallelStream()
-                .map(d -> CompletableFuture.supplyAsync(() -> getDroneDto(d), executorService))
-                .forEach(futures::add);
-
-        List<DroneDto> droneDtoList = new ArrayList<>();
-        for (CompletableFuture<DroneDto> future : futures) {
-            DroneDto droneDto = future.join();
-            if (droneDto != null) {
-                droneDtoList.add(droneDto);
+            List<DroneDto> droneDtoList = new ArrayList<>();
+            for (CompletableFuture<DroneDto> future : futures) {
+                DroneDto droneDto = future.join();
+                if (droneDto != null) {
+                    droneDtoList.add(droneDto);
+                }
             }
+
+            executorService.shutdown();
+            return droneDtoList;
+        } catch (DroneApiException e) {
+            logger.log(Level.SEVERE, "Failed to update drone data", e);
+            // On error, return existing data from local storage
+            return localDroneDao.loadDroneData().subList(offset, offset + limit)
+                    .stream()
+                    .map(this::getDroneDto)
+                    .filter(Objects::nonNull)
+                    .toList();
         }
-
-        executorService.shutdown();
-
-        return droneDtoList;
     }
 
     /**

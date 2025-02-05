@@ -28,6 +28,26 @@ public class LocalSearchService implements ILocalSearchService {
     private final ILocalDroneDao localDroneDao;
     private final ILocalDroneTypeDao localDroneTypeDao;
     private final IDroneApiService droneApiService;
+    private LoadingProgressListener progressListener;
+
+    /**
+     * Sets the progress listener for loading updates.
+     * @param listener The progress listener to use
+     */
+    public void setProgressListener(LoadingProgressListener listener) {
+        this.progressListener = listener;
+    }
+
+    /**
+     * Updates the loading progress if a listener is set.
+     * @param progress The current progress (0-100)
+     * @param status The current status message
+     */
+    private void updateProgress(int progress, String status) {
+        if (progressListener != null) {
+            progressListener.onProgressUpdate(progress, status);
+        }
+    }
 
     /**
      * Private constructor for LocalSearchService
@@ -69,32 +89,42 @@ public class LocalSearchService implements ILocalSearchService {
      */
     @Override
     public void initLocalData() {
+        updateProgress(0, "📡 Fetching drone data from API...");
         List<Drone> drones;
         List<DroneType> droneTypes;
         try {
+            updateProgress(10, "🚁 Fetching basic drone information...");
             drones = droneApiService.getDrones();
+            logger.log(Level.INFO, "Number of drones fetched: " + drones.size());
+            
+            updateProgress(30, "📋 Fetching drone type information...");
             droneTypes = droneApiService.getDroneTypes();
+            logger.log(Level.INFO, "Number of drone types fetched: " + droneTypes.size());
+            
         } catch (DroneApiException e) {
             logger.log(Level.SEVERE, "Failed to fetch drone data from API", e);
             throw new RuntimeException(e);
         }
 
-        logger.log(Level.INFO, "Number of drones fetched: " + drones.size());
-        logger.log(Level.INFO, "Number of drone types fetched: " + droneTypes.size());
-
+        updateProgress(50, "🔄 Processing drone type data...");
         List<DroneEntity> droneEntityList = new ArrayList<>();
         List<DroneTypeEntity> droneTypeEntityList = droneTypes.stream()
                 .map(DroneType::toEntity)
                 .collect(Collectors.toList());
 
+        updateProgress(70, "🔄 Processing drone data...");
         DroneController.mapDronesToEntities(droneEntityList, drones, droneTypes);
-
         logger.log(Level.INFO, "Number of drone entities mapped: " + droneEntityList.size());
 
+        updateProgress(85, "💾 Saving drone data to local storage...");
         localDroneDao.updateDroneData(droneEntityList);
+        
+        updateProgress(95, "💾 Saving drone type data to local storage...");
         if (localDroneTypeDao != null) {
             localDroneTypeDao.updateDroneTypeData(droneTypeEntityList);
         }
+
+        updateProgress(100, "✅ Data initialization complete");
     }
 
     /**
