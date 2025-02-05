@@ -56,26 +56,43 @@ public class DataRefreshService {
     }
 
     private void refreshData() {
-        logger.info("Starting data refresh at " + new java.util.Date());
+        logger.info("🔄 Starting periodic data refresh");
         try {
             // 1. Fetch basic drone data
             final int droneCount = localDroneDao.getDroneDataCount();
             logger.info("Fetching data for " + droneCount + " drones");
             List<DroneDto> drones = droneController.getDroneThreads(droneCount, 0);
-            logger.info("Successfully updated basic drone data");
+            logger.info("✅ Successfully fetched basic data for " + droneCount + " drones");
 
             // 2. Pre-fetch dynamics data for all drones
+            logger.info("📊 Starting dynamics data update for " + drones.size() + " drones");
+            int completedCount = 0;
+            int batchSize = 10;
+            long startTime = System.currentTimeMillis();
+
             for (DroneDto drone : drones) {
                 try {
                     DroneDynamicsResponse dynamicsResponse = droneController.getDroneApiService()
                             .getDroneDynamicsResponseByDroneId(drone.getId(), 1, 0);
                     droneController.getDroneApiService()
                             .getDroneDynamicsByDroneId(drone.getId(), 1, dynamicsResponse.getCount() - 1);
-                    logger.info("Updated dynamics data for drone " + drone.getId());
+                    completedCount++;
+                    
+                    // Log progress in batches
+                    if (completedCount % batchSize == 0 || completedCount == drones.size()) {
+                        double progress = (completedCount * 100.0) / drones.size();
+                        long currentTime = System.currentTimeMillis();
+                        double timeElapsed = (currentTime - startTime) / 1000.0;
+                        logger.info(String.format("⏳ Dynamics update progress: %.1f%% (%d/%d drones) - %.1f seconds elapsed", 
+                            progress, completedCount, drones.size(), timeElapsed));
+                    }
                 } catch (Exception e) {
-                    logger.log(Level.WARNING, "Failed to update dynamics for drone " + drone.getId(), e);
+                    logger.log(Level.WARNING, "⚠️ Failed to update dynamics for drone " + drone.getId() + ": " + e.getMessage());
                 }
             }
+            
+            long totalTime = (System.currentTimeMillis() - startTime) / 1000;
+            logger.info(String.format("✅ Dynamics update completed in %d seconds", totalTime));
 
             // 3. Update UI on EDT
             SwingUtilities.invokeLater(() -> {
@@ -84,10 +101,10 @@ public class DataRefreshService {
                 
                 dashboard.updateDrones("");
                 catalog.updateDroneTypes("");
-                logger.info("UI updated with refreshed data");
+                logger.info("✨ UI components updated with fresh data");
             });
 
-            logger.info("Data refresh completed successfully");
+            logger.info("✅ Data refresh cycle completed successfully\n");
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error during data refresh", e);
             throw e; // Let the scheduler handle retry

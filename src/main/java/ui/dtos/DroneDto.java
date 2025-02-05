@@ -102,7 +102,7 @@ public class DroneDto {
         try {
             return LocalDateTime.parse(isoDateTime, DateTimeFormatter.ISO_DATE_TIME);
         } catch (DateTimeParseException _) {
-            logger.log(Level.INFO, "Failed to parse ISO date/time: " + isoDateTime);
+            logger.log(Level.FINE, "Failed to parse ISO date/time format, trying custom format: " + isoDateTime);
         }
 
         try {
@@ -110,7 +110,7 @@ public class DroneDto {
             ZonedDateTime zonedDateTime = ZonedDateTime.parse(isoDateTime, customFormatter);
             return zonedDateTime.toLocalDateTime();
         } catch (DateTimeParseException _) {
-            logger.log(Level.INFO, "Failed to parse custom date/time: " + isoDateTime);
+            logger.log(Level.WARNING, "Could not parse date/time in any supported format: " + isoDateTime);
         }
 
         throw new IllegalArgumentException("Invalid date time format: " + isoDateTime);

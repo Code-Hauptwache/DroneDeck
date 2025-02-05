@@ -9,6 +9,11 @@ import java.util.List;
  * Service for Searching in Cached Data
  */
 public interface ILocalSearchService {
+    /**
+     * Sets the progress listener for loading updates.
+     * @param listener The progress listener to use
+     */
+    void setProgressListener(LoadingProgressListener listener);
 
     /**
      * Method that Initializes / Updates Local Drone Data for Caching

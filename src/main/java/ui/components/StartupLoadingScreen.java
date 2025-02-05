@@ -8,10 +8,13 @@ import java.util.Objects;
  * A panel that displays a logo image and a loading progress bar.
  */
 public class StartupLoadingScreen extends JPanel {
+    private final JProgressBar progressBar;
+    private final JLabel statusLabel;
+    private Timer pulseTimer;
 
     /**
      * Creates a new StartupLoadingScreen panel.
-     * This panel displays a logo image and a loading progress bar.
+     * This panel displays a logo image, a loading progress bar, and a status message.
      */
     public StartupLoadingScreen() {
         // Set layout for the panel
@@ -29,19 +32,78 @@ public class StartupLoadingScreen extends JPanel {
         logoLabel.setAlignmentX(CENTER_ALIGNMENT);
 
         // Add a loading progress bar below the logo
-        JProgressBar progressBar = new JProgressBar();
-        progressBar.setIndeterminate(true);
+        progressBar = new JProgressBar(0, 100);
+        progressBar.setValue(0);
+        progressBar.setStringPainted(true);
         progressBar.setAlignmentX(CENTER_ALIGNMENT);
-        progressBar.setMaximumSize(new Dimension(300, 25)); // Set size for the progress bar
+        progressBar.setMaximumSize(new Dimension(300, 25));
+
+        // Add a status label below the progress bar
+        statusLabel = new JLabel("Initializing...");
+        statusLabel.setAlignmentX(CENTER_ALIGNMENT);
+        Font currentFont = statusLabel.getFont();
+        statusLabel.setFont(new Font(currentFont.getName(), Font.PLAIN, 14));
 
         // Add spacing and components to the center panel
-        centerPanel.add(Box.createVerticalGlue()); // Add vertical space
+        centerPanel.add(Box.createVerticalGlue());
         centerPanel.add(logoLabel);
-        centerPanel.add(Box.createRigidArea(new Dimension(0, 20))); // Add space between logo and progress bar
+        centerPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         centerPanel.add(progressBar);
-        centerPanel.add(Box.createVerticalGlue()); // Add vertical space
+        centerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        centerPanel.add(statusLabel);
+        centerPanel.add(Box.createVerticalGlue());
+
+        // Start the pulse animation
+        startPulseAnimation();
 
         // Add the center panel to the main panel
         add(centerPanel, BorderLayout.CENTER);
+    }
+
+    /**
+     * Updates the loading progress and status message.
+     * @param progress The progress value (0-100)
+     * @param status The status message to display
+     */
+    public void updateProgress(int progress, String status) {
+        SwingUtilities.invokeLater(() -> {
+            progressBar.setValue(progress);
+            statusLabel.setText(status);
+        });
+    }
+
+    /**
+     * Sets the progress bar to indeterminate mode with a pulsing animation.
+     */
+    private void startPulseAnimation() {
+        if (pulseTimer != null) {
+            pulseTimer.stop();
+        }
+
+        progressBar.setIndeterminate(false);
+        pulseTimer = new Timer(50, e -> {
+            int value = progressBar.getValue();
+            if (value >= 100) {
+                value = 0;
+            }
+            progressBar.setValue(value + 1);
+        });
+        pulseTimer.start();
+    }
+
+    /**
+     * Stops the pulse animation.
+     */
+    public void stopPulseAnimation() {
+        if (pulseTimer != null) {
+            pulseTimer.stop();
+        }
+    }
+
+    /**
+     * Clean up resources when the loading screen is no longer needed.
+     */
+    public void cleanup() {
+        stopPulseAnimation();
     }
 }
