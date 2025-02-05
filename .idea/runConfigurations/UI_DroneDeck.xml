@@ -3,7 +3,7 @@
     <module name="DroneDeck" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="main.java.ui.*" />
+        <option name="PATTERN" value="main.java.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>

@@ -4,7 +4,7 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.jthemedetecor.OsThemeDetector;
-import main.java.ui.DroneDeck;
+import main.java.DroneDeck;
 import main.java.ui.components.EntryTimestampSelector;
 
 import javax.swing.*;

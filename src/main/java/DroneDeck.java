@@ -1,4 +1,4 @@
-package main.java.ui;
+package main.java;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
