@@ -1,6 +1,12 @@
 package main.java.services.DroneApi.dtos;
 
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
+import java.util.Locale;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -44,9 +50,12 @@ public class DroneDynamics {
     /// The Status of the Drone
     public String status = "";
 
+    private static final DateTimeFormatter DISPLAY_FORMAT =
+            DateTimeFormatter.ofPattern("MMMM dd, yyyy, hh:mm a", Locale.ENGLISH);
+
     /**
-     * Get the Id of the drone from the "drone" url property.
-     * @return the Id (0 on Error)
+     * Get the ID of the drone from the "drone" url property.
+     * @return the ID (0 on Error)
      */
     public int getId() {
         try {
@@ -55,6 +64,52 @@ public class DroneDynamics {
             logger.warning("Failed to parse DroneDynamic Id");
             return 0;
         }
+    }
+
+    private LocalDateTime parseIsoDateTime(Date date) {
+        if (date == null) {
+            return null;
+        }
+
+        try {
+            return LocalDateTime.parse(date.toString(), DateTimeFormatter.ISO_DATE_TIME);
+        } catch (DateTimeParseException e) {
+            logger.log(Level.INFO, "Failed to parse ISO date/time: " + date);
+        }
+
+        try {
+            DateTimeFormatter customFormatter = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+            ZonedDateTime zonedDateTime = ZonedDateTime.parse(date.toString(), customFormatter);
+            return zonedDateTime.toLocalDateTime();
+        } catch (DateTimeParseException e) {
+            logger.log(Level.INFO, "Failed to parse custom date/time: " + date);
+        }
+
+        throw new IllegalArgumentException("Invalid date time format: " + date);
+    }
+
+    /**
+     * Get the Last Seen Date in a human-readable format
+     * @return the Last Seen Date
+     */
+    public String getLastSeen() {
+        LocalDateTime lastSeenDateTime = parseIsoDateTime(last_seen);
+        if (lastSeenDateTime == null) {
+            return "";
+        }
+        return lastSeenDateTime.format(DISPLAY_FORMAT);
+    }
+
+    /**
+     * Get the Data Timestamp in a human-readable format
+     * @return the Data Timestamp
+     */
+    public String getDataTimestamp() {
+        LocalDateTime dataTimestampDateTime = parseIsoDateTime(timestamp);
+        if (dataTimestampDateTime == null) {
+            return "";
+        }
+        return dataTimestampDateTime.format(DISPLAY_FORMAT);
     }
 
     /**

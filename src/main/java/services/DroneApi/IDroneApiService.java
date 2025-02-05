@@ -152,4 +152,13 @@ public interface IDroneApiService {
      * @throws DroneApiException Api Exceptions
      */
     ArrayList<DroneDynamics> getDroneDynamicsByDroneId(int id) throws DroneApiException;
+
+    /**
+     * Get a DroneDynamics by its entry index
+     * @param id    the id of the Drone
+     * @param index the index of the entry
+     * @return the DroneDynamics
+     * @throws DroneApiException Api Exceptions
+     */
+    DroneDynamics getDroneDynamicsByEntryIndex(int id, int index) throws DroneApiException;
 }

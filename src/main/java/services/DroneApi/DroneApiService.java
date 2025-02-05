@@ -265,6 +265,18 @@ public class DroneApiService implements IDroneApiService {
         }
     }
 
+    /**
+     * Get a DroneDynamics by entry index
+     * @param droneId the id of the drone
+     * @param entryIndex the index of the entry
+     * @return the DroneDynamics
+     * @throws DroneApiException if an error occurs while fetching the data
+     */
+    public DroneDynamics getDroneDynamicsByEntryIndex(int droneId, int entryIndex) throws DroneApiException {
+        DroneDynamicsResponse response = getDroneDynamicsResponseByDroneId(droneId, 1, entryIndex);
+        return response.results.getFirst();
+    }
+
     private ArrayList<DroneDynamics> fetchDroneDynamics(String url) throws DroneApiException {
         try {
             HttpRequest httpRequest = HttpRequest.newBuilder()

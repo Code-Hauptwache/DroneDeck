@@ -32,6 +32,10 @@ public class InfoTooltip extends JComponent {
         add(iconLabel, BorderLayout.CENTER);
     }
 
+    public void setTooltipLabelText(String tooltipText) {
+        iconLabel.setToolTipText(tooltipText);
+    }
+
     // Ensure the component always stays the same size as the icon
     @Override
     public Dimension getPreferredSize() {
