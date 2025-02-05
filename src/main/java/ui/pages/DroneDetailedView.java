@@ -205,8 +205,7 @@ public class DroneDetailedView extends JPanel {
         JPanel graphPanel = new JPanel(new BorderLayout());
         graphPanel.setPreferredSize(new Dimension(0, 330));
         JLabel placeholder = new JLabel("Graphical Components (TODO)", SwingConstants.CENTER);
-        placeholder.setForeground(Color.ORANGE);
-        placeholder.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.ORANGE));
+        placeholder.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, UIManager.getColor("Separator.foreground")));
         graphPanel.add(placeholder);
         return graphPanel;
     }

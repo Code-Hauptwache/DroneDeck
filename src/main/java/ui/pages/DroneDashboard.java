@@ -48,8 +48,6 @@ public class DroneDashboard extends JPanel {
 
         // Create a graphical card with a JLabel
         JLabel label = new JLabel("Graphical Components (TODO)", SwingConstants.CENTER);
-        label.setForeground(Color.ORANGE);
-        label.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.ORANGE));
         GraphicalCardTemplate graphicalCard = new GraphicalCardTemplate("Graphical Card #2", label, 2, componentGap);
 
         graphPanel.add(Box.createHorizontalGlue());
