@@ -4,6 +4,7 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.jthemedetecor.OsThemeDetector;
+import main.java.controllers.DroneController;
 import main.java.dao.LocalDroneDao;
 import main.java.dao.LocalDroneTypeDao;
 import main.java.services.DroneApi.DroneApiService;
@@ -166,6 +167,7 @@ public class DroneDeck {
                     publish(new Object[]{30, "🔌 Setting up API service..."});
                     logger.info("🔌 Setting up API service...");
                     IDroneApiService droneApiService = new DroneApiService(apiToken);
+                    DroneController droneController = new DroneController();
                     ILocalSearchService localSearchService = LocalSearchService.createInstance(localDroneDao, localDroneTypeDao, droneApiService);
                     Thread.sleep(500);
 
@@ -182,6 +184,14 @@ public class DroneDeck {
 
                     // Clean up listener
                     localSearchService.setProgressListener(null);
+
+                    // Update progress for dynamic data fetching
+                    publish(new Object[]{90, "🔄 Fetching latest dynamic data for drones..."});
+                    logger.info("🔄 Fetching latest dynamic data for drones...");
+
+                    // Get initial dynamic data
+                    int droneCount = localDroneDao.getDroneDataCount();
+                    droneController.getDroneThreads(droneCount, 0);
 
                     publish(new Object[]{100, "✅ Application initialization complete"});
                     logger.info("✅ Application initialization complete");
