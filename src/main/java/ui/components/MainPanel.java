@@ -26,6 +26,7 @@ public class MainPanel extends JPanel {
     private final CardLayout cardLayout;
     private DroneCatalog droneCatalog; // Not final since it's initialized lazily
     private final DroneDashboard droneDashboard;
+    private Page currentPage = Page.DASHBOARD; // Track current page, initialized to DASHBOARD
 
     /**
      * Creates a new MainPanel with a BorderLayout.
@@ -103,6 +104,7 @@ public class MainPanel extends JPanel {
             droneCatalog = DroneCatalog.getInstance();
             cardPanel.add(createCatalogPanel(), Page.CATALOG.name());
         }
+        currentPage = page; // Update current page
         cardLayout.show(cardPanel, page.name());
     }
 
@@ -148,5 +150,13 @@ public class MainPanel extends JPanel {
 
     public JLayeredPane getMainLayeredPane() {
         return layeredPane;
+    }
+
+    /**
+     * Gets the currently displayed page.
+     * @return The current Page enum value
+     */
+    public Page getCurrentPage() {
+        return currentPage;
     }
 }
