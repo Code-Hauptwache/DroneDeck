@@ -10,6 +10,7 @@ import main.java.dao.LocalDroneDao;
 import main.java.services.DroneStatus.DroneStatusService;
 import main.java.ui.components.AllDronesStatusPieChartPanel;
 import main.java.ui.dtos.DroneDto;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,15 +42,7 @@ public class AllDronesStatusPieChartCardExample {
         frame.setLayout(new BorderLayout());
 
         // Initialize the DroneController and fetch drones
-        DroneController droneController = new DroneController();
-        ILocalDroneDao localDroneDao = new LocalDroneDao();
-        List<DroneDto> droneDtos = droneController.getDroneThreads(localDroneDao.getDroneDataCount(), 0);
-        
-        // Create DroneStatusService with the fetched drones
-        DroneStatusService droneStatusService = new DroneStatusService(droneDtos);
-
-        // Create the AllDronesStatusPieChartCard
-        AllDronesStatusPieChartPanel pieChartCard = new AllDronesStatusPieChartPanel(droneStatusService);
+        AllDronesStatusPieChartPanel pieChartCard = getAllDronesStatusPieChartPanel();
 
         // Add the pie chart card to the frame
         frame.add(pieChartCard, BorderLayout.CENTER);
@@ -57,5 +50,17 @@ public class AllDronesStatusPieChartCardExample {
         // Display the frame
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+
+    private static @NotNull AllDronesStatusPieChartPanel getAllDronesStatusPieChartPanel() {
+        DroneController droneController = new DroneController();
+        ILocalDroneDao localDroneDao = new LocalDroneDao();
+        List<DroneDto> droneDtos = droneController.getDroneThreads(localDroneDao.getDroneDataCount(), 0);
+
+        // Create DroneStatusService with the fetched drones
+        DroneStatusService droneStatusService = new DroneStatusService(droneDtos);
+
+        // Create the AllDronesStatusPieChartCard
+        return new AllDronesStatusPieChartPanel(droneStatusService);
     }
 }
