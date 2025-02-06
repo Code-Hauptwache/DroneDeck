@@ -4,6 +4,7 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.jthemedetecor.OsThemeDetector;
+import main.java.controllers.DroneController;
 import main.java.dao.LocalDroneDao;
 import main.java.dao.LocalDroneTypeDao;
 import main.java.services.DroneApi.DroneApiService;
@@ -113,6 +114,19 @@ public class DroneDeck {
             JOptionPane.showMessageDialog(null, "Failed to load the logo image.", "Logo Load Error", JOptionPane.ERROR_MESSAGE);
         }
 
+        // Create and set up a glass pane to block all interaction during loading
+        JPanel glassPane = new JPanel();
+        glassPane.setOpaque(false);
+        // Consume all mouse and keyboard events
+        glassPane.addMouseListener(new java.awt.event.MouseAdapter() {});
+        glassPane.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {});
+        glassPane.addKeyListener(new java.awt.event.KeyAdapter() {});
+        glassPane.setFocusTraversalKeysEnabled(false);
+        glassPane.setFocusable(true);
+        frame.setGlassPane(glassPane);
+        glassPane.setVisible(true);
+        glassPane.requestFocusInWindow();
+
         // Create the loading panel with progress updates
         StartupLoadingScreen loadingPanel = new StartupLoadingScreen();
         frame.add(loadingPanel, BorderLayout.CENTER);
@@ -135,9 +149,10 @@ public class DroneDeck {
             @Override
             protected Void doInBackground() {
                 try {
+                    // Stop the pulse animation and start showing real progress
+                    loadingPanel.stopPulseAnimation();
                     publish(new Object[]{0, "🚀 Starting application initialization..."});
                     logger.info("🚀 Starting application initialization...");
-                    Thread.sleep(500); // Brief pause for UI update
 
                     publish(new Object[]{10, "📦 Initializing data services..."});
                     logger.info("📦 Initializing data services...");
@@ -153,6 +168,7 @@ public class DroneDeck {
                     publish(new Object[]{30, "🔌 Setting up API service..."});
                     logger.info("🔌 Setting up API service...");
                     IDroneApiService droneApiService = new DroneApiService(apiToken);
+                    DroneController droneController = new DroneController();
                     ILocalSearchService localSearchService = LocalSearchService.createInstance(localDroneDao, localDroneTypeDao, droneApiService);
                     Thread.sleep(500);
 
@@ -170,8 +186,24 @@ public class DroneDeck {
                     // Clean up listener
                     localSearchService.setProgressListener(null);
 
-                    publish(new Object[]{100, "✅ Application initialization complete"});
-                    logger.info("✅ Application initialization complete");
+                    // Get initial dynamic data
+                    int droneCount = localDroneDao.getDroneDataCount();
+                    publish(new Object[]{90, String.format("🔄 Fetching latest dynamic data for %d drones...", droneCount)});
+                    logger.info(String.format("🔄 Fetching latest dynamic data for %d drones...", droneCount));
+
+                    if (droneCount > 0) {
+                        droneController.getDroneThreads(droneCount, 0, (completed, total, status) -> {
+                            // Map progress from 90-99%, ensuring we don't exceed 99%
+                            int mappedProgress = 90 + Math.min(9, (int)((completed * 9.0) / total));
+                            publish(new Object[]{mappedProgress, status});
+                            logger.info(status);
+                        });
+                    }
+
+                    // Show 100% with detailed transition message
+                    publish(new Object[]{100, "✅ Data initialization complete - Loading dashboard interface..."});
+                    logger.info("✅ Data initialization complete - Loading dashboard interface...");
+                    Thread.sleep(1000); // Longer pause to ensure message is visible and user understands the transition
                 } catch (Exception e) {
                     logger.log(Level.SEVERE, "Failed to initialize data.", e);
                     SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(frame, "Failed to initialize data", "Initialization Error", JOptionPane.ERROR_MESSAGE));
@@ -183,11 +215,12 @@ public class DroneDeck {
             protected void done() {
                 loadingPanel.cleanup(); // Stop the pulse animation
                 try {
-                    // Remove the loading panel
+                    // Remove the loading panel and disable glass pane
                     frame.remove(loadingPanel);
+                    glassPane.setVisible(false);
 
                     // Create and add the main panel
-                    main.java.ui.MainPanel mainPanel = new main.java.ui.MainPanel();
+                    main.java.ui.components.MainPanel mainPanel = new main.java.ui.components.MainPanel();
                     frame.add(mainPanel, BorderLayout.CENTER);
 
                     // Initialize the DataRefreshService

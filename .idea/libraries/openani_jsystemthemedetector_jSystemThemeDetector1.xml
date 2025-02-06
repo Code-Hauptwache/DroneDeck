@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="openani.jsystemthemedetector.jSystemThemeDetector1" type="repository">
+    <properties maven-id="org.openani.jsystemthemedetector:jSystemThemeDetector:3.8" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/jSystemThemeDetector-3.8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.7.32.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jna-5.15.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jna-platform-5.15.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jfa-1.2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/oshi-core-5.8.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/versioncompare-1.4.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/annotations-22.0.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

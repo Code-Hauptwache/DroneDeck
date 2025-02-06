@@ -145,7 +145,7 @@ public class ReverseGeocodeService implements IReverseGeocodeService {
         HttpURLConnection conn = null;
         Scanner scanner = null;
         try {
-            URL url = new URL(urlString);
+            URL url = java.net.URI.create(urlString).toURL();
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.connect();

@@ -67,7 +67,9 @@ public class StartupLoadingScreen extends JPanel {
      */
     public void updateProgress(int progress, String status) {
         SwingUtilities.invokeLater(() -> {
-            progressBar.setValue(progress);
+            // Ensure progress stays within bounds
+            int boundedProgress = Math.max(0, Math.min(100, progress));
+            progressBar.setValue(boundedProgress);
             statusLabel.setText(status);
         });
     }
@@ -81,7 +83,7 @@ public class StartupLoadingScreen extends JPanel {
         }
 
         progressBar.setIndeterminate(false);
-        pulseTimer = new Timer(50, e -> {
+        pulseTimer = new Timer(50, _ -> {
             int value = progressBar.getValue();
             if (value >= 100) {
                 value = 0;

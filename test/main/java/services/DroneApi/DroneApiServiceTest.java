@@ -1,7 +1,6 @@
 package main.java.services.DroneApi;
 
 import main.java.services.ApiToken.ApiTokenService;
-import main.java.services.ApiToken.ApiTokenStoreService;
 import main.java.services.DroneApi.dtos.Drone;
 import main.java.services.DroneApi.dtos.DroneDynamics;
 import main.java.services.DroneApi.dtos.DroneType;
@@ -9,7 +8,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
