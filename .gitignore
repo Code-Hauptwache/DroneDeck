@@ -24,3 +24,4 @@ hs_err_pid*
 replay_pid*
 /out/
 api_token.bin
+.vscode/settings.json
