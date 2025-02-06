@@ -149,9 +149,10 @@ public class DroneDeck {
             @Override
             protected Void doInBackground() {
                 try {
+                    // Stop the pulse animation and start showing real progress
+                    loadingPanel.stopPulseAnimation();
                     publish(new Object[]{0, "🚀 Starting application initialization..."});
                     logger.info("🚀 Starting application initialization...");
-                    Thread.sleep(500); // Brief pause for UI update
 
                     publish(new Object[]{10, "📦 Initializing data services..."});
                     logger.info("📦 Initializing data services...");
@@ -185,14 +186,22 @@ public class DroneDeck {
                     // Clean up listener
                     localSearchService.setProgressListener(null);
 
-                    // Update progress for dynamic data fetching
-                    publish(new Object[]{90, "🔄 Fetching latest dynamic data for drones..."});
-                    logger.info("🔄 Fetching latest dynamic data for drones...");
-
                     // Get initial dynamic data
                     int droneCount = localDroneDao.getDroneDataCount();
-                    droneController.getDroneThreads(droneCount, 0);
+                    publish(new Object[]{90, String.format("🔄 Fetching latest dynamic data for %d drones...", droneCount)});
+                    logger.info(String.format("🔄 Fetching latest dynamic data for %d drones...", droneCount));
 
+                    if (droneCount > 0) {
+                        droneController.getDroneThreads(droneCount, 0, (completed, total, status) -> {
+                            // Map progress from 90-99%, ensuring we don't exceed 99%
+                            int mappedProgress = 90 + Math.min(9, (int)((completed * 9.0) / total));
+                            publish(new Object[]{mappedProgress, status});
+                            logger.info(status);
+                        });
+                    }
+
+                    // Ensure we show 100% at the end
+                    Thread.sleep(100); // Brief pause to ensure last progress update is visible
                     publish(new Object[]{100, "✅ Application initialization complete"});
                     logger.info("✅ Application initialization complete");
                 } catch (Exception e) {

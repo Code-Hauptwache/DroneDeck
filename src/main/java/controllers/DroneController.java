@@ -54,17 +54,44 @@ public class DroneController implements IDroneController {
      * @return a list of DroneDashboardCardDto objects corresponding to the drones retrieved,
      *         or an empty list if no drones are found within the specified range.
      */
+    /**
+     * Interface for progress updates during drone data fetching
+     */
+    public interface DroneFetchProgressCallback {
+        void onProgress(int completed, int total, String status);
+    }
+
     @Override
     public List<DroneDto> getDroneThreads(int limit, int offset) {
+        return getDroneThreads(limit, offset, null);
+    }
+
+    public List<DroneDto> getDroneThreads(int limit, int offset, DroneFetchProgressCallback progressCallback) {
         // Get drones from local storage - no need to fetch static data again
         List<DroneEntity> updatedDrones = localDroneDao.loadDroneData().subList(offset, offset + limit);
         ExecutorService executorService = Executors.newFixedThreadPool(limit);
         List<CompletableFuture<DroneDto>> futures = new ArrayList<>();
 
+        // Track progress
+        final int[] completedCount = {0};
+        final int totalDrones = updatedDrones.size();
+
         updatedDrones.parallelStream()
                 .map(d -> CompletableFuture.supplyAsync(() -> {
                     try {
-                        return getDroneDto(d);
+                        DroneDto dto = getDroneDto(d);
+                        // Update progress
+                        synchronized (completedCount) {
+                            completedCount[0]++;
+                            if (progressCallback != null) {
+                                progressCallback.onProgress(
+                                    completedCount[0], 
+                                    totalDrones,
+                                    String.format("Fetched dynamics for drone %d/%d", completedCount[0], totalDrones)
+                                );
+                            }
+                        }
+                        return dto;
                     } catch (Exception e) {
                         logger.log(Level.SEVERE, "Failed to get drone data for ID: " + d.getId(), e);
                         return null;
