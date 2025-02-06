@@ -1,16 +1,12 @@
 package main.java.services.DroneStatus;
 
-import main.java.controllers.DroneController;
-import main.java.entity.DroneEntity;
 import main.java.ui.dtos.DroneDto;
-
 import java.util.List;
 
 /**
  * Service to get the status of all drones.
  */
 public class DroneStatusService {
-    private final DroneController droneController;
     private int onlineCount;
     private int issueCount;
     private int offlineCount;
@@ -18,17 +14,14 @@ public class DroneStatusService {
     /**
      * Constructor for DroneStatusService.
      *
-     * @param droneController the drone controller
+     * @param droneDtos List of drone DTOs to analyze statuses from
      */
-    public DroneStatusService(DroneController droneController) {
-        this.droneController = droneController;
-        checkDroneStatuses();
+    public DroneStatusService(List<DroneDto> droneDtos) {
+        checkDroneStatuses(droneDtos);
     }
 
-    private void checkDroneStatuses() {
-        List<DroneEntity> drones = droneController.getAllDrones();
-        for (DroneEntity drone : drones) {
-            DroneDto droneDto = droneController.getDroneDto(drone);
+    private void checkDroneStatuses(List<DroneDto> droneDtos) {
+        for (DroneDto droneDto : droneDtos) {
             String status = droneDto.getStatus();
             switch (status) {
                 case "ON" -> onlineCount++;

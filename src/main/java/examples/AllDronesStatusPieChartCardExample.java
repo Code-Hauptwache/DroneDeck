@@ -5,11 +5,16 @@ import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.jthemedetecor.OsThemeDetector;
 import main.java.controllers.DroneController;
+import main.java.dao.ILocalDroneDao;
+import main.java.dao.LocalDroneDao;
 import main.java.services.DroneStatus.DroneStatusService;
 import main.java.ui.components.AllDronesStatusPieChartPanel;
+import main.java.ui.dtos.DroneDto;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 /**
  * Example class that demonstrates how to create a JFrame with an AllDronesStatusPieChartPanel.
@@ -36,12 +41,8 @@ public class AllDronesStatusPieChartCardExample {
         frame.setSize(400, 400);
         frame.setLayout(new BorderLayout());
 
-        // Initialize the DroneController and DroneStatusService
-        DroneController droneController = new DroneController();
-        DroneStatusService droneStatusService = new DroneStatusService(droneController);
-
-        // Create the AllDronesStatusPieChartCard
-        AllDronesStatusPieChartPanel pieChartCard = new AllDronesStatusPieChartPanel(droneStatusService);
+        // Initialize the DroneController and fetch drones
+        AllDronesStatusPieChartPanel pieChartCard = getAllDronesStatusPieChartPanel();
 
         // Add the pie chart card to the frame
         frame.add(pieChartCard, BorderLayout.CENTER);
@@ -49,5 +50,17 @@ public class AllDronesStatusPieChartCardExample {
         // Display the frame
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+
+    private static @NotNull AllDronesStatusPieChartPanel getAllDronesStatusPieChartPanel() {
+        DroneController droneController = new DroneController();
+        ILocalDroneDao localDroneDao = new LocalDroneDao();
+        List<DroneDto> droneDtos = droneController.getDroneThreads(localDroneDao.getDroneDataCount(), 0);
+
+        // Create DroneStatusService with the fetched drones
+        DroneStatusService droneStatusService = new DroneStatusService(droneDtos);
+
+        // Create the AllDronesStatusPieChartCard
+        return new AllDronesStatusPieChartPanel(droneStatusService);
     }
 }
