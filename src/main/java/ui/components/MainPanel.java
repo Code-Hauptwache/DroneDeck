@@ -1,6 +1,5 @@
-package main.java.ui;
+package main.java.ui.components;
 
-import main.java.ui.components.NorthPanel;
 import main.java.ui.pages.DroneCatalog;
 import main.java.ui.pages.DroneDashboard;
 
@@ -25,7 +24,6 @@ public class MainPanel extends JPanel {
     private final JLayeredPane layeredPane;
     private final JPanel cardPanel;
     private final CardLayout cardLayout;
-    private Page currentPage;
     private final DroneCatalog droneCatalog;
     private final DroneDashboard droneDashboard;
 
@@ -53,7 +51,7 @@ public class MainPanel extends JPanel {
             }
         });
 
-        // 1) Create a JLayeredPane to hold both the master content panel and overlays
+        // 1) Create a JLayeredPane to hold both the primary content panel and overlays
         layeredPane = new JLayeredPane() {
             @Override
             public void doLayout() {
@@ -104,7 +102,6 @@ public class MainPanel extends JPanel {
      */
     public void showPage(Page page) {
         cardLayout.show(cardPanel, page.name());
-        currentPage = page;
     }
 
     /**
@@ -149,9 +146,5 @@ public class MainPanel extends JPanel {
 
     public JLayeredPane getMainLayeredPane() {
         return layeredPane;
-    }
-
-    public Page getCurrentPage() {
-        return currentPage;
     }
 }

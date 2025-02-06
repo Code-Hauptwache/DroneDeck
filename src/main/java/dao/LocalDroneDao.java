@@ -53,13 +53,18 @@ public class LocalDroneDao implements ILocalDroneDao {
         return loadDroneData().size();
     }
 
+    @SuppressWarnings("unchecked")
     private List<DroneEntity> getDroneDataFromFile() {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(DRONE_FILE_NAME))) {
-            return (List<DroneEntity>) ois.readObject();
+            Object obj = ois.readObject();
+            if (obj instanceof List<?> list && !list.isEmpty() && list.getFirst() instanceof DroneEntity) {
+                return (List<DroneEntity>) list;
+            }
+            logger.warning("Invalid data format in drone data file");
+            return new ArrayList<>();
         } catch (IOException | ClassNotFoundException e) {
             logger.log(Level.SEVERE, "Failed to load drone data.", e);
             return new ArrayList<>();
         }
     }
 }
-

@@ -1,8 +1,6 @@
 package main.java.ui.pages;
 
 import main.java.exceptions.DroneApiException;
-import main.java.services.ApiToken.ApiTokenService;
-import main.java.services.DroneApi.DroneApiService;
 import main.java.services.DroneApi.IDroneApiService;
 import main.java.services.DroneApi.dtos.DroneDynamics;
 import main.java.services.DroneApi.dtos.DroneDynamicsResponse;

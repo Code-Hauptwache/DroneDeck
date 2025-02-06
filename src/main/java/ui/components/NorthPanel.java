@@ -1,7 +1,5 @@
 package main.java.ui.components;
 
-import main.java.ui.MainPanel;
-
 import javax.swing.*;
 
 /**

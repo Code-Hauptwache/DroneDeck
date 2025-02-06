@@ -1,13 +1,10 @@
 package main.java.ui.components;
 
-import main.java.services.ApiToken.ApiTokenService;
-import main.java.services.DroneApi.DroneApiService;
 import main.java.services.DroneApi.IDroneApiService;
 import main.java.services.DroneDataCalculation.IDroneDataCalculationService;
 import main.java.services.ReverseGeocode.IReverseGeocodeService;
 import main.java.services.ReverseGeocode.ReverseGeocodeService;
 import main.java.services.DroneDataCalculation.DroneDataCalculationService;
-import main.java.ui.MainPanel;
 import main.java.ui.dtos.DroneDto;
 import main.java.ui.pages.DroneDetailedView;
 
@@ -23,7 +20,6 @@ import java.awt.event.MouseEvent;
  * information about a drone.
  */
 public class DroneDashboardCard extends JComponent {
-    private final IDroneApiService droneApiService;
     private final IDroneDataCalculationService droneDataCalculationService;
     private final IReverseGeocodeService reverseGeocodeService;
     private final DroneDto dto;
@@ -34,7 +30,7 @@ public class DroneDashboardCard extends JComponent {
      * @param dto The DTO containing the information to display.
      */
     public DroneDashboardCard(DroneDto dto) {
-        this.droneApiService = main.java.services.DataRefresh.DataRefreshService.getInstance().getDroneApiService();
+        IDroneApiService droneApiService = main.java.services.DataRefresh.DataRefreshService.getInstance().getDroneApiService();
         this.droneDataCalculationService = new DroneDataCalculationService(droneApiService);
         this.reverseGeocodeService = new ReverseGeocodeService();
         setLayout(new BorderLayout());
@@ -72,7 +68,7 @@ public class DroneDashboardCard extends JComponent {
                 dto.getManufacturer(),
                 contentContainer
         );
-        card.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)); // Set cursor to pointer when hovering
+        card.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)); // Set cursor to a pointer when hovering
 
         // Set the preferred, minimum, and maximum sizes to match the CardTemplate
         Dimension cardSize = card.getPreferredSize();
@@ -133,7 +129,7 @@ public class DroneDashboardCard extends JComponent {
 
             DroneDetailedView detailView = new DroneDetailedView(dto, overlayPanel);
 
-            // Remove loading panel and add detailed view
+            // Remove the loading panel and add detailed view
             overlayPanel.remove(loadingPanel);
             overlayPanel.add(detailView, BorderLayout.CENTER);
 

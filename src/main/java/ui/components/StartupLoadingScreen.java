@@ -81,7 +81,7 @@ public class StartupLoadingScreen extends JPanel {
         }
 
         progressBar.setIndeterminate(false);
-        pulseTimer = new Timer(50, e -> {
+        pulseTimer = new Timer(50, _ -> {
             int value = progressBar.getValue();
             if (value >= 100) {
                 value = 0;

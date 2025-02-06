@@ -113,6 +113,19 @@ public class DroneDeck {
             JOptionPane.showMessageDialog(null, "Failed to load the logo image.", "Logo Load Error", JOptionPane.ERROR_MESSAGE);
         }
 
+        // Create and set up a glass pane to block all interaction during loading
+        JPanel glassPane = new JPanel();
+        glassPane.setOpaque(false);
+        // Consume all mouse and keyboard events
+        glassPane.addMouseListener(new java.awt.event.MouseAdapter() {});
+        glassPane.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {});
+        glassPane.addKeyListener(new java.awt.event.KeyAdapter() {});
+        glassPane.setFocusTraversalKeysEnabled(false);
+        glassPane.setFocusable(true);
+        frame.setGlassPane(glassPane);
+        glassPane.setVisible(true);
+        glassPane.requestFocusInWindow();
+
         // Create the loading panel with progress updates
         StartupLoadingScreen loadingPanel = new StartupLoadingScreen();
         frame.add(loadingPanel, BorderLayout.CENTER);
@@ -183,11 +196,12 @@ public class DroneDeck {
             protected void done() {
                 loadingPanel.cleanup(); // Stop the pulse animation
                 try {
-                    // Remove the loading panel
+                    // Remove the loading panel and disable glass pane
                     frame.remove(loadingPanel);
+                    glassPane.setVisible(false);
 
                     // Create and add the main panel
-                    main.java.ui.MainPanel mainPanel = new main.java.ui.MainPanel();
+                    main.java.ui.components.MainPanel mainPanel = new main.java.ui.components.MainPanel();
                     frame.add(mainPanel, BorderLayout.CENTER);
 
                     // Initialize the DataRefreshService

@@ -52,7 +52,7 @@ public class DataRefreshService {
                 // Schedule a retry after a short delay
                 scheduler.schedule(this::refreshData, 5, TimeUnit.SECONDS);
             }
-        }, 0, REFRESH_INTERVAL_SECONDS, TimeUnit.SECONDS);
+        }, REFRESH_INTERVAL_SECONDS, REFRESH_INTERVAL_SECONDS, TimeUnit.SECONDS);
     }
 
     private void refreshData() {
