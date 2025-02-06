@@ -34,9 +34,18 @@ public class DroneDashboard extends JPanel {
     private DroneDashboard() {
         super(new BorderLayout());
 
-        // Create a DroneController and DroneStatusService instance
+        // Create a DroneController instance
         DroneController droneController = new DroneController();
-        DroneStatusService droneStatusService = new DroneStatusService(droneController); // Add this line
+        
+        // Initialize services
+        localSearchService = LocalSearchService.getCurrentInstance();
+        ILocalDroneDao localDroneDao = new LocalDroneDao();
+        
+        // Fetch drones first since both dashboard and status service need them
+        fetchedDrones = droneController.getDroneThreads(localDroneDao.getDroneDataCount(), 0);
+        
+        // Create DroneStatusService with the fetched drones
+        DroneStatusService droneStatusService = new DroneStatusService(fetchedDrones);
 
         // Create a JPanel to hold the graphical components
         JPanel graphPanel = new JPanel();
@@ -65,9 +74,6 @@ public class DroneDashboard extends JPanel {
 
         // The rest of your logic for the drone cards stays the same
         cardPanel = new JPanel(new GridLayout(0, 1, componentGap, componentGap));
-        localSearchService = LocalSearchService.getCurrentInstance();
-        ILocalDroneDao localDroneDao = new LocalDroneDao();
-        fetchedDrones = droneController.getDroneThreads(localDroneDao.getDroneDataCount(), 0);
 
         // Load initial drones
         updateDrones("");
