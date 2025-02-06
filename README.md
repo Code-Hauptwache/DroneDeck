@@ -53,3 +53,42 @@ To successfully run the application and interact with the DroneSim API, you will
 
 ![image](https://github.com/user-attachments/assets/805d8c2c-a472-428c-8842-9c0fc9db3453)
 
+---
+
+## Releases and Installation
+
+DroneDeck v1.0.0 is available with native installers for all major platforms. Users can download and install the application without needing to install Java separately.
+
+### Download and Install
+
+Visit the [Releases](https://github.com/yourusername/DroneDeck/releases) page to download the appropriate installer for your system:
+
+#### Windows
+- `.msi` installer (recommended)
+- `.exe` installer
+
+#### macOS
+- `.dmg` disk image (recommended)
+- `.pkg` installer package
+
+#### Linux
+- `.deb` package for Debian/Ubuntu-based systems
+- `.rpm` package for Red Hat/Fedora-based systems
+
+### Installation Notes
+- All installers include a bundled Java Runtime Environment (JRE)
+- No additional software installation is required
+- Creates desktop shortcuts and start menu entries automatically
+- Uninstallation is handled through your system's standard package manager
+
+### Building from Source
+
+If you want to build the native installers yourself:
+
+1. Clone the repository
+2. Navigate to the `package-config` directory
+3. Follow the instructions in `package-config/README.md`
+
+Requirements for building:
+- JDK 16 or later
+- Platform-specific build tools (see `package-config/README.md` for details)
