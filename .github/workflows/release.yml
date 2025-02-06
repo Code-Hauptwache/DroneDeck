@@ -1,0 +1,108 @@
+name: Build Release Packages
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Install WiX Toolset
+        run: |
+          curl -L -o wix.exe https://github.com/wixtoolset/wix3/releases/download/wix3112rtm/wix311.exe
+          .\wix.exe /install /quiet
+      - name: Build JAR
+        run: |
+          mkdir -p build
+          javac -d build src/main/java/**/*.java
+          jar cfe DroneDeck.jar main.java.DroneDeck -C build .
+      - name: Build Windows Installers
+        run: .\package-config\build-windows.bat
+      - name: Upload Windows Installers
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: |
+            dist/DroneDeck-1.0.0.msi
+            dist/DroneDeck-1.0.0.exe
+          asset_name: |
+            DroneDeck-1.0.0.msi
+            DroneDeck-1.0.0.exe
+          asset_content_type: application/octet-stream
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Build JAR
+        run: |
+          mkdir -p build
+          javac -d build src/main/java/**/*.java
+          jar cfe DroneDeck.jar main.java.DroneDeck -C build .
+      - name: Build macOS Installers
+        run: |
+          chmod +x package-config/build-macos.sh
+          ./package-config/build-macos.sh
+      - name: Upload macOS Installers
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: |
+            dist/DroneDeck-1.0.0.dmg
+            dist/DroneDeck-1.0.0.pkg
+          asset_name: |
+            DroneDeck-1.0.0.dmg
+            DroneDeck-1.0.0.pkg
+          asset_content_type: application/octet-stream
+
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Install Linux Build Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y rpm
+      - name: Build JAR
+        run: |
+          mkdir -p build
+          javac -d build src/main/java/**/*.java
+          jar cfe DroneDeck.jar main.java.DroneDeck -C build .
+      - name: Build Linux Packages
+        run: |
+          chmod +x package-config/build-linux.sh
+          ./package-config/build-linux.sh
+      - name: Upload Linux Packages
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: |
+            dist/dronedeck_1.0.0-1_amd64.deb
+            dist/dronedeck-1.0.0-1.x86_64.rpm
+          asset_name: |
+            dronedeck_1.0.0-1_amd64.deb
+            dronedeck-1.0.0-1.x86_64.rpm
+          asset_content_type: application/octet-stream
