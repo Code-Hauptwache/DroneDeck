@@ -56,44 +56,36 @@ public class DroneController implements IDroneController {
      */
     @Override
     public List<DroneDto> getDroneThreads(int limit, int offset) {
-        try {
-            // First update the local data from the API
-            List<Drone> drones = droneApiService.getDrones(limit, offset);
-            List<DroneType> droneTypes = droneApiService.getDroneTypes();
-            
-            // Update local storage
-            List<DroneEntity> droneEntityList = new ArrayList<>();
-            mapDronesToEntities(droneEntityList, drones, droneTypes);
-            localDroneDao.updateDroneData(droneEntityList);
+        // Get drones from local storage - no need to fetch static data again
+        List<DroneEntity> updatedDrones = localDroneDao.loadDroneData().subList(offset, offset + limit);
+        ExecutorService executorService = Executors.newFixedThreadPool(limit);
+        List<CompletableFuture<DroneDto>> futures = new ArrayList<>();
 
-            // Now process the updated data
-            List<DroneEntity> updatedDrones = localDroneDao.loadDroneData().subList(offset, offset + limit);
-            ExecutorService executorService = Executors.newFixedThreadPool(limit);
-            List<CompletableFuture<DroneDto>> futures = new ArrayList<>();
+        updatedDrones.parallelStream()
+                .map(d -> CompletableFuture.supplyAsync(() -> {
+                    try {
+                        return getDroneDto(d);
+                    } catch (Exception e) {
+                        logger.log(Level.SEVERE, "Failed to get drone data for ID: " + d.getId(), e);
+                        return null;
+                    }
+                }, executorService))
+                .forEach(futures::add);
 
-            updatedDrones.parallelStream()
-                    .map(d -> CompletableFuture.supplyAsync(() -> getDroneDto(d), executorService))
-                    .forEach(futures::add);
-
-            List<DroneDto> droneDtoList = new ArrayList<>();
-            for (CompletableFuture<DroneDto> future : futures) {
+        List<DroneDto> droneDtoList = new ArrayList<>();
+        for (CompletableFuture<DroneDto> future : futures) {
+            try {
                 DroneDto droneDto = future.join();
                 if (droneDto != null) {
                     droneDtoList.add(droneDto);
                 }
+            } catch (Exception e) {
+                logger.log(Level.SEVERE, "Failed to join future", e);
             }
-
-            executorService.shutdown();
-            return droneDtoList;
-        } catch (DroneApiException e) {
-            logger.log(Level.SEVERE, "Failed to update drone data", e);
-            // On error, return existing data from local storage
-            return localDroneDao.loadDroneData().subList(offset, offset + limit)
-                    .stream()
-                    .map(this::getDroneDto)
-                    .filter(Objects::nonNull)
-                    .toList();
         }
+
+        executorService.shutdown();
+        return droneDtoList;
     }
 
     /**
@@ -124,18 +116,17 @@ public class DroneController implements IDroneController {
     }
 
     public DroneDto getDroneDto(DroneEntity drone) {
-        ArrayList<DroneDynamics> latestDroneDynamic;
+        DroneDynamics droneDynamic;
         try {
-            // get latest drone dynamic info
+            // First get the count of dynamics data
             DroneDynamicsResponse droneDynamicsResponse = droneApiService.getDroneDynamicsResponseByDroneId(drone.getId(), 1, 0);
-
-            latestDroneDynamic = droneApiService.getDroneDynamicsByDroneId(drone.getId(), 1, droneDynamicsResponse.getCount() - 1);
+            // Then get the latest dynamic data using (count - 1) as offset
+            ArrayList<DroneDynamics> latestDroneDynamic = droneApiService.getDroneDynamicsByDroneId(drone.getId(), 1, droneDynamicsResponse.getCount() - 1);
+            droneDynamic = latestDroneDynamic.getFirst();
         } catch (DroneApiException e) {
             logger.log(Level.SEVERE, "Failed to get drone dynamics for drone with ID: " + drone.getId(), e);
             throw new RuntimeException(e);
         }
-
-        DroneDynamics droneDynamic = latestDroneDynamic.getFirst();
 
         DroneTypeEntity droneType = drone.getDronetype();
 
