@@ -24,7 +24,7 @@ public class MainPanel extends JPanel {
     private final JLayeredPane layeredPane;
     private final JPanel cardPanel;
     private final CardLayout cardLayout;
-    private final DroneCatalog droneCatalog;
+    private DroneCatalog droneCatalog; // Not final since it's initialized lazily
     private final DroneDashboard droneDashboard;
 
     /**
@@ -69,15 +69,12 @@ public class MainPanel extends JPanel {
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
 
-        // Instantiate the pages
-        droneCatalog = DroneCatalog.getInstance();
+        // Initially only create the dashboard panel since it's shown first
         droneDashboard = DroneDashboard.getInstance();
-        JPanel droneCatalogPanel = createCatalogPanel();
-        JPanel droneDashboardPanel = createDashboardPanel();
-
-        // Add the pages to the cardPanel
-        cardPanel.add(droneCatalogPanel, Page.CATALOG.name());
-        cardPanel.add(droneDashboardPanel, Page.DASHBOARD.name());
+        droneCatalog = null; // Will be created lazily when needed
+        
+        // Add the dashboard panel to the cardPanel
+        cardPanel.add(createDashboardPanel(), Page.DASHBOARD.name());
         showPage(Page.DASHBOARD);
 
         // 4) Create a north panel (header/navigation)
@@ -101,6 +98,11 @@ public class MainPanel extends JPanel {
      * Show one of the pages in the cardPanel.
      */
     public void showPage(Page page) {
+        if (page == Page.CATALOG && droneCatalog == null) {
+            // Lazy initialization of catalog when first needed
+            droneCatalog = DroneCatalog.getInstance();
+            cardPanel.add(createCatalogPanel(), Page.CATALOG.name());
+        }
         cardLayout.show(cardPanel, page.name());
     }
 

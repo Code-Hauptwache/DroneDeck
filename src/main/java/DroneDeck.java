@@ -200,10 +200,10 @@ public class DroneDeck {
                         });
                     }
 
-                    // Ensure we show 100% at the end
-                    Thread.sleep(100); // Brief pause to ensure last progress update is visible
-                    publish(new Object[]{100, "✅ Application initialization complete"});
-                    logger.info("✅ Application initialization complete");
+                    // Show 100% with detailed transition message
+                    publish(new Object[]{100, "✅ Data initialization complete - Loading dashboard interface..."});
+                    logger.info("✅ Data initialization complete - Loading dashboard interface...");
+                    Thread.sleep(1000); // Longer pause to ensure message is visible and user understands the transition
                 } catch (Exception e) {
                     logger.log(Level.SEVERE, "Failed to initialize data.", e);
                     SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(frame, "Failed to initialize data", "Initialization Error", JOptionPane.ERROR_MESSAGE));
