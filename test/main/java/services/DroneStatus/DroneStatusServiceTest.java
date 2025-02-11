@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -52,7 +53,10 @@ class DroneStatusServiceTest {
     @BeforeEach
     void setUp() {
         DroneController droneController = new TestDroneController();
-        droneStatusService = new DroneStatusService(droneController);
+        List<DroneDto> droneDtos = droneController.getAllDrones().stream()
+                .map(droneController::getDroneDto)
+                .collect(Collectors.toList());
+        droneStatusService = new DroneStatusService(droneDtos);
     }
 
     @Test
