@@ -200,10 +200,10 @@ public class DroneDeck {
                         });
                     }
 
-                    // Show 100% with detailed transition message
+                    // Show 100% with a detailed transition message
                     publish(new Object[]{100, "✅ Data initialization complete - Loading dashboard interface..."});
                     logger.info("✅ Data initialization complete - Loading dashboard interface...");
-                    Thread.sleep(1000); // Longer pause to ensure message is visible and user understands the transition
+                    Thread.sleep(100);
                 } catch (Exception e) {
                     logger.log(Level.SEVERE, "Failed to initialize data.", e);
                     SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(frame, "Failed to initialize data", "Initialization Error", JOptionPane.ERROR_MESSAGE));
@@ -215,7 +215,7 @@ public class DroneDeck {
             protected void done() {
                 loadingPanel.cleanup(); // Stop the pulse animation
                 try {
-                    // Remove the loading panel and disable glass pane
+                    // Remove the loading panel and disable the glass pane
                     frame.remove(loadingPanel);
                     glassPane.setVisible(false);
 
