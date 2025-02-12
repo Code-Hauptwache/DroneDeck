@@ -8,6 +8,7 @@ import main.java.dao.LocalDroneDao;
 import main.java.services.DroneApi.IDroneApiService;
 import main.java.services.DroneApi.dtos.DroneDynamicsResponse;
 import main.java.ui.dtos.DroneDto;
+import main.java.services.LocalSearch.LocalSearchService;
 import java.util.List;
 
 import javax.swing.*;
@@ -22,7 +23,7 @@ import java.util.logging.Logger;
  */
 public class DataRefreshService {
     private static final Logger logger = Logger.getLogger(DataRefreshService.class.getName());
-    private static final int REFRESH_INTERVAL_SECONDS = 300;
+    private static final int REFRESH_INTERVAL_SECONDS = 300; // Changed back to 5 minutes
     
     private static DataRefreshService instance;
     private final DroneController droneController;
@@ -56,16 +57,20 @@ public class DataRefreshService {
     }
 
     private void refreshData() {
-        logger.info("🔄 Starting periodic data refresh");
+        logger.info("\n🔄 Starting periodic data refresh cycle");
         try {
-            // 1. Fetch basic drone data
-            final int droneCount = localDroneDao.getDroneDataCount();
-            logger.info("Fetching data for " + droneCount + " drones");
-            List<DroneDto> drones = droneController.getDroneThreads(droneCount, 0);
-            logger.info("✅ Successfully fetched basic data for " + droneCount + " drones");
+            // 1. Update local data storage with fresh API data
+            logger.info("📥 Fetching fresh data from API and updating local storage...");
+            LocalSearchService.getCurrentInstance().initLocalData();
+            logger.info("💾 Local data storage updated successfully with latest drone and drone type data");
 
-            // 2. Pre-fetch dynamics data for all drones
-            logger.info("📊 Starting dynamics data update for " + drones.size() + " drones");
+            // 2. Get drone DTOs for dynamics update
+            final int droneCount = localDroneDao.getDroneDataCount();
+            logger.info("🔍 Preparing to update dynamics for " + droneCount + " drones");
+            List<DroneDto> drones = droneController.getDroneThreads(droneCount, 0);
+
+            // 3. Pre-fetch dynamics data for all drones
+            logger.info("📊 Starting dynamics data update");
             int completedCount = 0;
             int batchSize = 10;
             long startTime = System.currentTimeMillis();
@@ -94,7 +99,7 @@ public class DataRefreshService {
             long totalTime = (System.currentTimeMillis() - startTime) / 1000;
             logger.info(String.format("✅ Dynamics update completed in %d seconds", totalTime));
 
-            // 3. Update UI on EDT
+            // 4. Update UI on EDT
             SwingUtilities.invokeLater(() -> {
                 DroneDashboard dashboard = DroneDashboard.getInstance();
                 DroneCatalog catalog = DroneCatalog.getInstance();
@@ -106,7 +111,7 @@ public class DataRefreshService {
 
             logger.info("✅ Data refresh cycle completed successfully\n");
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error during data refresh", e);
+            logger.log(Level.SEVERE, "❌ Error during data refresh", e);
             throw e; // Let the scheduler handle retry
         }
     }
