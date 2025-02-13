@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  */
 public class DataRefreshService {
     private static final Logger logger = Logger.getLogger(DataRefreshService.class.getName());
-    private static final int REFRESH_INTERVAL_SECONDS = 300; // Changed back to 5 minutes
+    private static final int REFRESH_INTERVAL_SECONDS = 300;
     
     private static DataRefreshService instance;
     private final DroneController droneController;
