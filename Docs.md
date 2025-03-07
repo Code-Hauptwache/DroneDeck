@@ -41,7 +41,7 @@ Welcome to the User Handbook for **DroneDeck**! This guide will help you underst
 
 **First-Time Authentication**
 
-![image.png](attachment:9422075e-e32e-4e6e-9f9f-d27c39f4abc6:image.png)
+![image](https://github.com/user-attachments/assets/27087c8b-bdc1-433d-8563-caef7b3f3fdc)
 
 1. When launching **DroneDeck** for the first time, the application will display a screen requesting the **API Token**.
 2. Users must copy their API Token from the [**dronesim.facets-labs.com**](http://dronesim.facets-labs.com) portal and paste it into the input field.
@@ -50,7 +50,7 @@ Welcome to the User Handbook for **DroneDeck**! This guide will help you underst
 
 **Returning User Login**
 
-![image.png](attachment:59e87976-8ba0-4330-9978-52e5d0a9a1ad:image.png)
+![image](https://github.com/user-attachments/assets/fe052c75-3d66-4ac1-b9f3-d5f0ae8ad8d3)
 
 On subsequent launches, instead of re-entering the API Token, users will see a login screen requesting only their **password**.
 
@@ -71,7 +71,7 @@ On subsequent launches, instead of re-entering the API Token, users will see a l
 
 **Dashboard (Real-Time-Data)**
 
-![image.png](attachment:4537172f-04b1-49e4-b4ea-390fa41f174f:image.png)
+![image](https://github.com/user-attachments/assets/2d0a099b-c623-4ba1-9ebd-280b18e062d6)
 
 - Live monitoring of all active drones.
 - Displays battery status, speed, carriage type and serial number
@@ -81,7 +81,7 @@ On subsequent launches, instead of re-entering the API Token, users will see a l
 
 **Drone Catalog**
 
-![image.png](attachment:7ebc1899-b012-4954-96d9-96c0a8dc3a84:image.png)
+![image](https://github.com/user-attachments/assets/9215d1b2-5696-4d3f-a2a6-a18550dcbc25)
 
 - Displays all available drone models.
 - Accessing detailed view of drone information.
@@ -90,7 +90,7 @@ On subsequent launches, instead of re-entering the API Token, users will see a l
 
 **Detailed Drone Card**
 
-![image.png](attachment:12bb15e0-67d4-4ec4-97d3-37199b6d232c:image.png)
+![image](https://github.com/user-attachments/assets/aa026d2b-5af1-4782-a4ac-2e040d727001)
 
 - Shows details such as location, weight, control range and more.
 - [Graphical Component (comming soon)]
@@ -486,7 +486,7 @@ To conclude this milestone, we decided to finalize our milestone document and ho
     - The team collaboratively created a mockup in Figma to visualize the GUI design.
     - The mockup emphasized a modern, minimalistic, and user-friendly interface.
     
-    ![Group 26.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/0f0681e9-e312-42e7-bb53-e8e6f5ae82d3/7bd19d10-06db-48e0-8082-7a6fd61a4880/Group_26.png)
+    ![image](https://github.com/user-attachments/assets/a9ae0a98-94f5-44b4-8828-f112d87e6ad2)
     
 - **Scrum-like Workflow:**
     - We have decided to use a Scrum-like workflow to collaborate in an easy and efficient manner.
@@ -501,7 +501,8 @@ To conclude this milestone, we decided to finalize our milestone document and ho
     - **Why?**
         - To ensure effective collaboration, maintain a clear project structure, and track development progress.
         
-        ![*Status as of 20.12.2024*](https://prod-files-secure.s3.us-west-2.amazonaws.com/0f0681e9-e312-42e7-bb53-e8e6f5ae82d3/9a0fb8ab-ba86-4ad8-a491-a91fc561732a/image.png)
+        ![image](https://github.com/user-attachments/assets/99a0e4f6-4957-4438-b93e-1b391090a8b5)
+
         
         *Status as of 20.12.2024*
         
