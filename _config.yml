@@ -1,0 +1,6 @@
+remote_theme: pages-themes/cayman@v0.2.0
+plugins:
+- jekyll-remote-theme
+title: DroneDeck
+description: A Java GUI application for drone simulation system interaction
+show_downloads: true
