@@ -55,3 +55,9 @@ To successfully run the application and interact with the DroneSim API, you will
 - [**Milestones Description**](https://github.com/user-attachments/files/18007586/milestones.pdf)
 
 ![image](https://github.com/user-attachments/assets/805d8c2c-a472-428c-8842-9c0fc9db3453)
+
+---
+
+## 📜 License
+
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
