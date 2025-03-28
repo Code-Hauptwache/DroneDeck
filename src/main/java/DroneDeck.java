@@ -7,11 +7,14 @@ import com.jthemedetecor.OsThemeDetector;
 import main.java.controllers.DroneController;
 import main.java.dao.LocalDroneDao;
 import main.java.dao.LocalDroneTypeDao;
+import main.java.services.DroneApi.ApiModeConfig;
 import main.java.services.DroneApi.DroneApiService;
 import main.java.services.DroneApi.IDroneApiService;
+import main.java.services.DroneApi.MockDroneApiService;
 import main.java.services.LocalSearch.LocalSearchService;
 import main.java.services.LocalSearch.ILocalSearchService;
 import main.java.services.DataRefresh.DataRefreshService;
+import main.java.ui.components.DemoDeckMenuBar;
 import main.java.ui.components.StartupLoadingScreen;
 import main.java.services.ApiToken.ApiTokenService;
 
@@ -32,10 +35,20 @@ public class DroneDeck {
     /**
      * The main entry point of the application.
      *
-     * @param args the command line arguments (not used in this application)
+     * @param args the command line arguments (use "--demo" to enable demo mode)
      */
     public static void main(String[] args) {
         configureLogging();
+        
+        // Check for demo mode flag
+        for (String arg : args) {
+            if (arg.equalsIgnoreCase("--demo")) {
+                logger.info("Demo mode enabled - using mock data instead of live API");
+                ApiModeConfig.setDemoMode(true);
+                break;
+            }
+        }
+        
         SwingUtilities.invokeLater(DroneDeck::createAndShowGUI);
     }
 
@@ -98,7 +111,10 @@ public class DroneDeck {
 
     private static void setupMainPanel() {
         // Create the frame
-        JFrame frame = new JFrame("DroneDeck");
+        JFrame frame = new JFrame("DroneDeck" + (ApiModeConfig.isDemoMode() ? " - DEMO MODE" : ""));
+        
+        // Add menu bar with demo mode toggle
+        frame.setJMenuBar(new DemoDeckMenuBar(frame));
 
         ApiTokenService.setParent(frame); //Initialize the ApiTokenService with the parent frame
 
@@ -166,8 +182,18 @@ public class DroneDeck {
                     Thread.sleep(500);
 
                     publish(new Object[]{30, "🔌 Setting up API service..."});
-                    logger.info("🔌 Setting up API service...");
-                    IDroneApiService droneApiService = new DroneApiService(apiToken);
+                    String serviceType = ApiModeConfig.isDemoMode() ? "DEMO MODE with mock data" : "LIVE API";
+                    logger.info("🔌 Setting up API service... (" + serviceType + ")");
+                    
+                    // Create either mock or real API service based on demo mode setting
+                    IDroneApiService droneApiService;
+                    if (ApiModeConfig.isDemoMode()) {
+                        droneApiService = new MockDroneApiService();
+                        publish(new Object[]{35, "🧪 Running in DEMO MODE with mock data"});
+                        logger.info("🧪 Running in DEMO MODE with mock data");
+                    } else {
+                        droneApiService = new DroneApiService(apiToken);
+                    }
                     DroneController droneController = new DroneController();
                     ILocalSearchService localSearchService = LocalSearchService.createInstance(localDroneDao, localDroneTypeDao, droneApiService);
                     Thread.sleep(500);

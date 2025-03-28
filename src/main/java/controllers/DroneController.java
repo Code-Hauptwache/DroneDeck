@@ -6,8 +6,10 @@ import main.java.entity.DroneEntity;
 import main.java.entity.DroneTypeEntity;
 import main.java.exceptions.DroneApiException;
 import main.java.services.ApiToken.ApiTokenService;
+import main.java.services.DroneApi.ApiModeConfig;
 import main.java.services.DroneApi.DroneApiService;
 import main.java.services.DroneApi.IDroneApiService;
+import main.java.services.DroneApi.MockDroneApiService;
 import main.java.services.DroneApi.dtos.Drone;
 import main.java.services.DroneApi.dtos.DroneDynamics;
 import main.java.services.DroneApi.dtos.DroneDynamicsResponse;
@@ -30,9 +32,46 @@ public class DroneController implements IDroneController {
 
     private static final Logger logger = Logger.getLogger(DroneController.class.getName());
 
-    private static final String API_KEY = ApiTokenService.getApiToken();
-    private final IDroneApiService droneApiService = new DroneApiService(API_KEY);
-    private final ILocalDroneDao localDroneDao = new LocalDroneDao();
+    private final IDroneApiService droneApiService;
+    private final ILocalDroneDao localDroneDao;
+    
+    /**
+     * Default constructor - creates appropriate service based on demo mode
+     */
+    public DroneController() {
+        this.localDroneDao = new LocalDroneDao();
+        
+        // Create the appropriate service based on demo mode
+        if (ApiModeConfig.isDemoMode()) {
+            logger.info("Creating DroneController with MockDroneApiService (DEMO MODE)");
+            this.droneApiService = new MockDroneApiService();
+        } else {
+            String apiKey = ApiTokenService.getApiToken();
+            logger.info("Creating DroneController with real DroneApiService");
+            this.droneApiService = new DroneApiService(apiKey);
+        }
+    }
+    
+    /**
+     * Constructor with dependency injection for service
+     *
+     * @param droneApiService The API service to use
+     */
+    public DroneController(IDroneApiService droneApiService) {
+        this.droneApiService = droneApiService;
+        this.localDroneDao = new LocalDroneDao();
+    }
+    
+    /**
+     * Constructor with dependency injection for service and DAO
+     *
+     * @param droneApiService The API service to use
+     * @param localDroneDao The local drone DAO to use
+     */
+    public DroneController(IDroneApiService droneApiService, ILocalDroneDao localDroneDao) {
+        this.droneApiService = droneApiService;
+        this.localDroneDao = localDroneDao;
+    }
 
     /**
      * Gets the DroneApiService instance used by this controller.
