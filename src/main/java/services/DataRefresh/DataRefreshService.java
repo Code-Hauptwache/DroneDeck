@@ -5,6 +5,7 @@ import main.java.ui.pages.DroneCatalog;
 import main.java.ui.pages.DroneDashboard;
 import main.java.dao.ILocalDroneDao;
 import main.java.dao.LocalDroneDao;
+import main.java.services.DroneApi.ApiModeConfig;
 import main.java.services.DroneApi.IDroneApiService;
 import main.java.services.DroneApi.dtos.DroneDynamicsResponse;
 import main.java.ui.dtos.DroneDto;
@@ -29,11 +30,17 @@ public class DataRefreshService {
     private final DroneController droneController;
     private final ScheduledExecutorService scheduler;
     private final ILocalDroneDao localDroneDao;
-
-    private DataRefreshService() {
-        this.droneController = new DroneController();
-        this.localDroneDao = new LocalDroneDao();
-        this.scheduler = Executors.newSingleThreadScheduledExecutor();
+private DataRefreshService() {
+    this.droneController = new DroneController();
+    this.localDroneDao = new LocalDroneDao();
+    this.scheduler = Executors.newSingleThreadScheduledExecutor();
+    
+    // In demo mode, we use a longer refresh interval since data is static
+    if (ApiModeConfig.isDemoMode()) {
+        logger.info("🧪 DataRefreshService initialized in DEMO MODE with mock data");
+    }
+    
+    startPeriodicRefresh();
         startPeriodicRefresh();
     }
 
@@ -58,7 +65,28 @@ public class DataRefreshService {
 
     private void refreshData() {
         logger.info("\n🔄 Starting periodic data refresh cycle");
+        
+        // In demo mode, we don't need to fetch real data - our mock data is static
+        if (ApiModeConfig.isDemoMode()) {
+            logger.info("🧪 DEMO MODE: Using static mock data instead of refreshing from API");
+            
+            // Just update the UI with the existing mock data
+            SwingUtilities.invokeLater(() -> {
+                DroneDashboard dashboard = DroneDashboard.getInstance();
+                DroneCatalog catalog = DroneCatalog.getInstance();
+                
+                dashboard.updateDrones("");
+                catalog.updateDroneTypes("");
+                logger.info("✨ UI components updated with mock data");
+            });
+            
+            logger.info("✅ Demo mode refresh cycle completed successfully\n");
+            return;
+        }
+        
         try {
+            // For live mode, proceed with normal API refresh:
+            
             // 1. Update local data storage with fresh API data
             logger.info("📥 Fetching fresh data from API and updating local storage...");
             LocalSearchService.getCurrentInstance().initLocalData();
@@ -88,7 +116,7 @@ public class DataRefreshService {
                         double progress = (completedCount * 100.0) / drones.size();
                         long currentTime = System.currentTimeMillis();
                         double timeElapsed = (currentTime - startTime) / 1000.0;
-                        logger.info(String.format("⏳ Dynamics update progress: %.1f%% (%d/%d drones) - %.1f seconds elapsed", 
+                        logger.info(String.format("⏳ Dynamics update progress: %.1f%% (%d/%d drones) - %.1f seconds elapsed",
                             progress, completedCount, drones.size(), timeElapsed));
                     }
                 } catch (Exception e) {
@@ -109,7 +137,7 @@ public class DataRefreshService {
                 logger.info("✨ UI components updated with fresh data");
             });
 
-            logger.info("✅ Data refresh cycle completed successfully\n");
+            logger.info("✅ Live data refresh cycle completed successfully\n");
         } catch (Exception e) {
             logger.log(Level.SEVERE, "❌ Error during data refresh", e);
             throw e; // Let the scheduler handle retry
