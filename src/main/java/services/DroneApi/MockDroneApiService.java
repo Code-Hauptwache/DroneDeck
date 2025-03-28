@@ -233,7 +233,7 @@ public class MockDroneApiService implements IDroneApiService {
         dynamics.drone = "http://dronesim.facets-labs.com/api/drones/" + droneId + "/";
         dynamics.timestamp = new Date();
         dynamics.last_seen = new Date();
-        dynamics.status = "ONLINE"; // Set to ONLINE by default
+        dynamics.status = "ON"; // Set to ONLINE by default
         dynamics.battery_status = 85; // Good battery level
         dynamics.speed = 45;
         
@@ -286,13 +286,13 @@ public class MockDroneApiService implements IDroneApiService {
         
         // For variety, set different statuses and battery levels based on ID
         if (id % 3 == 0) {
-            fallback.status = "ONLINE";
+            fallback.status = "ON";
             fallback.battery_status = 90;
         } else if (id % 3 == 1) {
-            fallback.status = "ISSUE";
+            fallback.status = "IS";
             fallback.battery_status = 40;
         } else {
-            fallback.status = "OFFLINE";
+            fallback.status = "OF";
             fallback.battery_status = 5;
         }
         
@@ -358,8 +358,8 @@ public class MockDroneApiService implements IDroneApiService {
     private List<Drone> createMockDrones() {
         List<Drone> drones = new ArrayList<>();
         
-        // Create 10 drones with different configurations
-        for (int i = 1; i <= 10; i++) {
+        // Create 6 drones with different configurations (instead of 10)
+        for (int i = 1; i <= 6; i++) {
             Drone drone = new Drone();
             drone.id = i;
             
@@ -396,136 +396,283 @@ public class MockDroneApiService implements IDroneApiService {
         List<DroneDynamics> dynamicsList = new ArrayList<>();
         Random random = new Random(42); // Fixed seed for reproducible randomness
         
-        // Create a very simple mix exactly as requested:
-        // - Some high battery and ONLINE
-        // - Some medium battery and ONLINE
-        // - Some low battery but still ONLINE
-        // - Some 0% battery and OFFLINE
+        logger.info("Creating detailed mock drone dynamics data with flight paths for travel distance calculation");
         
-        // Skip all history - just create ONE current entry per drone
+        // ======= DRONE 1: ONLINE with high battery (Mavic Air 2, 3500 mAh) =======
+        // Create a significant flight path for travel distance calculations
+        double baseLat1 = 50.110924;
+        double baseLong1 = 8.682127;
         
-        // We'll make exactly 10 drones with the following properties:
-        // Drone 1 is Type 1 (Mavic Air 2) with 3500 mAh capacity
-        DroneDynamics d1 = new DroneDynamics();
-        d1.drone = "http://dronesim.facets-labs.com/api/drones/1/";
-        d1.status = "ON";
-        d1.battery_status = 3325; // 95% of 3500 mAh
-        d1.timestamp = new Date();
-        d1.last_seen = new Date();
-        d1.speed = 45;
-        d1.latitude = 50.110924;
-        d1.longitude = 8.682127;
-        dynamicsList.add(d1);
+        // Generate 20 points along a figure-8 pattern to ensure significant movement
+        // First point is oldest, last point is newest
+        for (int i = 0; i < 20; i++) {
+            DroneDynamics d1History = new DroneDynamics();
+            d1History.drone = "http://dronesim.facets-labs.com/api/drones/1/";
+            d1History.status = "ON";
+            
+            // Battery decreases as the drone flies (from 100% down to 95%)
+            d1History.battery_status = 3500 - (i * 9);
+            
+            // Set timestamps with 5-minute intervals (oldest first)
+            long minutesAgo = (20 - i) * 5; // 100, 95, 90, ... minutes ago
+            d1History.timestamp = new Date(System.currentTimeMillis() - (minutesAgo * 60000L));
+            d1History.last_seen = d1History.timestamp;
+            
+            // Speed varies slightly during flight (40-50 km/h)
+            d1History.speed = 40 + random.nextInt(11);
+            
+            // Create a figure-8 pattern for significant travel distance
+            // Each 0.001 in lat/long is roughly 100m, so we're creating a path
+            // that spans several kilometers to ensure non-zero travel distance
+            double t = i * Math.PI / 10; // Parameter for figure-8 curve
+            double latOffset = 0.01 * Math.sin(t);        // ~1km north-south
+            double longOffset = 0.015 * Math.sin(2 * t);  // ~1.5km east-west
+            
+            d1History.latitude = baseLat1 + latOffset;
+            d1History.longitude = baseLong1 + longOffset;
+            
+            dynamicsList.add(d1History);
+        }
+
+        // ======= DRONE 2: ONLINE with medium battery (Alta X, 5200 mAh) =======
+        double baseLat2 = 50.120924;
+        double baseLong2 = 8.692127;
         
-        // Drone 2 is Type 2 (Alta X) with 5200 mAh capacity
-        DroneDynamics d2 = new DroneDynamics();
-        d2.drone = "http://dronesim.facets-labs.com/api/drones/2/";
-        d2.status = "ON";
-        d2.battery_status = 4420; // 85% of 5200 mAh
-        d2.timestamp = new Date();
-        d2.last_seen = new Date();
-        d2.speed = 50;
-        d2.latitude = 50.120924;
-        d2.longitude = 8.692127;
-        dynamicsList.add(d2);
+        // Create a rectangular flight path (15 points)
+        for (int i = 0; i < 15; i++) {
+            DroneDynamics d2History = new DroneDynamics();
+            d2History.drone = "http://dronesim.facets-labs.com/api/drones/2/";
+            d2History.status = "ON";
+            
+            // Battery at 85% and dropping slightly
+            d2History.battery_status = 4420 - (i * 12);
+            
+            // Timestamps with 6-minute intervals (oldest first)
+            long minutesAgo = (15 - i) * 6; // 90, 84, 78, ... minutes ago
+            d2History.timestamp = new Date(System.currentTimeMillis() - (minutesAgo * 60000L));
+            d2History.last_seen = d2History.timestamp;
+            
+            // Speed around 45-55 km/h
+            d2History.speed = 45 + random.nextInt(11);
+            
+            // Create a rectangular flight path
+            // This will ensure substantial travel distance
+            double phase = (double)i / 15;
+            double latOffset = 0;
+            double longOffset = 0;
+            
+            if (phase < 0.25) {
+                // Moving east
+                latOffset = 0;
+                longOffset = 0.02 * (phase * 4);
+            } else if (phase < 0.5) {
+                // Moving north
+                latOffset = 0.02 * ((phase - 0.25) * 4);
+                longOffset = 0.02;
+            } else if (phase < 0.75) {
+                // Moving west
+                latOffset = 0.02;
+                longOffset = 0.02 - 0.02 * ((phase - 0.5) * 4);
+            } else {
+                // Moving south, back to start
+                latOffset = 0.02 - 0.02 * ((phase - 0.75) * 4);
+                longOffset = 0;
+            }
+            
+            d2History.latitude = baseLat2 + latOffset;
+            d2History.longitude = baseLong2 + longOffset;
+            
+            dynamicsList.add(d2History);
+        }
+
+        // ======= DRONE 3: ONLINE with low battery (Anafi USA, 3350 mAh) =======
+        double baseLat3 = 50.130924;
+        double baseLong3 = 8.702127;
         
-        // Drone 3 is Type 3 (Anafi USA) with 3350 mAh capacity
-        DroneDynamics d3 = new DroneDynamics();
-        d3.drone = "http://dronesim.facets-labs.com/api/drones/3/";
-        d3.status = "ON";
-        d3.battery_status = 1340; // 40% of 3350 mAh
-        d3.timestamp = new Date();
-        d3.last_seen = new Date();
-        d3.speed = 35;
-        d3.latitude = 50.130924;
-        d3.longitude = 8.702127;
-        dynamicsList.add(d3);
+        // Create a one-way flight path (12 points)
+        for (int i = 0; i < 12; i++) {
+            DroneDynamics d3History = new DroneDynamics();
+            d3History.drone = "http://dronesim.facets-labs.com/api/drones/3/";
+            d3History.status = "ON";
+            
+            // Battery at 40% and dropping
+            d3History.battery_status = 1340 - (i * 15);
+            
+            // Timestamps with 4-minute intervals (oldest first)
+            long minutesAgo = (12 - i) * 4; // 48, 44, 40, ... minutes ago
+            d3History.timestamp = new Date(System.currentTimeMillis() - (minutesAgo * 60000L));
+            d3History.last_seen = d3History.timestamp;
+            
+            // Speed around 35-40 km/h, slowing as battery drops
+            d3History.speed = 40 - (i / 4);
+            
+            // Linear flight path from southwest to northeast
+            d3History.latitude = baseLat3 + (0.015 * i / 11);
+            d3History.longitude = baseLong3 + (0.02 * i / 11);
+            
+            dynamicsList.add(d3History);
+        }
+
+        // ======= DRONE 4: ISSUE status with medium battery (Vortex 250 Pro, 1800 mAh) =======
+        double baseLat4 = 50.140924;
+        double baseLong4 = 8.712127;
         
-        // Drone 4 is Type 4 (Vortex 250 Pro) with 1800 mAh capacity
-        DroneDynamics d4 = new DroneDynamics();
-        d4.drone = "http://dronesim.facets-labs.com/api/drones/4/";
-        d4.status = "ON";
-        d4.battery_status = 684; // 38% of 1800 mAh
-        d4.timestamp = new Date();
-        d4.last_seen = new Date();
-        d4.speed = 30;
-        d4.latitude = 50.140924;
-        d4.longitude = 8.712127;
-        dynamicsList.add(d4);
+        // Create zigzag pattern showing erratic behavior (10 points)
+        for (int i = 0; i < 10; i++) {
+            DroneDynamics d4History = new DroneDynamics();
+            d4History.drone = "http://dronesim.facets-labs.com/api/drones/4/";
+            
+            // Status changes from ONLINE to ISSUE
+            if (i < 5) {
+                d4History.status = "ON";
+            } else {
+                d4History.status = "IS"; // Issue after 5th point
+            }
+            
+            // Battery at 38% and dropping
+            d4History.battery_status = 684 - (i * 8);
+            
+            // Timestamps with 5-minute intervals (oldest first)
+            long minutesAgo = (10 - i) * 5; // 50, 45, 40, ... minutes ago
+            d4History.timestamp = new Date(System.currentTimeMillis() - (minutesAgo * 60000L));
+            d4History.last_seen = d4History.timestamp;
+            
+            // Speed drops significantly after issue appears
+            if (i < 5) {
+                d4History.speed = 30 + random.nextInt(6);
+            } else {
+                d4History.speed = 15 + random.nextInt(6);
+            }
+            
+            // Zigzag pattern, more erratic after issue appears
+            double latOffset;
+            double longOffset;
+            
+            if (i < 5) {
+                // Before issue - normal zigzag
+                latOffset = 0.002 * i;
+                longOffset = 0.003 * Math.sin(i);
+            } else {
+                // After issue - more erratic movements
+                latOffset = 0.002 * i + 0.001 * Math.sin(i * 3);
+                longOffset = 0.003 * Math.sin(i) + 0.001 * Math.cos(i * 2);
+            }
+            
+            d4History.latitude = baseLat4 + latOffset;
+            d4History.longitude = baseLong4 + longOffset;
+            
+            dynamicsList.add(d4History);
+        }
+
+        // ======= DRONE 5: ONLINE with very low battery (Mavic Air 2, 3500 mAh) =======
+        double baseLat5 = 50.150924;
+        double baseLong5 = 8.722127;
         
-        // Drone 5 is Type 1 (Mavic Air 2) with 3500 mAh capacity
-        DroneDynamics d5 = new DroneDynamics();
-        d5.drone = "http://dronesim.facets-labs.com/api/drones/5/";
-        d5.status = "ON";
-        d5.battery_status = 140; // 4% of 3500 mAh - very low but still online
-        d5.timestamp = new Date();
-        d5.last_seen = new Date();
-        d5.speed = 20;
-        d5.latitude = 50.150924;
-        d5.longitude = 8.722127;
-        dynamicsList.add(d5);
+        // Create short flight path showing final moments of battery (8 points)
+        for (int i = 0; i < 8; i++) {
+            DroneDynamics d5History = new DroneDynamics();
+            d5History.drone = "http://dronesim.facets-labs.com/api/drones/5/";
+            d5History.status = "ON";
+            
+            // Battery critically low (4%) and dropping
+            d5History.battery_status = 175 - (i * 5);
+            if (d5History.battery_status < 0) d5History.battery_status = 0;
+            
+            // Timestamps with 2-minute intervals (oldest first)
+            long minutesAgo = (8 - i) * 3; // 24, 21, 18, ... minutes ago
+            d5History.timestamp = new Date(System.currentTimeMillis() - (minutesAgo * 60000L));
+            d5History.last_seen = d5History.timestamp;
+            
+            // Speed decreasing as battery runs out
+            d5History.speed = 20 - (i * 2);
+            if (d5History.speed < 0) d5History.speed = 0;
+            
+            // Small, tentative movements as battery runs out
+            // Drone is trying to land safely
+            d5History.latitude = baseLat5 + 0.005 - (0.005 * i / 7.0);
+            d5History.longitude = baseLong5 + 0.003 - (0.003 * i / 7.0);
+            
+            dynamicsList.add(d5History);
+        }
+
+        // ======= DRONE 6: OFFLINE with dead battery (Alta X, 5200 mAh) =======
+        double baseLat6 = 50.160924;
+        double baseLong6 = 8.732127;
         
-        // Drone 6 is Type 2 (Alta X) with 5200 mAh capacity
-        DroneDynamics d6 = new DroneDynamics();
-        d6.drone = "http://dronesim.facets-labs.com/api/drones/6/";
-        d6.status = "ON";
-        d6.battery_status = 156; // 3% of 5200 mAh - very low but still online
-        d6.timestamp = new Date();
-        d6.last_seen = new Date();
-        d6.speed = 15;
-        d6.latitude = 50.160924;
-        d6.longitude = 8.732127;
-        dynamicsList.add(d6);
+        // Create flight path showing gradual shutdown (15 points)
+        for (int i = 0; i < 15; i++) {
+            DroneDynamics d6History = new DroneDynamics();
+            d6History.drone = "http://dronesim.facets-labs.com/api/drones/6/";
+            
+            // Status changes as battery depletes
+            if (i < 7) {
+                d6History.status = "ON"; // First half - online
+            } else if (i < 12) {
+                d6History.status = "IS"; // Middle - issues
+            } else {
+                d6History.status = "OF"; // End - offline
+            }
+            
+            // Battery depleting to zero
+            if (i < 7) {
+                d6History.battery_status = 520 - (i * 30); // 10% down to 5%
+            } else if (i < 12) {
+                d6History.battery_status = 310 - ((i - 7) * 60); // 5% down to 1%
+            } else {
+                d6History.battery_status = 0; // Dead battery
+            }
+            
+            // Timestamps with 4-minute intervals (oldest first)
+            long minutesAgo = (15 - i) * 4; // 60, 56, 52, ... minutes ago
+            d6History.timestamp = new Date(System.currentTimeMillis() - (minutesAgo * 60000L));
+            
+            // Last seen time becomes increasingly delayed as the drone goes offline
+            if (i < 12) {
+                d6History.last_seen = d6History.timestamp;
+            } else {
+                // Increasingly large gap between timestamp and last_seen
+                long lastSeenDelay = (i - 11) * 60000; // 1-3 minutes delay
+                d6History.last_seen = new Date(d6History.timestamp.getTime() - lastSeenDelay);
+            }
+            
+            // Speed declining to zero
+            if (i < 7) {
+                d6History.speed = 25 - (i * 2); // Normal decline
+            } else if (i < 12) {
+                d6History.speed = 11 - ((i - 7) * 2); // Faster decline
+            } else {
+                d6History.speed = 0; // Stopped
+            }
+            
+            // Path showing drone attempting to return home but failing
+            double latOffset;
+            double longOffset;
+            
+            if (i < 7) {
+                // Moving away from home in an arc
+                double angle = (double)i / 7 * Math.PI;
+                latOffset = 0.015 * Math.sin(angle);
+                longOffset = 0.015 * Math.cos(angle);
+            } else if (i < 12) {
+                // Trying to return home but following erratic path
+                double angle = (double)(i - 7) / 5 * Math.PI;
+                double radius = 0.015 * (1 - ((double)(i - 7) / 5));
+                latOffset = radius * Math.sin(angle);
+                longOffset = radius * Math.cos(angle);
+            } else {
+                // Stopped, failed to return all the way home
+                latOffset = 0.003;
+                longOffset = 0.003;
+            }
+            
+            d6History.latitude = baseLat6 + latOffset;
+            d6History.longitude = baseLong6 + longOffset;
+            
+            dynamicsList.add(d6History);
+        }
         
-        // Drone 7 is Type 3 (Anafi USA) with 3350 mAh capacity
-        DroneDynamics d7 = new DroneDynamics();
-        d7.drone = "http://dronesim.facets-labs.com/api/drones/7/";
-        d7.status = "IS";
-        d7.battery_status = 1005; // 30% of 3350 mAh - medium with issue
-        d7.timestamp = new Date();
-        d7.last_seen = new Date();
-        d7.speed = 25;
-        d7.latitude = 50.170924;
-        d7.longitude = 8.742127;
-        dynamicsList.add(d7);
-        
-        // Drone 8 is Type 4 (Vortex 250 Pro) with 1800 mAh capacity
-        DroneDynamics d8 = new DroneDynamics();
-        d8.drone = "http://dronesim.facets-labs.com/api/drones/8/";
-        d8.status = "OF";
-        d8.battery_status = 0; // Dead battery, offline (0 mAh left)
-        d8.timestamp = new Date();
-        d8.last_seen = new Date(System.currentTimeMillis() - 3600000); // 1 hour ago
-        d8.speed = 0;
-        d8.latitude = 50.180924;
-        d8.longitude = 8.752127;
-        dynamicsList.add(d8);
-        
-        // Drone 9 is Type 1 (Mavic Air 2) with 3500 mAh capacity
-        DroneDynamics d9 = new DroneDynamics();
-        d9.drone = "http://dronesim.facets-labs.com/api/drones/9/";
-        d9.status = "OF";
-        d9.battery_status = 0; // Dead battery, offline (0 mAh left)
-        d9.timestamp = new Date();
-        d9.last_seen = new Date(System.currentTimeMillis() - 7200000); // 2 hours ago
-        d9.speed = 0;
-        d9.latitude = 50.190924;
-        d9.longitude = 8.762127;
-        dynamicsList.add(d9);
-        
-        // Drone 10 is Type 2 (Alta X) with 5200 mAh capacity
-        DroneDynamics d10 = new DroneDynamics();
-        d10.drone = "http://dronesim.facets-labs.com/api/drones/10/";
-        d10.status = "IS";
-        d10.battery_status = 780; // 15% of 5200 mAh - low with issue
-        d10.timestamp = new Date();
-        d10.last_seen = new Date();
-        d10.speed = 10;
-        d10.latitude = 50.200924;
-        d10.longitude = 8.772127;
-        dynamicsList.add(d10);
-        
-        logger.info("Created exactly 10 mock drone dynamics entries with varied statuses and battery levels");
+        // Log info about our dataset
+        logger.info("Created " + dynamicsList.size() + " mock drone dynamics entries with detailed flight paths");
         
         return dynamicsList;
     }
