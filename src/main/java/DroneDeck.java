@@ -14,7 +14,6 @@ import main.java.services.DroneApi.MockDroneApiService;
 import main.java.services.LocalSearch.LocalSearchService;
 import main.java.services.LocalSearch.ILocalSearchService;
 import main.java.services.DataRefresh.DataRefreshService;
-import main.java.ui.components.DemoDeckMenuBar;
 import main.java.ui.components.StartupLoadingScreen;
 import main.java.services.ApiToken.ApiTokenService;
 
@@ -112,9 +111,6 @@ public class DroneDeck {
     private static void setupMainPanel() {
         // Create the frame
         JFrame frame = new JFrame("DroneDeck" + (ApiModeConfig.isDemoMode() ? " - DEMO MODE" : ""));
-        
-        // Add menu bar with demo mode toggle
-        frame.setJMenuBar(new DemoDeckMenuBar(frame));
 
         ApiTokenService.setParent(frame); //Initialize the ApiTokenService with the parent frame
 

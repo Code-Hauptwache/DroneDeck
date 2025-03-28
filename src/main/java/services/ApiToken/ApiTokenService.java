@@ -5,6 +5,11 @@ import main.java.ui.components.PasswordInputDialog;
 import main.java.ui.components.TokenInputDialog;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.Dialog.ModalityType;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.logging.Logger;
 
 
@@ -25,15 +30,24 @@ public class ApiTokenService {
     /**
      * Get the API Token.
      * If the Token is not available, the user will be prompted to enter the Token.
-     * In demo mode, a mock token is returned without prompting.
+     * In demo mode, a mock password dialog is shown for UX flow, but any password works.
      * This method SHOULD NOT be called before setting the Parent JFrame.
      *
      * @return The API Token
      */
     public static String getApiToken() {
-        // When in demo mode, return a mock token without prompting
+        // Check if we're in demo mode
         if (ApiModeConfig.isDemoMode()) {
-            logger.info("Demo mode: Using mock API token");
+            logger.info("Demo mode: Showing mock password dialog");
+            
+            // In demo mode, we still want to show a password dialog for the UX flow,
+            // but we'll accept any password and return a mock token
+            if (Parent != null) {
+                showMockPasswordDialog();
+            } else {
+                logger.warning("Parent frame not set, skipping mock password dialog");
+            }
+            
             return DEMO_TOKEN;
         }
 
@@ -96,5 +110,53 @@ public class ApiTokenService {
 
             return null;
         }
+    }
+    
+    /**
+     * Shows a mock password dialog in demo mode.
+     * This dialog is purely for demonstration purposes and accepts any password.
+     */
+    private static void showMockPasswordDialog() {
+        logger.info("Showing mock password dialog in demo mode");
+        
+        JDialog dialog = new JDialog(Parent, "Enter Password (Demo Mode)", ModalityType.APPLICATION_MODAL);
+        dialog.setResizable(false);
+        dialog.setSize(400, 170);
+        dialog.setLayout(new BorderLayout());
+        
+        // Create content panel with GridLayout just like the original
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new GridLayout(2, 1, 5, 5));
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        
+        // First row: label
+        contentPanel.add(new JLabel("Enter any Password:"));
+        
+        // Second row: password field
+        JPasswordField passwordField = new JPasswordField(20);
+        contentPanel.add(passwordField);
+        
+        // Add content panel to dialog
+        dialog.add(contentPanel, BorderLayout.CENTER);
+        
+        // Create button panel
+        JPanel buttonPanel = new JPanel();
+        JButton okButton = new JButton("OK");
+        JButton cancelButton = new JButton("Cancel");
+        
+        // Add action listeners
+        okButton.addActionListener(e -> dialog.dispose());
+        passwordField.addActionListener(e -> dialog.dispose());
+        cancelButton.addActionListener(e -> dialog.dispose());
+        
+        buttonPanel.add(okButton);
+        buttonPanel.add(cancelButton);
+        
+        // Add button panel to dialog
+        dialog.add(buttonPanel, BorderLayout.SOUTH);
+        
+        // Set location and make visible
+        dialog.setLocationRelativeTo(Parent);
+        dialog.setVisible(true);
     }
 }

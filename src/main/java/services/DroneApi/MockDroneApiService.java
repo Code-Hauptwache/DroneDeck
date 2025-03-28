@@ -358,13 +358,19 @@ public class MockDroneApiService implements IDroneApiService {
     private List<Drone> createMockDrones() {
         List<Drone> drones = new ArrayList<>();
         
-        // Create 6 drones with different configurations (instead of 10)
-        for (int i = 1; i <= 6; i++) {
+        // Create 8 drones with different configurations (instead of 10)
+        for (int i = 1; i <= 8; i++) {
             Drone drone = new Drone();
             drone.id = i;
             
             // Assign drone types in a distributed manner
             int typeId = ((i - 1) % 4) + 1;
+            
+            // Force drones 7 and 8 to be Alta X (type 2)
+            if (i == 7 || i == 8) {
+                typeId = 2; // Alta X type ID
+            }
+            
             drone.dronetype = "http://dronesim.facets-labs.com/api/dronetypes/" + typeId + "/";
             
             drone.serialnumber = "SN-" + String.format("%06d", i * 100);
@@ -669,6 +675,77 @@ public class MockDroneApiService implements IDroneApiService {
             d6History.longitude = baseLong6 + longOffset;
             
             dynamicsList.add(d6History);
+        }
+        
+        // ======= DRONE 7: ONLINE Alta X with stable battery (Alta X, 5200 mAh) =======
+        double baseLat7 = 50.170924;
+        double baseLong7 = 8.742127;
+        
+        // Create a circular patrol pattern (12 points)
+        for (int i = 0; i < 12; i++) {
+            DroneDynamics d7History = new DroneDynamics();
+            d7History.drone = "http://dronesim.facets-labs.com/api/drones/7/";
+            d7History.status = "ON"; // Consistently ONLINE
+            
+            // Battery stable at around 70% - reliable drone
+            d7History.battery_status = 3640; // 70% of 5200 mAh
+            
+            // Timestamps with 3-minute intervals (oldest first)
+            long minutesAgo = (12 - i) * 3; // 36, 33, 30, ... minutes ago
+            d7History.timestamp = new Date(System.currentTimeMillis() - (minutesAgo * 60000L));
+            d7History.last_seen = d7History.timestamp;
+            
+            // Consistent speed - steady patrol drone
+            d7History.speed = 35; // Steady patrol speed
+            
+            // Create a circular patrol pattern
+            double angle = (double)i / 12 * 2 * Math.PI; // Full 360° circle
+            double radius = 0.01; // ~1km radius
+            
+            // Calculate offsets using circle equation
+            double latOffset = radius * Math.cos(angle);
+            double longOffset = radius * Math.sin(angle);
+            
+            d7History.latitude = baseLat7 + latOffset;
+            d7History.longitude = baseLong7 + longOffset;
+            
+            dynamicsList.add(d7History);
+        }
+        
+        // ======= DRONE 8: ONLINE Alta X in hovering/stationary mode (Alta X, 5200 mAh) =======
+        double baseLat8 = 50.185924;
+        double baseLong8 = 8.762127;
+        
+        // Create a hovering/mapping pattern with minimal movement (10 points)
+        for (int i = 0; i < 10; i++) {
+            DroneDynamics d8History = new DroneDynamics();
+            d8History.drone = "http://dronesim.facets-labs.com/api/drones/8/";
+            d8History.status = "ON"; // Consistently ONLINE
+            
+            // Very high battery - fresh start
+            d8History.battery_status = 4940; // 95% of 5200 mAh
+            
+            // Timestamps with 2-minute intervals (oldest first)
+            long minutesAgo = (10 - i) * 2; // 20, 18, 16, ... minutes ago
+            d8History.timestamp = new Date(System.currentTimeMillis() - (minutesAgo * 60000L));
+            d8History.last_seen = d8History.timestamp;
+            
+            // Very low speed - hovering/mapping mission
+            d8History.speed = 5 + random.nextInt(3); // 5-7 km/h (very slow)
+            
+            // Create a very tight grid/hovering pattern (minimal movement)
+            // This drone is doing a stationary mapping/scanning mission
+            double row = Math.floor(i / 5.0); // 0 for first 5 points, 1 for next 5
+            double col = i % 5; // 0-4 repeating
+            
+            // Small movements in a grid pattern (50-100m)
+            double latOffset = 0.0005 * row;     // ~50m between rows
+            double longOffset = 0.001 * (col/4); // ~100m across the row (normalized)
+            
+            d8History.latitude = baseLat8 + latOffset;
+            d8History.longitude = baseLong8 + longOffset;
+            
+            dynamicsList.add(d8History);
         }
         
         // Log info about our dataset
