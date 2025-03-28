@@ -1,4 +1,16 @@
 # DroneDeck
+
+![Java](https://img.shields.io/badge/Java-JDK%2023-orange?logo=java)
+![Swing](https://img.shields.io/badge/UI-Swing-blue?logo=java)
+![FlatLaf](https://img.shields.io/badge/UI-FlatLaf%203.5.2-lightblue)
+![REST API](https://img.shields.io/badge/Integration-REST%20API-brightgreen)
+![Multithreading](https://img.shields.io/badge/Performance-Multithreading-blueviolet)
+![GSON](https://img.shields.io/badge/JSON-GSON%202.11.0-yellow?logo=google)
+![Guava](https://img.shields.io/badge/RateLimiting-Guava%2033.4-blue?logo=google)
+![Ikonli](https://img.shields.io/badge/UI-Ikonli%20Icons-9cf)
+![JUnit5](https://img.shields.io/badge/Testing-JUnit%205.11.3-green?logo=junit5)
+![License](https://img.shields.io/badge/License-MIT-lightgrey)
+
 This repository contains the source code and supporting documentation for the **DroneDeck** project, developed as part of the **Object-Oriented Programming in Java** course at Frankfurt UAS (Winter 2024). The goal is to create a Java application with a graphical user interface (GUI) to interact with a drone simulation system using a [RESTful API](http://dronesim.facets-labs.com).
 
 ## Documentation
