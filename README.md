@@ -11,14 +11,12 @@
 
 This repository contains the source code and supporting documentation for the **DroneDeck** project, developed as part of the **Object-Oriented Programming in Java** course at Frankfurt UAS (Winter 2024). The goal is to create a Java application with a graphical user interface (GUI) to interact with a drone simulation system using a [RESTful API](http://dronesim.facets-labs.com).
 
-## Documentation
-For comprehensive project documentation, including user handbook and technical details, see our [Full Documentation](Docs.md).
-
-## Short Demo
+## Demo
 
 ![DroneDeck Demo](demo/DroneDeck_Demo.gif)
 
-*Note: For best results, record your demo using OBS with window capture at 1280x720 resolution (16:9 aspect ratio).*
+## Documentation
+For comprehensive project documentation, including user handbook and technical details, see our [Full Documentation](Docs.md).
 
 ## Architecture
 
