@@ -4,6 +4,135 @@ This repository contains the source code and supporting documentation for the **
 ## 📑 Documentation
 For comprehensive project documentation, including user handbook and technical details, see our [Full Documentation](Docs.md).
 
+## 🏗️ Architecture
+
+The DroneDeck application is built with a layered architecture that ensures separation of concerns and maintainability. Below is a diagram illustrating the main components and their relationships:
+
+```mermaid
+graph TB
+    %% Main Application Entry Point
+    DroneDeck[DroneDeck.java Entry Point]
+    
+    %% UI Layer
+    subgraph UI_Layer["UI Layer"]
+        MainPanel["MainPanel (CardLayout)"]
+        NorthPanel["NorthPanel (Navigation)"]
+        
+        subgraph UI_Pages["Pages"]
+            DroneDashboard["DroneDashboard"]
+            DroneCatalog["DroneCatalog"]
+            DroneDetailedView["DroneDetailedView"]
+        end
+        
+        subgraph UI_Components["UI Components"]
+            SearchBar["SearchBar"]
+            NavigationBar["NavigationBar"]
+            StartupLoadingScreen["StartupLoadingScreen"]
+            ButtonThemeSwitcher["ButtonThemeSwitcher"]
+            DroneDashboardCard["DroneDashboardCard"]
+            DroneCatalogCard["DroneCatalogCard"]
+            PieChartPanel["PieChartPanel"]
+            AllDronesStatusPieChartPanel["AllDronesStatusPieChartPanel"]
+        end
+    end
+    
+    %% Controller Layer
+    subgraph Controller_Layer["Controller Layer"]
+        DroneController["DroneController"]
+    end
+    
+    %% Service Layer
+    subgraph Service_Layer["Service Layer"]
+        ApiTokenService["ApiTokenService"]
+        DataRefreshService["DataRefreshService"]
+        
+        subgraph DroneServices["Drone Services"]
+            DroneApiService["DroneApiService"]
+            LocalSearchService["LocalSearchService"]
+        end
+        
+        subgraph UtilityServices["Utility Services"]
+            DroneDataCalculationService["DroneDataCalculationService"]
+            DroneStatusService["DroneStatusService"]
+            ReverseGeocodeService["ReverseGeocodeService"]
+            ScrollPaneService["ScrollPaneService"]
+        end
+    end
+    
+    %% Data Access Layer
+    subgraph Data_Layer["Data Access Layer"]
+        LocalDroneDao["LocalDroneDao"]
+        LocalDroneTypeDao["LocalDroneTypeDao"]
+    end
+    
+    %% Entity Layer
+    subgraph Entity_Layer["Entity Layer"]
+        DroneEntity["DroneEntity"]
+        DroneTypeEntity["DroneTypeEntity"]
+        
+        subgraph DTOs["Data Transfer Objects"]
+            DroneDto["DroneDto"]
+            DroneDynamics["DroneDynamics"]
+            DroneType["DroneType"]
+        end
+    end
+    
+    %% External Services
+    subgraph External_Services["External Services"]
+        DroneAPI["Drone Simulator API"]
+        style DroneAPI fill:#f9f,stroke:#333,stroke-width:2px
+    end
+    
+    %% Connections
+    DroneDeck --> MainPanel
+    DroneDeck --> StartupLoadingScreen
+    MainPanel --> NorthPanel
+    MainPanel --> UI_Pages
+    
+    NorthPanel --> NavigationBar
+    NorthPanel --> SearchBar
+    NorthPanel --> ButtonThemeSwitcher
+    
+    DroneDashboard --> DroneDashboardCard
+    DroneDashboard --> AllDronesStatusPieChartPanel
+    DroneCatalog --> DroneCatalogCard
+    AllDronesStatusPieChartPanel --> PieChartPanel
+    
+    DroneController --> DroneApiService
+    DroneController --> LocalDroneDao
+    
+    DroneApiService --> External_Services
+    ApiTokenService --> DroneApiService
+    
+    DataRefreshService --> DroneController
+    LocalSearchService --> LocalDroneDao
+    LocalSearchService --> LocalDroneTypeDao
+    
+    DroneDataCalculationService --> DroneDto
+    
+    DroneDashboard --> DroneStatusService
+    DroneDashboard --> DroneController
+    
+    DroneCatalog --> DroneController
+    DroneCatalog --> LocalSearchService
+    
+    LocalDroneDao --> DroneEntity
+    LocalDroneTypeDao --> DroneTypeEntity
+    
+    %% Data Flow
+    DroneController -.-> DroneDto
+    External_Services -.-> DTOs
+```
+
+For more detailed information on the architecture and component relationships, see the [Architecture Diagram](architecture-diagram.md).
+
+<!-- 
+## 🎥 Demo Video
+(Coming Soon) This section will include a demo video showcasing the key features of DroneDeck.
+
+![DroneDeck Demo](demo/demo.gif)
+-->
+
 ---
 
 ## Getting Started
