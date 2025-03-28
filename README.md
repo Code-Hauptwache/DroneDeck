@@ -1,57 +1,15 @@
 # DroneDeck
 This repository contains the source code and supporting documentation for the **DroneDeck** project, developed as part of the **Object-Oriented Programming in Java** course at Frankfurt UAS (Winter 2024). The goal is to create a Java application with a graphical user interface (GUI) to interact with a drone simulation system using a [RESTful API](http://dronesim.facets-labs.com).
 
-## 📑 Documentation
-For comprehensive project documentation, including user handbook and technical details, see our [Full Documentation](Docs.md).
-
-## 🏗️ Architecture
-
-DroneDeck follows a clean, modern architecture focused on scalability and maintainability:
-
-```mermaid
-graph TD
-    subgraph "Frontend"
-        UI[UI Components]
-        Dashboard[Dashboard View]
-        Catalog[Catalog View]
-    end
-
-    subgraph "Core"
-        Controller[Controller Layer]
-        Services[Service Layer]
-        DataAccess[Data Access Layer]
-    end
-
-    subgraph "External"
-        API[Drone API]
-        style API fill:#f96, stroke:#333
-    end
-
-    UI --> Dashboard
-    UI --> Catalog
-    Dashboard --> Controller
-    Catalog --> Controller
-    Controller --> Services
-    Services --> DataAccess
-    Services --> API
-
-    classDef default fill:#e4f2ff,stroke:#2c3e50
-    classDef external fill:#f5e2d8,stroke:#2c3e50
-    class API external
-```
-
-**Key Technologies:**
-- Java Swing with modern FlatLaf UI components
-- REST API integration with token authentication
-- Multithreaded data processing for performance
-- Local data caching for offline capabilities
-
 <!-- 
 ## 🎥 Demo Video
 (Coming Soon) This section will include a demo video showcasing the key features of DroneDeck.
 
 ![DroneDeck Demo](demo/demo.gif)
 -->
+
+## 📑 Documentation
+For comprehensive project documentation, including user handbook and technical details, see our [Full Documentation](Docs.md).
 
 ---
 
@@ -104,6 +62,45 @@ To successfully run the application and interact with the DroneSim API, you will
 - [**Milestones Description**](https://github.com/user-attachments/files/18007586/milestones.pdf)
 
 ![image](https://github.com/user-attachments/assets/805d8c2c-a472-428c-8842-9c0fc9db3453)
+
+---
+
+## 🏗️ Architecture
+
+DroneDeck follows a clean, modern architecture focused on scalability and maintainability:
+
+```mermaid
+graph TD
+    subgraph "Frontend"
+        UI[UI Components]
+        Dashboard[Dashboard View]
+        Catalog[Catalog View]
+    end
+
+    subgraph "Core"
+        Controller[Controller Layer]
+        Services[Service Layer]
+        DataAccess[Data Access Layer]
+    end
+
+    subgraph "External"
+        API[Drone API]
+    end
+
+    UI --> Dashboard
+    UI --> Catalog
+    Dashboard --> Controller
+    Catalog --> Controller
+    Controller --> Services
+    Services --> DataAccess
+    Services --> API
+```
+
+**Key Technologies:**
+- Java Swing with modern FlatLaf UI components
+- REST API integration with token authentication
+- Multithreaded data processing for performance
+- Local data caching for offline capabilities
 
 ---
 
