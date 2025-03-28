@@ -14,12 +14,11 @@ This repository contains the source code and supporting documentation for the **
 ## Documentation
 For comprehensive project documentation, including user handbook and technical details, see our [Full Documentation](Docs.md).
 
-<!-- 
-## 🎥 Demo Video
-(Coming Soon) This section will include a demo video showcasing the key features of DroneDeck.
+## Short Demo
 
-![DroneDeck Demo](demo/demo.gif)
--->
+![DroneDeck Demo](demo/DroneDeck_Demo.gif)
+
+*Note: For best results, record your demo using OBS with window capture at 1280x720 resolution (16:9 aspect ratio).*
 
 ## Architecture
 
