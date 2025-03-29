@@ -9,18 +9,18 @@
 [![Data Visualization](https://img.shields.io/badge/UI-Data%20Visualization-00BFFF)](https://docs.oracle.com/javase/tutorial/uiswing/components/index.html)
 [![License](https://img.shields.io/badge/License-MIT-lightgrey)](LICENSE)
 
-## 📋 Table of Contents
+## Table of Contents
 - [Overview](#overview)
 - [What's New in v1.2.0](#whats-new-in-v120)
 - [Quick Start](#quick-start)
 - [Demo](#demo)
 - [Documentation](#documentation)
 - [Architecture](#architecture)
-- [🚀 Running the Application](#-running-the-application)
-- [🔧 Development Setup](#-development-setup)
-- [🔑 API Access Setup](#-api-access-setup)
-- [📚 Additional Resources](#-additional-resources)
-- [📄 License](#-license)
+- [Running the Application](#running-the-application)
+- [Development Setup](#development-setup)
+- [API Access Setup](#api-access-setup)
+- [Additional Resources](#additional-resources)
+- [License](#license)
 
 ## Overview
 
@@ -28,8 +28,8 @@ This repository contains the source code and supporting documentation for the **
 
 ## What's New in v1.2.0
 
-- **✨ Demo Mode**: Run without API access (`java -jar DroneDeck.jar --demo`)
-- **🔄 Enhanced Data Sync**: Improved local storage synchronization
+- **Demo Mode**: Run without API access (`java -jar DroneDeck.jar --demo`)
+- **Enhanced Data Sync**: Improved local storage synchronization
 
 ## Quick Start
 
@@ -87,7 +87,7 @@ graph TD
 
 ---
 
-## 🚀 Running the Application
+## Running the Application
 
 ### Standard Mode (With API Access)
 
@@ -98,7 +98,6 @@ java -jar DroneDeck.jar
 
 **Requirements:**
 - ☕ Java 23+ ([Download](https://www.oracle.com/java/))
-- 🖥️ Screen resolution: 1024x768+
 - 🔑 DroneSim account with API token
 - 🌐 Frankfurt UAS network access
 
@@ -114,7 +113,7 @@ java -jar DroneDeck.jar --demo
 - Works outside university network
 - Try all features with simulated data
 
-## 🔧 Development Setup
+## Development Setup
 
 ### Required Tools
 
@@ -143,7 +142,7 @@ java -jar DroneDeck.jar --demo
    java -cp out/production/DroneDeck:lib/* main.java.DroneDeck --demo
    ```
 
-## 🔑 API Access Setup
+## API Access Setup
 
 1. **Set the `DRONE_API_KEY` environment variable**:
    - Find your API token at [DroneSim](http://dronesim.facets-labs.com)
@@ -156,26 +155,26 @@ java -jar DroneDeck.jar --demo
 
 ---
 
-## 📚 Additional Resources
+## Additional Resources
 
-- 📝 **Documentation**
+- **Documentation**
   - [Notion Project Page](https://www.notion.so/zakabouj/DroneDeck-OOP-Java-Projcet-152408e5d09b8033b5aed50a06d138d8)
   - [Detailed Documentation](https://www.notion.so/zakabouj/DroneDeck-Documentation-152408e5d09b800bb222fb4f9c63cec0)
   
-- 🎨 **Design**
+- **Design**
   - [Figma Wireframes & Mockups](https://www.figma.com/design/lKYP3mLiFFFGDFb1HdLXus/DroneDeck-Mockup?node-id=80-33&t=G7z15kf5VyYzPZE0-0)
 
 ---
 
-## 📋 Project Requirements
+## Project Requirements
 
-- 📄 [Project Requirements PDF](https://github.com/user-attachments/files/18007575/2024_winter_project_description.pdf)
-- 🎯 [Milestones Description PDF](https://github.com/user-attachments/files/18007586/milestones.pdf)
+- [Project Requirements PDF](https://github.com/user-attachments/files/18007575/2024_winter_project_description.pdf)
+- [Milestones Description PDF](https://github.com/user-attachments/files/18007586/milestones.pdf)
 
 ![Project Image](https://github.com/user-attachments/assets/805d8c2c-a472-428c-8842-9c0fc9db3453)
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
