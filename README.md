@@ -147,7 +147,7 @@ java -jar DroneDeck.jar --demo
 
 1. **Set the `DRONE_API_KEY` environment variable**:
    - Find your API token at [DroneSim](http://dronesim.facets-labs.com)
-   - Setting this prevents manual key entry on each startup
+   - Setting this prevents manual key entry on each startup in standard mode
 
 2. **Off-campus access**:
    - API only accessible from Frankfurt UAS network
