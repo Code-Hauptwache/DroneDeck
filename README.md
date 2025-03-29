@@ -1,4 +1,4 @@
-# DroneDeck v1.2.0
+# DroneDeck
 
 [![Java](https://img.shields.io/badge/Java-JDK%2023-ED8B00?logo=java)](https://www.oracle.com/java/)
 [![Desktop Development](https://img.shields.io/badge/Desktop-GUI%20Application-3178C6)](https://docs.oracle.com/javase/tutorial/uiswing/)
@@ -11,7 +11,6 @@
 
 ## Table of Contents
 - [Overview](#overview)
-- [What's New in v1.2.0](#whats-new-in-v120)
 - [Quick Start](#quick-start)
 - [Demo](#demo)
 - [Documentation](#documentation)
@@ -25,11 +24,6 @@
 ## Overview
 
 This repository contains the source code and supporting documentation for the **DroneDeck** project, developed as part of the **Object-Oriented Programming in Java** course at Frankfurt UAS (Winter 2024). The goal is to create a Java application with a graphical user interface (GUI) to interact with a drone simulation system using a [RESTful API](http://dronesim.facets-labs.com).
-
-## What's New in v1.2.0
-
-- **Demo Mode**: Run without API access (`java -jar DroneDeck.jar --demo`)
-- **Enhanced Data Sync**: Improved local storage synchronization
 
 ## Quick Start
 
